@@ -176,42 +176,6 @@
             opacity: 1;
         }
         
-        /* Poet's Oracle */
-        .oracle-button {
-            background: linear-gradient(45deg, #433A3F, var(--primary-color));
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-        .oracle-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 20px rgba(192, 132, 151, 0.5);
-        }
-        .loader {
-            width: 20px;
-            height: 20px;
-            border: 3px solid #FFF;
-            border-bottom-color: transparent;
-            border-radius: 50%;
-            display: inline-block;
-            box-sizing: border-box;
-            animation: rotation 1s linear infinite;
-        }
-        @keyframes rotation {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .oracle-image-option {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 4px solid transparent;
-        }
-        .oracle-image-option:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px var(--secondary-color);
-        }
-        .oracle-image-option.selected {
-            border-color: var(--primary-color);
-            transform: scale(1.05);
-        }
-        
         /* Guest Constellation Canvas */
         #guest-constellation-canvas {
             background: #1e1e3f;
@@ -301,6 +265,35 @@
         }
         .hero-names {
             transition: opacity 1s ease-in-out;
+        }
+        
+        /* Serendipity Map */
+        #adventure-map-canvas {
+            background: url('https://placehold.co/800x500/1e1e3f/433A3F?text=Our+World') center center/cover;
+            border-radius: 1rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .adventure-button {
+            background: linear-gradient(45deg, #433A3F, var(--primary-color));
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .adventure-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 20px rgba(192, 132, 151, 0.5);
+        }
+        .loader {
+            width: 20px;
+            height: 20px;
+            border: 3px solid #FFF;
+            border-bottom-color: transparent;
+            border-radius: 50%;
+            display: inline-block;
+            box-sizing: border-box;
+            animation: rotation 1s linear infinite;
+        }
+        @keyframes rotation {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
     </style>
@@ -428,22 +421,18 @@
             </div>
         </section>
 
-        <!-- Poet's Oracle Section -->
-        <section id="oracle" class="py-20 px-4 md:px-10 bg-[#F7EBE8] fade-in-section">
-            <div class="max-w-3xl mx-auto text-center">
-                <h2 class="section-title">The Poet's Oracle</h2>
-                <p class="text-xl -mt-4 mb-8 text-gray-600">Choose an image that speaks to you, and let the stars compose a verse.</p>
+        <!-- NEW: Serendipity Map Section -->
+        <section id="serendipity-map" class="py-20 px-4 md:px-10 bg-[#F7EBE8] fade-in-section">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="section-title">Our Future Adventures</h2>
+                <p class="text-xl -mt-4 mb-8 text-gray-600">Where will our story take us next? Let's find out.</p>
                 <div class="bg-white p-8 rounded-lg shadow-lg">
-                    <div id="oracle-image-options" class="flex justify-center gap-4 mb-6">
-                        <img src="https://placehold.co/150x100/1e1e3f/ffffff?text=Starry+Night" class="oracle-image-option rounded-lg cursor-pointer" data-prompt="a starry night sky">
-                        <img src="https://placehold.co/150x100/228B22/ffffff?text=Forest+Path" class="oracle-image-option rounded-lg cursor-pointer" data-prompt="a sunlit path in a forest">
-                        <img src="https://placehold.co/150x100/4682B4/ffffff?text=Ocean+Waves" class="oracle-image-option rounded-lg cursor-pointer" data-prompt="gentle ocean waves on a shore">
-                    </div>
-                    <button id="ask-oracle-btn" class="oracle-button text-white font-bold py-3 px-8 rounded-full" disabled>
-                        <span>Choose an Image</span>
+                    <canvas id="adventure-map-canvas" class="w-full aspect-video"></canvas>
+                    <button id="adventure-btn" class="adventure-button mt-6 text-white font-bold py-3 px-8 rounded-full">
+                        <span>Discover Our Next Adventure</span>
                         <span class="loader hidden"></span>
                     </button>
-                    <div id="oracle-answer" class="mt-6 text-lg text-left italic text-gray-700 min-h-[5rem] p-4 bg-gray-50 rounded-md">The stars await your inspiration...</div>
+                    <div id="adventure-story" class="mt-6 text-lg text-left italic text-gray-700 min-h-[5rem] p-4 bg-gray-50 rounded-md">The world awaits...</div>
                 </div>
             </div>
         </section>
@@ -487,34 +476,9 @@
         </div>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, onSnapshot, doc, setDoc, getDoc, query, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-        // --- Firebase Config ---
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const auth = getAuth(app);
-
-        // --- Authentication ---
-        async function authenticateUser() {
-            try {
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(auth, __initial_auth_token);
-                } else {
-                    await signInAnonymously(auth);
-                }
-            } catch (error) {
-                console.error("Authentication failed:", error);
-            }
-        }
-
+    <script>
         // --- Password Protection Logic ---
-        document.addEventListener('DOMContentLoaded', async () => {
-            await authenticateUser();
+        document.addEventListener('DOMContentLoaded', () => {
             const overlay = document.getElementById('password-overlay');
             const passwordBox = document.getElementById('password-box');
             const mainContent = document.getElementById('main-content');
@@ -577,6 +541,7 @@
                     if (entry.target.id === 'connect-stars') { startVowCanvas(); }
                     if (entry.target.id === 'guest-constellation-section') { initGuestConstellation(); }
                     if (entry.target.id === 'garden') { initGarden(); }
+                    if (entry.target.id === 'serendipity-map') { initAdventureMap(); }
                 }
             });
         }, { threshold: 0.2 });
@@ -586,7 +551,8 @@
         const wishForm = document.getElementById('wish-form');
         const wishesDisplay = document.getElementById('wishes-display');
         const lanternContainer = document.getElementById('lantern-container');
-        wishForm.addEventListener('submit', async (e) => {
+        let wishCount = 0;
+        wishForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const name = document.getElementById('wisher-name').value;
             const relation = document.getElementById('wisher-relation').value;
@@ -604,39 +570,28 @@
             lanternContainer.appendChild(lantern);
             setTimeout(() => { lantern.remove(); }, 15000);
 
-            // Add wish to Firestore to track for garden growth
-            const wishesRef = collection(db, `artifacts/${appId}/public/data/wishes`);
-            await addDoc(wishesRef, { name, message, timestamp: new Date() });
-
+            wishCount++;
+            updateGarden(wishCount);
             wishForm.reset();
         });
 
         // --- Garden of Growth ---
         const gardenContainer = document.getElementById('garden-container');
         let gardenInitialized = false;
-        async function initGarden() {
+        function initGarden() {
             if (gardenInitialized) return;
             gardenInitialized = true;
-            
-            const wishesRef = collection(db, `artifacts/${appId}/public/data/wishes`);
-            onSnapshot(wishesRef, (snapshot) => {
-                const wishCount = snapshot.size;
-                updateGarden(wishCount);
-            });
-
-            // Initial load
-            const initialSnapshot = await getDocs(wishesRef);
-            updateGarden(initialSnapshot.size);
+            updateGarden(0); // Initial empty garden
         }
 
-        function updateGarden(wishCount) {
+        function updateGarden(count) {
             gardenContainer.innerHTML = ''; // Clear garden to redraw
             const trunk = document.createElement('div');
             trunk.className = 'tree-branch';
-            trunk.style.height = `${100 + wishCount * 5}px`;
+            trunk.style.height = `${100 + count * 5}px`;
             gardenContainer.appendChild(trunk);
 
-            const branchCount = Math.floor(wishCount / 5);
+            const branchCount = Math.floor(count / 5);
             for (let i = 0; i < 3 + branchCount; i++) {
                 const branch = document.createElement('div');
                 branch.className = 'tree-branch';
@@ -645,7 +600,7 @@
                 trunk.appendChild(branch);
             }
 
-            for (let i = 0; i < wishCount; i++) {
+            for (let i = 0; i < count; i++) {
                 addFlowerToGarden();
             }
         }
@@ -702,8 +657,8 @@
         let currentLine = null;
         const VOWS = [
             "From this day forward,", "you shall not walk alone.",
-            "My <span class='glowing-word'>heart<i class='fas fa-heart icon'></i></span> will be your shelter,",
-            "and my arms will be your <span class='glowing-word'>home<i class='fas fa-home icon'></i></span>."
+            "My heart will be your shelter,",
+            "and my arms will be your home."
         ];
 
         function setupVowCanvas() {
@@ -724,8 +679,7 @@
                 vctx.beginPath(); vctx.moveTo(line.start.x, line.start.y); vctx.lineTo(line.end.x, line.end.y);
                 vctx.strokeStyle = 'gold'; vctx.lineWidth = 2; vctx.stroke();
                 
-                // This part is now visual only; the interactive text is in HTML
-                const text = VOWS[index].replace(/<[^>]*>/g, ""); // strip html for canvas
+                const text = VOWS[index];
                 vctx.fillStyle = 'white'; vctx.font = '16px "Dancing Script", cursive'; vctx.textAlign = 'center';
                 vctx.fillText(text, (line.start.x + line.end.x) / 2, (line.start.y + line.end.y) / 2 - 10);
             });
@@ -777,34 +731,75 @@
             vowCanvasStarted = true; setupVowCanvas(); drawVowCanvas();
         }
         
-        // --- Poet's Oracle (Gemini API) ---
-        const oracleBtn = document.getElementById('ask-oracle-btn');
-        const oracleAnswer = document.getElementById('oracle-answer');
-        const loader = oracleBtn.querySelector('.loader');
-        const btnText = oracleBtn.querySelector('span');
-        const imageOptions = document.getElementById('oracle-image-options');
-        let selectedPrompt = '';
+        // --- Serendipity Map (Gemini API) ---
+        const adventureBtn = document.getElementById('adventure-btn');
+        const adventureStory = document.getElementById('adventure-story');
+        const adventureLoader = adventureBtn.querySelector('.loader');
+        const adventureBtnText = adventureBtn.querySelector('span');
+        const adventureCanvas = document.getElementById('adventure-map-canvas');
+        const actx = adventureCanvas.getContext('2d');
+        let adventureMapInitialized = false;
 
-        imageOptions.addEventListener('click', e => {
-            if (e.target.tagName === 'IMG') {
-                imageOptions.querySelectorAll('img').forEach(img => img.classList.remove('selected'));
-                e.target.classList.add('selected');
-                selectedPrompt = e.target.dataset.prompt;
-                oracleBtn.disabled = false;
-                btnText.textContent = 'Ask the Oracle';
+        const destinations = [
+            { name: "Paris, France", x: 0.49, y: 0.35 },
+            { name: "Kyoto, Japan", x: 0.84, y: 0.42 },
+            { name: "Santorini, Greece", x: 0.55, y: 0.41 },
+            { name: "Bali, Indonesia", x: 0.79, y: 0.62 },
+            { name: "Reykjavik, Iceland", x: 0.44, y: 0.25 },
+        ];
+
+        function initAdventureMap() {
+            if (adventureMapInitialized) return;
+            adventureMapInitialized = true;
+            adventureCanvas.width = adventureCanvas.offsetWidth;
+            adventureCanvas.height = adventureCanvas.offsetHeight;
+        }
+
+        function animateAdventurePath(destination) {
+            const start = { x: adventureCanvas.width * 0.68, y: adventureCanvas.height * 0.55 }; // Approx. Chennai
+            const end = { x: destination.x * adventureCanvas.width, y: destination.y * adventureCanvas.height };
+            let progress = 0;
+            
+            function animate() {
+                if (progress < 1) {
+                    progress += 0.01;
+                    const currentX1 = start.x + (end.x - start.x) * progress;
+                    const currentY1 = start.y + (end.y - start.y) * progress;
+                    
+                    const currentX2 = start.x - (end.x - start.x) * progress * 0.1; // slight curve
+                    const currentY2 = start.y + (end.y - start.y) * progress;
+
+
+                    actx.clearRect(0, 0, adventureCanvas.width, adventureCanvas.height);
+                    
+                    // Draw path
+                    actx.beginPath();
+                    actx.moveTo(start.x, start.y);
+                    actx.lineTo(currentX1, currentY1);
+                    actx.strokeStyle = 'rgba(255, 215, 0, 0.8)';
+                    actx.lineWidth = 2;
+                    actx.stroke();
+
+                    // Draw glowing dot
+                    actx.beginPath();
+                    actx.arc(currentX1, currentY1, 5, 0, Math.PI * 2);
+                    actx.fillStyle = 'gold';
+                    actx.shadowColor = 'gold';
+                    actx.shadowBlur = 15;
+                    actx.fill();
+                    actx.shadowBlur = 0;
+
+                    requestAnimationFrame(animate);
+                } else {
+                    // Animation finished, call Gemini
+                    getAdventureStory(destination.name);
+                }
             }
-        });
+            animate();
+        }
 
-        oracleBtn.addEventListener('click', async () => {
-            if (!selectedPrompt) {
-                oracleAnswer.textContent = "Please choose an image to inspire the stars.";
-                return;
-            }
-            loader.classList.remove('hidden');
-            btnText.classList.add('hidden');
-            oracleAnswer.textContent = "The stars are composing a verse...";
-
-            const fullPrompt = `For a romantic website celebrating a couple named Manoharan and Abirami, write a short, poetic, and happy verse (2-4 lines) inspired by this theme: "${selectedPrompt}". Frame the answer as if it's a vision from the stars.`;
+        async function getAdventureStory(destinationName) {
+            const fullPrompt = `For a romantic website celebrating a couple named Manoharan and Abirami, write a very short, whimsical, and happy story (2-3 sentences) about their future adventure in ${destinationName}.`;
             
             let chatHistory = [{ role: "user", parts: [{ text: fullPrompt }] }];
             const payload = { contents: chatHistory };
@@ -819,20 +814,32 @@
                 });
                 const result = await response.json();
                 if (result.candidates && result.candidates[0].content && result.candidates[0].content.parts[0].text) {
-                    oracleAnswer.textContent = result.candidates[0].content.parts[0].text;
+                    adventureStory.textContent = result.candidates[0].content.parts[0].text;
                 } else {
-                    oracleAnswer.textContent = "The starlight is faint right now. Please try again later.";
+                    adventureStory.textContent = "The stars whisper of a beautiful journey, but the details are a sweet surprise...";
                 }
             } catch (error) {
-                console.error("Oracle Error:", error);
-                oracleAnswer.textContent = "A cosmic cloud is obscuring the view. Please try again.";
+                console.error("Adventure Story Error:", error);
+                adventureStory.textContent = "A cosmic cloud is obscuring the view. Please try again.";
             } finally {
-                loader.classList.add('hidden');
-                btnText.classList.remove('hidden');
+                adventureLoader.classList.add('hidden');
+                adventureBtnText.classList.remove('hidden');
+                adventureBtn.disabled = false;
             }
+        }
+
+        adventureBtn.addEventListener('click', () => {
+            adventureLoader.classList.remove('hidden');
+            adventureBtnText.classList.add('hidden');
+            adventureBtn.disabled = true;
+            adventureStory.textContent = "Charting a course through the stars...";
+            
+            const randomIndex = Math.floor(Math.random() * destinations.length);
+            const destination = destinations[randomIndex];
+            animateAdventurePath(destination);
         });
 
-        // --- Guest Constellation Canvas (Firestore) ---
+        // --- Guest Constellation Canvas (Static) ---
         const guestCanvas = document.getElementById('guest-constellation-canvas');
         const gctx = guestCanvas.getContext('2d');
         let guestCanvasInitialized = false;
@@ -849,10 +856,17 @@
             guestCanvas.height = 450;
         }
 
-        async function initGuestConstellation() {
+        function initGuestConstellation() {
             if (guestCanvasInitialized) return;
             guestCanvasInitialized = true;
             resizeGuestCanvas();
+
+            // Pre-populate with some stars
+            guestStars = [
+                { x: 0.2, y: 0.3, name: 'A Friend', wish: 'Wishing you a lifetime of joy!'},
+                { x: 0.8, y: 0.5, name: 'Family', wish: 'So happy for you both!'},
+                { x: 0.5, y: 0.7, name: 'A Well Wisher', wish: 'May your love shine bright!'}
+            ];
 
             for (let i = 0; i < 100; i++) {
                 backgroundStars.push({
@@ -860,14 +874,6 @@
                     radius: Math.random() * 1.5, alpha: Math.random() * 0.5 + 0.2
                 });
             }
-
-            const guestConstellationRef = collection(db, `artifacts/${appId}/public/data/guest-constellation`);
-            onSnapshot(guestConstellationRef, (snapshot) => {
-                guestStars = [];
-                snapshot.forEach(doc => {
-                    guestStars.push(doc.data());
-                });
-            });
 
             drawGuestConstellation();
 
@@ -895,12 +901,12 @@
                 }
             });
 
-            starForm.addEventListener('submit', async (e) => {
+            starForm.addEventListener('submit', (e) => {
                 e.preventDefault();
                 if (!tempStar) return;
                 const name = document.getElementById('star-name').value;
                 const wish = document.getElementById('star-wish').value;
-                await addDoc(guestConstellationRef, { ...tempStar, name, wish });
+                guestStars.push({ ...tempStar, name, wish });
                 tempStar = null;
                 starForm.reset();
                 starFormContainer.classList.add('hidden');
