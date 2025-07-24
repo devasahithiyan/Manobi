@@ -335,13 +335,13 @@
         <!-- Countdown Section -->
         <section id="countdown" class="py-20 px-4 md:px-10 fade-in-section">
             <div class="max-w-4xl mx-auto text-center">
-                <h2 class="section-title">The Next Chapter</h2>
-                <p class="text-xl -mt-4 mb-12">Counting down to our forever</p>
+                <h2 class="section-title">Our Time Together</h2>
+                <p class="text-xl -mt-4 mb-12">Celebrating every moment since we began</p>
                 <div id="countdown-timer" class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 text-center">
+                    <div class="bg-white p-6 rounded-lg shadow-lg"><div id="years" class="text-5xl font-bold text-[var(--accent-color)]">00</div><div class="text-lg text-gray-600">Years</div></div>
                     <div class="bg-white p-6 rounded-lg shadow-lg"><div id="days" class="text-5xl font-bold text-[var(--accent-color)]">00</div><div class="text-lg text-gray-600">Days</div></div>
                     <div class="bg-white p-6 rounded-lg shadow-lg"><div id="hours" class="text-5xl font-bold text-[var(--accent-color)]">00</div><div class="text-lg text-gray-600">Hours</div></div>
                     <div class="bg-white p-6 rounded-lg shadow-lg"><div id="minutes" class="text-5xl font-bold text-[var(--accent-color)]">00</div><div class="text-lg text-gray-600">Minutes</div></div>
-                    <div class="bg-white p-6 rounded-lg shadow-lg"><div id="seconds" class="text-5xl font-bold text-[var(--accent-color)]">00</div><div class="text-lg text-gray-600">Seconds</div></div>
                 </div>
             </div>
         </section>
@@ -421,7 +421,7 @@
             </div>
         </section>
 
-        <!-- NEW: Serendipity Map Section -->
+        <!-- Serendipity Map Section -->
         <section id="serendipity-map" class="py-20 px-4 md:px-10 bg-[#F7EBE8] fade-in-section">
             <div class="max-w-4xl mx-auto text-center">
                 <h2 class="section-title">Our Future Adventures</h2>
@@ -517,19 +517,28 @@
             });
         });
 
-        // --- Countdown Timer ---
-        const countDownDate = new Date("Dec 25, 2025 00:00:00").getTime();
-        const countdownFunction = setInterval(function() {
-            const now = new Date().getTime();
-            const distance = countDownDate - now;
-            document.getElementById("days").innerText = Math.floor(distance / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
-            document.getElementById("hours").innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
-            document.getElementById("minutes").innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
-            document.getElementById("seconds").innerText = Math.floor((distance % (1000 * 60)) / 1000).toString().padStart(2, '0');
-            if (distance < 0) {
-                clearInterval(countdownFunction);
-                document.getElementById("countdown-timer").innerHTML = "<div class='col-span-4 text-3xl font-bold'>The day is here!</div>";
+        // --- Time Since Timer ---
+        const startDate = new Date("2022-03-22T00:00:00");
+        const timeSinceFunction = setInterval(function() {
+            const now = new Date();
+            
+            let years = now.getFullYear() - startDate.getFullYear();
+            const anniversaryThisYear = new Date(now.getFullYear(), startDate.getMonth(), startDate.getDate());
+            if (now < anniversaryThisYear) {
+                years--;
             }
+
+            const lastAnniversary = new Date(startDate.getFullYear() + years, startDate.getMonth(), startDate.getDate());
+            const diff = now - lastAnniversary;
+            
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+
+            document.getElementById("years").innerText = years.toString().padStart(2, '0');
+            document.getElementById("days").innerText = days.toString().padStart(2, '0');
+            document.getElementById("hours").innerText = hours.toString().padStart(2, '0');
+            document.getElementById("minutes").innerText = minutes.toString().padStart(2, '0');
         }, 1000);
 
         // --- Fade-in sections on scroll ---
@@ -766,10 +775,6 @@
                     const currentX1 = start.x + (end.x - start.x) * progress;
                     const currentY1 = start.y + (end.y - start.y) * progress;
                     
-                    const currentX2 = start.x - (end.x - start.x) * progress * 0.1; // slight curve
-                    const currentY2 = start.y + (end.y - start.y) * progress;
-
-
                     actx.clearRect(0, 0, adventureCanvas.width, adventureCanvas.height);
                     
                     // Draw path
