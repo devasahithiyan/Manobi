@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,428 +11,642 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <style>
-        :root {
-            --bg-color: #FBF6F0;
-            --text-color: #433A3F;
-            --primary-color: #C08497; /* Muted Rose */
-            --secondary-color: #F7AF9D; /* Soft Peach */
-            --accent-color: #8B5E34; /* Warm Gold/Brown */
-        }
-        html {
-            scroll-behavior: smooth;
-        }
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            overflow-x: hidden;
-        }
-        h1, h2, h3 {
-            font-family: 'Playfair Display', serif;
-        }
-        .font-dancing {
-            font-family: 'Dancing Script', cursive;
-        }
-        .hero {
-            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('./images/back.jpeg') no-repeat center center/cover;
-            position: relative;
-        }
+    
+<style>
+    :root {
+        --bg-color: #FBF6F0;
+        --text-color: #433A3F;
+        --primary-color: #C08497; /* Muted Rose */
+        --secondary-color: #F7AF9D; /* Soft Peach */
+        --accent-color: #8B5E34; /* Warm Gold/Brown */
+    }
+    html {
+        scroll-behavior: smooth;
+    }
+    body {
+        font-family: 'Montserrat', sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        overflow-x: hidden;
+    }
+    h1, h2, h3 {
+        font-family: 'Playfair Display', serif;
+    }
+    .font-dancing {
+        font-family: 'Dancing Script', cursive;
+    }
+    .hero {
+        background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('./images/back.jpeg') no-repeat center center/cover;
+        position: relative;
+    }
+    .section-title {
+        font-size: 2.5rem; /* Base size for mobile */
+        font-weight: 700;
+        color: var(--accent-color);
+        text-align: center;
+        margin-bottom: 2rem;
+        position: relative;
+    }
+    @media (min-width: 768px) { /* md */
         .section-title {
             font-size: 3rem;
-            font-weight: 700;
-            color: var(--accent-color);
-            text-align: center;
-            margin-bottom: 2rem;
-            position: relative;
         }
-        .section-title::after {
-            content: '✨';
-            display: block;
-            font-size: 1.5rem;
-            color: var(--primary-color);
-            margin: 0.5rem auto 0;
+    }
+    .section-title::after {
+        content: '✨';
+        display: block;
+        font-size: 1.5rem;
+        color: var(--primary-color);
+        margin: 0.5rem auto 0;
+    }
+    
+    /* Fade-in animation */
+    .fade-in-section {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 1s ease-out, transform 1s ease-out;
+    }
+    .fade-in-section.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    #lantern-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 9999;
+    }
+    .lantern {
+        position: absolute;
+        bottom: -150px;
+        width: 80px;
+        height: 120px;
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 120"><defs><radialGradient id="grad" cx="50%" cy="50%" r="50%" fx="50%" fy="50%"><stop offset="0%" style="stop-color:white;stop-opacity:0.8" /><stop offset="100%" style="stop-color:gold;stop-opacity:0.5" /></radialGradient></defs><path d="M10 0 L70 0 L80 40 L80 100 L0 100 L0 40 Z" fill="url(%23grad)"/><rect x="30" y="100" width="20" height="20" fill="rgba(0,0,0,0.2)"/></svg>');
+        background-size: contain;
+        background-repeat: no-repeat;
+        animation: floatUp 15s ease-in forwards;
+        filter: drop-shadow(0 0 10px gold);
+    }
+    @keyframes floatUp {
+        0% { transform: translateY(0) translateX(0) rotate(0); opacity: 1; }
+        100% { transform: translateY(-120vh) translateX(10vw) rotate(10deg); opacity: 0; }
+    }
+    @keyframes shake {
+        10%, 90% { transform: translate3d(-1px, 0, 0); }
+        20%, 80% { transform: translate3d(2px, 0, 0); }
+        30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+        40%, 60% { transform: translate3d(4px, 0, 0); }
+    }
+    .animate-shake {
+        animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+    }
+    
+    /* Smoother Unlock Animation */
+    #password-box {
+        transition: opacity 0.5s ease-out;
+    }
+    .gate {
+        background-color: #111827;
+        transition: transform 1.5s cubic-bezier(0.86, 0, 0.07, 1);
+    }
+    #password-overlay.unlocked #password-box {
+        opacity: 0;
+    }
+    #password-overlay.unlocked .left-gate {
+        transform: translateX(-100%);
+    }
+    #password-overlay.unlocked .right-gate {
+        transform: translateX(100%);
+    }
+
+    /* Garden of Growth Styles */
+    #garden-container {
+        position: relative;
+        width: 100%;
+        max-width: 600px;
+        height: 400px;
+        margin: auto;
+        background: linear-gradient(to top, #F7EBE8, var(--bg-color));
+        border-bottom: 2px solid var(--accent-color);
+        border-radius: 0.5rem;
+        overflow: hidden;
+    }
+    #hearts-canvas {
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        pointer-events: none;
+    }
+    .tree-branch {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 10px;
+        background-color: var(--accent-color);
+        transform-origin: bottom center;
+        transition: height 1s ease-in-out;
+    }
+    .flower {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background-color: var(--primary-color);
+        border-radius: 50%;
+        border: 2px solid white;
+        transform: scale(0);
+        animation: bloom 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        filter: drop-shadow(0 0 5px var(--primary-color));
+    }
+    @keyframes bloom {
+        from { transform: scale(0); }
+        to { transform: scale(1); }
+    }
+
+    /* Connect the Stars Canvas */
+    #vow-canvas {
+        background: #1e1e3f;
+        background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+        border-radius: 1rem;
+        cursor: pointer;
+    }
+    
+    /* Guest Constellation Canvas */
+    #guest-constellation-canvas {
+        background: #1e1e3f;
+        background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+        border-radius: 1rem;
+        cursor: cell;
+    }
+    
+    /* NEW Hero Animation */
+    .hero-names {
+        opacity: 0;
+        transform: scale(1.2);
+        transition: opacity 1s ease-out, transform 1s ease-out;
+    }
+    .hero.loaded .hero-names {
+        opacity: 1;
+        transform: scale(1);
+    }
+    .hero-names h1 .letter {
+        display: inline-block;
+        opacity: 0;
+        transform: translateY(30px) rotateZ(20deg) scale(0.5);
+        animation: letter-reveal 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        text-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
+    }
+    @keyframes letter-reveal {
+        to {
+            opacity: 1;
+            transform: translateY(0) rotateZ(0) scale(1);
         }
-        
-        /* Fade-in animation */
-        .fade-in-section {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 1s ease-out, transform 1s ease-out;
-        }
-        .fade-in-section.is-visible {
+    }
+    .hero-names .subtitle {
+        opacity: 0;
+        transform: translateY(20px);
+        animation: subtitle-reveal 1s 1.5s forwards;
+    }
+    @keyframes subtitle-reveal {
+        to {
             opacity: 1;
             transform: translateY(0);
         }
-        
-        #lantern-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 9999;
-        }
-        .lantern {
-            position: absolute;
-            bottom: -150px;
-            width: 80px;
-            height: 120px;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 120"><defs><radialGradient id="grad" cx="50%" cy="50%" r="50%" fx="50%" fy="50%"><stop offset="0%" style="stop-color:white;stop-opacity:0.8" /><stop offset="100%" style="stop-color:gold;stop-opacity:0.5" /></radialGradient></defs><path d="M10 0 L70 0 L80 40 L80 100 L0 100 L0 40 Z" fill="url(%23grad)"/><rect x="30" y="100" width="20" height="20" fill="rgba(0,0,0,0.2)"/></svg>');
-            background-size: contain;
-            background-repeat: no-repeat;
-            animation: floatUp 15s ease-in forwards;
-            filter: drop-shadow(0 0 10px gold);
-        }
-        @keyframes floatUp {
-            0% { transform: translateY(0) translateX(0) rotate(0); opacity: 1; }
-            100% { transform: translateY(-120vh) translateX(10vw) rotate(10deg); opacity: 0; }
-        }
-        @keyframes shake {
-            10%, 90% { transform: translate3d(-1px, 0, 0); }
-            20%, 80% { transform: translate3d(2px, 0, 0); }
-            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
-            40%, 60% { transform: translate3d(4px, 0, 0); }
-        }
-        .animate-shake {
-            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
-        }
-        
-        /* Smoother Unlock Animation */
-        #password-box {
-            transition: opacity 0.5s ease-out;
-        }
-        .gate {
-            background-color: #111827;
-            transition: transform 1.5s cubic-bezier(0.86, 0, 0.07, 1);
-        }
-        #password-overlay.unlocked #password-box {
-            opacity: 0;
-        }
-        #password-overlay.unlocked .left-gate {
-            transform: translateX(-100%);
-        }
-        #password-overlay.unlocked .right-gate {
-            transform: translateX(100%);
-        }
+    }
+    .scroll-down-indicator {
+        position: absolute;
+        bottom: 2rem;
+        left: 50%;
+        transform: translateX(-50%);
+        color: white;
+        animation: bounce 2s infinite;
+        opacity: 0;
+        transition: opacity 1s 2s ease-in;
+    }
+    .hero.loaded .scroll-down-indicator {
+        opacity: 1;
+    }
 
-        /* Garden of Growth Styles */
-        #garden-container {
-            position: relative;
-            width: 100%;
-            max-width: 600px;
-            height: 400px;
-            margin: auto;
-            background: linear-gradient(to top, #F7EBE8, var(--bg-color));
-            border-bottom: 2px solid var(--accent-color);
-            border-radius: 0.5rem;
-            overflow: hidden;
+    @keyframes bounce {
+        0%, 20%, 50%, 80%, 100% {
+            transform: translateX(-50%) translateY(0);
         }
-        #hearts-canvas {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            pointer-events: none;
+        40% {
+            transform: translateX(-50%) translateY(-20px);
         }
-        .tree-branch {
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            width: 10px;
-            background-color: var(--accent-color);
-            transform-origin: bottom center;
-            transition: height 1s ease-in-out;
+        60% {
+            transform: translateX(-50%) translateY(-10px);
         }
-        .flower {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background-color: var(--primary-color);
-            border-radius: 50%;
-            border: 2px solid white;
-            transform: scale(0);
-            animation: bloom 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-            filter: drop-shadow(0 0 5px var(--primary-color));
-        }
-        @keyframes bloom {
-            from { transform: scale(0); }
-            to { transform: scale(1); }
-        }
+    }
+    
+    /* NEW: Timeline Photo Gallery */
+    .timeline-gallery-container {
+        max-width: 800px;
+        margin: auto;
+        position: relative;
+    }
+    .timeline-gallery-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 4px;
+        height: 100%;
+        background-color: var(--primary-color);
+    }
+    .timeline-item {
+        position: relative;
+        width: 50%;
+        padding: 2rem;
+        opacity: 0;
+        transform: translateY(50px);
+        transition: all 0.8s ease;
+    }
+    .timeline-item.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    .timeline-item:nth-child(odd) {
+        left: 0;
+        padding-right: 4rem;
+        text-align: right;
+    }
+    .timeline-item:nth-child(even) {
+        left: 50%;
+        padding-left: 4rem;
+        text-align: left;
+    }
+    .timeline-dot {
+        content: '';
+        position: absolute;
+        top: 2.5rem;
+        width: 20px;
+        height: 20px;
+        background-color: var(--bg-color);
+        border: 4px solid var(--primary-color);
+        border-radius: 50%;
+        z-index: 1;
+    }
+    .timeline-item:nth-child(odd) .timeline-dot {
+        right: -10px;
+    }
+    .timeline-item:nth-child(even) .timeline-dot {
+        left: -10px;
+    }
+    .timeline-content {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 0.5rem;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    .timeline-image {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 0.25rem;
+        margin-bottom: 1rem;
+    }
 
-        /* Connect the Stars Canvas */
-        #vow-canvas {
-            background: #1e1e3f;
-            background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
-            border-radius: 1rem;
-            cursor: pointer;
-        }
-        
-        /* Guest Constellation Canvas */
-        #guest-constellation-canvas {
-            background: #1e1e3f;
-            background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
-            border-radius: 1rem;
-            cursor: cell;
-        }
+    /* NEW Love Playlist */
+    .playlist-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 2rem;
+        flex-wrap: wrap;
+    }
+    .song-list { list-style: none; padding: 0; }
+    .song-item {
+        padding: 0.5rem 1rem;
+        margin: 0.5rem 0;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.3s;
+        position: relative;
+    }
+    .song-item:hover {
+        background-color: rgba(255,255,255,0.7);
+        transform: translateX(10px);
+    }
+    .song-list.right .song-item:hover {
+        transform: translateX(-10px);
+    }
+    .song-item .song-memory {
+        display: none;
+        position: absolute;
+        bottom: 100%;
+        left: 0;
+        background: #333;
+        color: white;
+        padding: 0.5rem;
+        border-radius: 0.5rem;
+        font-size: 0.9rem;
+        width: 200px;
+        margin-bottom: 0.5rem;
+        z-index: 10;
+    }
+    .song-item:hover .song-memory {
+        display: block;
+    }
+    .cassette-tape {
+        width: 250px;
+        height: 160px;
+        background-color: #EAEAEA;
+        border-radius: 10px;
+        padding: 10px;
+        box-shadow: 5px 5px 15px rgba(0,0,0,0.2);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
 
-        /* NEW Storybook Gallery with Smoother Page Turn */
-        .storybook-container {
-            position: relative;
-            width: 100%;
-            max-width: 800px;
-            aspect-ratio: 16/9;
-            margin: auto;
-            perspective: 2500px;
-        }
-        .storybook-page {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background-color: white;
-            border-radius: 0.5rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            transform-origin: left center;
-            transform-style: preserve-3d;
-            backface-visibility: hidden;
-            transition: transform 1.2s cubic-bezier(0.6, 0.04, 0.98, 0.335), z-index 1.2s;
-            z-index: 1;
-        }
-        .storybook-page.active {
-            z-index: 10;
-        }
-        .storybook-page.flipped {
-            transform: rotateY(-180deg);
-            z-index: 1;
-        }
-        .page-content {
-            display: flex;
-            width: 100%;
-            height: 100%;
-            flex-direction: row;
-        }
-        .page-image {
-            width: 60%;
-            height: 100%;
-            background-size: cover;
-            background-position: center;
-        }
-        .page-text {
-            width: 40%;
-            padding: 2rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        .storybook-nav {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 20;
-            background: rgba(255,255,255,0.5);
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        .storybook-nav:hover {
-            background: rgba(255,255,255,0.8);
-        }
-        #prev-page { left: -25px; }
-        #next-page { right: -25px; }
-        
-        /* NEW Hero Animation */
-        .hero-names {
-            opacity: 0;
-            transform: scale(1.2);
-            transition: opacity 1s ease-out, transform 1s ease-out;
-        }
-        .hero.loaded .hero-names {
-            opacity: 1;
-            transform: scale(1);
-        }
-        .hero-names h1 .letter {
-            display: inline-block;
-            opacity: 0;
-            transform: translateY(30px) rotateZ(20deg) scale(0.5);
-            animation: letter-reveal 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
-        }
-        @keyframes letter-reveal {
-            to {
-                opacity: 1;
-                transform: translateY(0) rotateZ(0) scale(1);
-            }
-        }
-        .hero-names .subtitle {
-            opacity: 0;
-            transform: translateY(20px);
-            animation: subtitle-reveal 1s 1.5s forwards;
-        }
-        @keyframes subtitle-reveal {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        .scroll-down-indicator {
-            position: absolute;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            color: white;
-            animation: bounce 2s infinite;
-            opacity: 0;
-            transition: opacity 1s 2s ease-in;
-        }
-        .hero.loaded .scroll-down-indicator {
-            opacity: 1;
-        }
+    /* Book effect styles */
+    .book-container {
+        perspective: 2000px;
+        position: relative;
+    }
+    .book {
+        width: 800px;
+        height: 600px;
+        position: relative;
+        transform-style: preserve-3d;
+        margin: 0 auto;
+        background: #8b4513;
+        border-radius: 10px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+    .page {
+        width: 400px;
+        height: 600px;
+        position: absolute;
+        top: 0;
+        left: 400px;
+        transform-origin: left center;
+        transform-style: preserve-3d;
+        transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        cursor: pointer;
+        border-radius: 0 10px 10px 0;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    .page.flipped {
+        transform: rotateY(-180deg);
+        z-index: 0 !important;
+    }
+    .page-front, .page-back {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        backface-visibility: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        padding: 0;
+        background-size: cover;
+        background-position: center;
+        border-radius: 0 10px 10px 0;
+        overflow: hidden;
+    }
+    .page-back {
+        transform: rotateY(180deg);
+        border-radius: 10px 0 0 10px;
+    }
+    .page-front::before, .page-back::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        z-index: 1;
+        background: linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.15) 60%, rgba(0,0,0,0.05) 100%);
+    }
+    .page-content-wrap {
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        padding: 40px 40px 24px 40px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
 
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {
-                transform: translateX(-50%) translateY(0);
-            }
-            40% {
-                transform: translateX(-50%) translateY(-20px);
-            }
-            60% {
-                transform: translateX(-50%) translateY(-10px);
-            }
-        }
+    /* Corrected, more specific selector for storybook page titles */
+    .page-front .page-title,
+    .page-back .page-title {
+        font-size: 2.5rem;
+        color: #f0f0f0;
+        font-weight: bold;
+        text-align: left;
+        margin-bottom: 1rem;
+        padding: 0;
+        background: none;
+        text-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
+    }
+    
+    /* Corrected style for the description text */
+    .page-front .page-content,
+    .page-back .page-content {
+        color: #d1d1d1;
+        font-size: 1rem;
+        text-align: left;
+        text-shadow: 0 2px 8px rgba(0,0,0,0.7), 0 1px 0 #222;
+        margin-bottom: 0;
+        display: block; 
+        width: auto;
+        height: auto;
+    }
+    
+    .book-spine {
+        width: 40px;
+        height: 600px;
+        position: absolute;
+        left: 380px;
+        top: 0;
+        background: linear-gradient(to right, #6b3410, #8b4513, #6b3410);
+        border-radius: 10px 0 0 10px;
+        z-index: -1;
+        box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
+    }
+    .cover {
+        width: 400px;
+        height: 600px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        background: linear-gradient(135deg, #2c1810, #4a2c17);
+        border-radius: 10px 0 0 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: #d4c4a8;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+    .cover h1 {
+        font-size: 36px;
+        margin-bottom: 20px;
+        text-align: center;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        padding: 0 1rem;
+    }
+    .cover p {
+        font-size: 18px;
+        font-style: italic;
+        text-align: center;
+    }
+    .navigation {
+        position: absolute;
+        bottom: -80px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 20px;
+    }
+    .nav-button {
+        padding: 12px 24px;
+        background: rgba(255,255,255,0.9);
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        color: #333;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+    .nav-button:hover {
+        background: white;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    }
+    .nav-button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+    }
+    .page-counter {
+        position: absolute;
+        bottom: -120px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: #333;
+        font-size: 18px;
+        font-weight: bold;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .page:nth-child(3) { z-index: 6; }
+    .page:nth-child(4) { z-index: 5; }
+    .page:nth-child(5) { z-index: 4; }
+    .page:nth-child(6) { z-index: 3; }
+    .page:nth-child(7) { z-index: 2; }
+    .page:nth-child(8) { z-index: 1; }
+    .flipped { z-index: 0 !important; }
+
+    /* --- RESPONSIVENESS --- */
+    /* Tablet */
+    @media (max-width: 900px) {
+        .book { width: 600px; height: 450px; }
+        .page { width: 300px; height: 450px; left: 300px; }
+        .cover { width: 300px; height: 450px; }
+        .book-spine { width: 30px; height: 450px; left: 285px; }
+        .cover h1 { font-size: 28px; }
         
-        /* NEW: Timeline Photo Gallery */
-        .timeline-gallery-container {
-            max-width: 800px;
-            margin: auto;
-            position: relative;
+        .page-front .page-title,
+        .page-back .page-title {
+            font-size: 2rem;
         }
+        .page-content-wrap { padding: 20px 20px 12px 20px; }
+    }
+    
+    /* Mobile Timeline & Playlist */
+    @media (max-width: 768px) { /* md breakpoint */
         .timeline-gallery-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 4px;
-            height: 100%;
-            background-color: var(--primary-color);
+            left: 20px; /* Move line to the left */
         }
-        .timeline-item {
-            position: relative;
-            width: 50%;
-            padding: 2rem;
-            opacity: 0;
-            transform: translateY(50px);
-            transition: all 0.8s ease;
-        }
-        .timeline-item.is-visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .timeline-item:nth-child(odd) {
-            left: 0;
-            padding-right: 4rem;
-            text-align: right;
-        }
+        .timeline-item,
         .timeline-item:nth-child(even) {
-            left: 50%;
-            padding-left: 4rem;
+            width: 100%;
+            left: 0;
+            padding-left: 50px; /* Space for the dot and line */
+            padding-right: 1rem;
             text-align: left;
         }
-        .timeline-dot {
-            content: '';
-            position: absolute;
-            top: 2.5rem;
-            width: 20px;
-            height: 20px;
-            background-color: var(--bg-color);
-            border: 4px solid var(--primary-color);
-            border-radius: 50%;
-            z-index: 1;
-        }
+        .timeline-dot,
+        .timeline-item:nth-child(even) .timeline-dot,
         .timeline-item:nth-child(odd) .timeline-dot {
-            right: -10px;
-        }
-        .timeline-item:nth-child(even) .timeline-dot {
-            left: -10px;
-        }
-        .timeline-content {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 0.5rem;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        .timeline-image {
-            width: 100%;
-            height: 150px;
-            object-fit: cover;
-            border-radius: 0.25rem;
-            margin-bottom: 1rem;
+            left: 10px; /* Align all dots to the line */
+            right: auto;
+            transform: translateX(0);
         }
 
-        /* NEW Love Playlist */
         .playlist-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 2rem;
-            flex-wrap: wrap;
-        }
-        .song-list { list-style: none; padding: 0; }
-        .song-item {
-            padding: 0.5rem 1rem;
-            margin: 0.5rem 0;
-            border-radius: 0.5rem;
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.3s;
-            position: relative;
-        }
-        .song-item:hover {
-            background-color: rgba(255,255,255,0.7);
-            transform: translateX(10px);
-        }
-        .song-list.right .song-item:hover {
-            transform: translateX(-10px);
-        }
-        .song-item .song-memory {
-            display: none;
-            position: absolute;
-            bottom: 100%;
-            left: 0;
-            background: #333;
-            color: white;
-            padding: 0.5rem;
-            border-radius: 0.5rem;
-            font-size: 0.9rem;
-            width: 200px;
-            margin-bottom: 0.5rem;
-        }
-        .song-item:hover .song-memory {
-            display: block;
-        }
-        .cassette-tape {
-            width: 250px;
-            height: 160px;
-            background-color: #EAEAEA;
-            border-radius: 10px;
-            padding: 10px;
-            box-shadow: 5px 5px 15px rgba(0,0,0,0.2);
-            display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            align-items: center; /* Center items when stacked */
         }
+        .song-list {
+            text-align: center;
+        }
+        .song-list.right .song-item:hover, /* remove transform on mobile */
+        .song-item:hover {
+            transform: none;
+        }
+    }
 
-    </style>
+    /* Mobile Book */
+    @media (max-width: 640px) { /* sm breakpoint */
+        .book-container {
+            padding: 0 1rem; /* Prevent book from touching screen edges */
+            margin-top: 1rem;
+            margin-bottom: 120px; /* Make space for navigation */
+        }
+        .book {
+            width: 90vw;
+            height: calc(90vw * 1.33);
+        }
+        .page, .cover, .book-spine {
+             height: calc(90vw * 1.33);
+        }
+        .page {
+            width: 45vw;
+            left: 45vw;
+        }
+        .cover {
+            width: 45vw;
+        }
+        .book-spine {
+            left: calc(45vw - 10px);
+            width: 20px;
+        }
+        .cover h1 { font-size: 1.5rem; }
+        .cover p { font-size: 1rem; }
+        .page-front .page-title,
+        .page-back .page-title {
+            font-size: 1.25rem;
+        }
+        .page-front .page-content,
+        .page-back .page-content {
+            font-size: 0.8rem;
+            line-height: 1.4;
+        }
+        .page-content-wrap {
+            padding: 1rem;
+        }
+        .navigation {
+            bottom: -70px;
+        }
+        .page-counter {
+            bottom: -110px;
+        }
+        .nav-button {
+            padding: 10px 20px;
+            font-size: 14px;
+        }
+    }
+</style>
 </head>
 <body class="overflow-x-hidden">
-    <!-- Password Overlay -->
     <div id="password-overlay" class="fixed inset-0 z-[10000]">
         <div class="gate left-gate fixed top-0 left-0 w-1/2 h-full"></div>
         <div class="gate right-gate fixed top-0 right-0 w-1/2 h-full"></div>
@@ -449,41 +664,39 @@
         </div>
     </div>
 
-    <!-- Main Content (Initially Hidden) -->
+    <audio id="page-curl-sound" src="https://cdn.pixabay.com/audio/2022/07/26/audio_124bfae3e2.mp3" preload="auto"></audio>
+
     <main id="main-content" class="hidden opacity-0" style="transition: opacity 1s ease-in;">
         <div id="lantern-container"></div>
 
-        <!-- Hero Section -->
         <section class="hero h-screen w-full flex flex-col justify-center items-center text-white text-center">
-            <div class="hero-names z-10 bg-black bg-opacity-40 p-8 rounded-lg">
-                <h1 id="name1" class="text-5xl md:text-8xl font-bold mb-2"></h1>
+            <div class="hero-names z-10 bg-black bg-opacity-40 p-6 md:p-8 rounded-lg">
+                <h1 id="name1" class="text-5xl md:text-7xl font-bold mb-2"></h1>
                 <div class="subtitle text-3xl md:text-5xl my-2">&</div>
-                <h1 id="name2" class="text-5xl md:text-8xl font-bold"></h1>
-                <p class="subtitle text-xl md:text-2xl mt-4 tracking-wider">Our Forever Story</p>
+                <h1 id="name2" class="text-5xl md:text-7xl font-bold"></h1>
+                <p class="subtitle text-lg md:text-2xl mt-4 tracking-wider">Our Forever Story</p>
             </div>
             <div class="scroll-down-indicator"><i class="fas fa-chevron-down"></i></div>
         </section>
 
-        <!-- Time Together Section -->
         <section id="time-together" class="py-20 px-4 md:px-10 fade-in-section">
             <div class="max-w-5xl mx-auto text-center">
                 <h2 class="section-title">Our Time Together</h2>
-                <p class="text-xl -mt-4 mb-12">Celebrating every moment since we began</p>
+                <p class="text-lg md:text-xl -mt-4 mb-12">Celebrating every moment since we began</p>
                 <div id="time-together-timer" class="grid grid-cols-2 sm:grid-cols-5 gap-4 md:gap-8 text-center">
-                    <div class="bg-white p-6 rounded-lg shadow-lg"><div id="years" class="text-5xl font-bold text-[var(--accent-color)]">00</div><div class="text-lg text-gray-600">Years</div></div>
-                    <div class="bg-white p-6 rounded-lg shadow-lg"><div id="days" class="text-5xl font-bold text-[var(--accent-color)]">00</div><div class="text-lg text-gray-600">Days</div></div>
-                    <div class="bg-white p-6 rounded-lg shadow-lg"><div id="hours" class="text-5xl font-bold text-[var(--accent-color)]">00</div><div class="text-lg text-gray-600">Hours</div></div>
-                    <div class="bg-white p-6 rounded-lg shadow-lg"><div id="minutes" class="text-5xl font-bold text-[var(--accent-color)]">00</div><div class="text-lg text-gray-600">Minutes</div></div>
-                    <div class="bg-white p-6 rounded-lg shadow-lg"><div id="seconds" class="text-5xl font-bold text-[var(--accent-color)]">00</div><div class="text-lg text-gray-600">Seconds</div></div>
+                    <div class="bg-white p-4 sm:p-6 rounded-lg shadow-lg"><div id="years" class="text-4xl sm:text-5xl font-bold text-[var(--accent-color)]">00</div><div class="text-md sm:text-lg text-gray-600">Years</div></div>
+                    <div class="bg-white p-4 sm:p-6 rounded-lg shadow-lg"><div id="days" class="text-4xl sm:text-5xl font-bold text-[var(--accent-color)]">00</div><div class="text-md sm:text-lg text-gray-600">Days</div></div>
+                    <div class="bg-white p-4 sm:p-6 rounded-lg shadow-lg"><div id="hours" class="text-4xl sm:text-5xl font-bold text-[var(--accent-color)]">00</div><div class="text-md sm:text-lg text-gray-600">Hours</div></div>
+                    <div class="bg-white p-4 sm:p-6 rounded-lg shadow-lg"><div id="minutes" class="text-4xl sm:text-5xl font-bold text-[var(--accent-color)]">00</div><div class="text-md sm:text-lg text-gray-600">Minutes</div></div>
+                    <div class="bg-white p-4 sm:p-6 rounded-lg shadow-lg col-span-2 sm:col-span-1"><div id="seconds" class="text-4xl sm:text-5xl font-bold text-[var(--accent-color)]">00</div><div class="text-md sm:text-lg text-gray-600">Seconds</div></div>
                 </div>
             </div>
         </section>
         
-        <!-- NEW Timeline Photo Gallery Section -->
-        <section id="timeline-gallery" class="py-20 bg-[#F7EBE8] fade-in-section">
+        <section id="timeline-gallery" class="py-20 px-4 bg-[#F7EBE8] fade-in-section">
             <div class="max-w-7xl mx-auto text-center">
                 <h2 class="section-title">A Timeline of Our Moments</h2>
-                <p class="text-xl -mt-4 mb-12 text-gray-600">Our journey, one beautiful memory at a time.</p>
+                <p class="text-lg md:text-xl -mt-4 mb-12 text-gray-600">Our journey, one beautiful memory at a time.</p>
                 <div class="timeline-gallery-container">
                     <div class="timeline-item">
                         <div class="timeline-dot"></div>
@@ -525,68 +738,129 @@
             </div>
         </section>
 
-        <!-- Storybook Photo Gallery -->
-        <section id="storybook-gallery" class="py-20 fade-in-section">
+        <section id="storybook-gallery" class="py-20 px-4 fade-in-section overflow-hidden">
             <div class="max-w-4xl mx-auto text-center">
                 <h2 class="section-title">Our Storybook</h2>
-                <p class="text-xl -mt-4 mb-8 text-gray-600">Turn the pages to walk through our most cherished memories.</p>
-                <div class="storybook-container">
-                    <div id="page1" class="storybook-page active">
-                        <div class="page-content">
-                            <div class="page-image" style="background-image: url('https://placehold.co/800x600/D9BFA9/333?text=First+Meet')"></div>
-                            <div class="page-text">
-                                <h3 class="font-dancing text-4xl text-[var(--primary-color)] mb-4">The First Meet</h3>
-                                <p>A simple hello in a quiet cafe. We didn't know it then, but it was the first word of the first chapter of our forever story.</p>
+                <p class="text-lg md:text-xl -mt-4 mb-8 text-gray-600">Turn the pages to walk through our most cherished memories.</p>
+                <div class="book-container" style="margin-top:2rem;">
+                    <div class="book">
+                        <div class="book-spine"></div>
+                        <div class="cover">
+                            <h1>Our Forever Story</h1>
+                            <p>Manoharan & Abirami</p>
+                        </div>
+                        <div class="page" data-page="1">
+                            <div class="page-front" style="background-image: url('images/storyBook/athirapallyFallsTrip.jpg');">
+                                <div class="page-content-wrap">
+                                    <h2 class="page-title font-dancing">Athirapally Falls Trip</h2>
+                                    <div class="page-content">A beautiful memory at Athirapally Falls.</div>
+                                </div>
+                            </div>
+                            <div class="page-back" style="background-image: url('images/storyBook/firstSoloTrip.jpg');">
+                                <div class="page-content-wrap">
+                                    <h2 class="page-title font-dancing">First Solo Trip</h2>
+                                    <div class="page-content">The adventure of the first solo trip.</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="page" data-page="2">
+                            <div class="page-front" style="background-image: url('images/storyBook/giftingDiamondRing.jpg');">
+                                <div class="page-content-wrap">
+                                    <h2 class="page-title font-dancing">Gifting Diamond Ring</h2>
+                                    <div class="page-content">A special moment: gifting a diamond ring.</div>
+                                </div>
+                            </div>
+                            <div class="page-back" style="background-image: url('images/storyBook/firstTimeMarudhamalai.jpg');">
+                                <div class="page-content-wrap">
+                                    <h2 class="page-title font-dancing">First Time Marudhamalai</h2>
+                                    <div class="page-content">First visit to Marudhamalai temple together.</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="page" data-page="3">
+                            <div class="page-front" style="background-image: url('images/storyBook/nativeTempleFunction.jpg');">
+                                <div class="page-content-wrap">
+                                    <h2 class="page-title font-dancing">Native Temple Function</h2>
+                                    <div class="page-content">A cherished native temple function.</div>
+                                </div>
+                            </div>
+                            <div class="page-back" style="background-image: url('images/storyBook/aug15_metWholeFamily.jpg');">
+                                <div class="page-content-wrap">
+                                    <h2 class="page-title font-dancing">Aug 15 Met Whole Family</h2>
+                                    <div class="page-content">Meeting the whole family on August 15.</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="page" data-page="4">
+                            <div class="page-front" style="background-image: url('images/storyBook/convincingAfterFight.jpg');">
+                                <div class="page-content-wrap">
+                                    <h2 class="page-title font-dancing">Convincing After Fight</h2>
+                                    <div class="page-content">A sweet moment of making up after a fight.</div>
+                                </div>
+                            </div>
+                            <div class="page-back" style="background-image: url('images/storyBook/firstBikeTrip(kotagiri).jpg');">
+                                <div class="page-content-wrap">
+                                    <h2 class="page-title font-dancing">First Bike Trip (Kotagiri)</h2>
+                                    <div class="page-content">Our first bike trip to Kotagiri.</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="page" data-page="5">
+                            <div class="page-front" style="background-image: url('images/storyBook/firstSemester.jpg');">
+                                <div class="page-content-wrap">
+                                    <h2 class="page-title font-dancing">First Semester</h2>
+                                    <div class="page-content">Memories from the first semester together.</div>
+                                </div>
+                            </div>
+                            <div class="page-back" style="background-image: url('images/storyBook/specialPic.jpg');">
+                                <div class="page-content-wrap">
+                                    <h2 class="page-title font-dancing">Special Pic</h2>
+                                    <div class="page-content">A special picture to remember.</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="page" data-page="6">
+                            <div class="page-front" style="background-image: url('images/storyBook/tangoreTrip.jpg');">
+                                <div class="page-content-wrap">
+                                    <h2 class="page-title font-dancing">Tangore Trip</h2>
+                                    <div class="page-content">Exploring Tangore together.</div>
+                                </div>
+                            </div>
+                            <div class="page-back" style="background-image: url('images/storyBook/firstTrip(Chennai).jpg');">
+                                <div class="page-content-wrap">
+                                    <h2 class="page-title font-dancing">First Trip (Chennai)</h2>
+                                    <div class="page-content">Our first trip to Chennai.</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="page" data-page="7">
+                            <div class="page-front" style="background-image: url('images/storyBook/firstTempleVisit.jpg');">
+                                <div class="page-content-wrap">
+                                    <h2 class="page-title font-dancing">First Temple Visit</h2>
+                                    <div class="page-content">Our first temple visit together.</div>
+                                </div>
+                            </div>
+                            <div class="page-back" style="background-image: url('images/storyBook/firstPicTogether.jpg');">
+                                <div class="page-content-wrap">
+                                    <h2 class="page-title font-dancing">First Pic Together</h2>
+                                    <div class="page-content">The very first picture we took together.</div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div id="page2" class="storybook-page">
-                        <div class="page-content">
-                            <div class="page-image" style="background-image: url('https://placehold.co/800x600/C8A2C8/333?text=First+Date')"></div>
-                            <div class="page-text">
-                                <h3 class="font-dancing text-4xl text-[var(--primary-color)] mb-4">The First Date</h3>
-                                <p>Nervous laughter and endless conversation. The world seemed to fade away, and in that small bubble, it was just us.</p>
-                            </div>
-                        </div>
+                    <div class="navigation">
+                        <button class="nav-button" onclick="previousPage()" id="prevBtn">← Previous</button>
+                        <button class="nav-button" onclick="nextPage()" id="nextBtn">Next →</button>
                     </div>
-                    <div id="page3" class="storybook-page">
-                        <div class="page-content">
-                             <div class="page-image" style="background-image: url('https://placehold.co/800x600/A0D2DB/333?text=First+Trip')"></div>
-                            <div class="page-text">
-                                <h3 class="font-dancing text-4xl text-[var(--primary-color)] mb-4">Our First Trip</h3>
-                                <p>With bags packed and hearts full of adventure, we learned that the best views are the ones we share together.</p>
-                            </div>
-                        </div>
-                    </div>
-                     <div id="page4" class="storybook-page">
-                        <div class="page-content">
-                             <div class="page-image" style="background-image: url('https://placehold.co/800x600/B2D8D8/333?text=The+Proposal')"></div>
-                            <div class="page-text">
-                                <h3 class="font-dancing text-4xl text-[var(--primary-color)] mb-4">The Proposal</h3>
-                                <p>Under a sky full of stars, one question changed everything. It was the easiest 'Yes' ever spoken.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="page5" class="storybook-page">
-                        <div class="page-content">
-                             <div class="page-image" style="background-image: url('https://placehold.co/800x600/FADADD/333?text=Our+Home')"></div>
-                            <div class="page-text">
-                                <h3 class="font-dancing text-4xl text-[var(--primary-color)] mb-4">Building Our Home</h3>
-                                <p>More than just bricks and mortar, we started building a space filled with love, laughter, and a lifetime of shared dreams.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <button id="prev-page" class="storybook-nav"><i class="fas fa-chevron-left"></i></button>
-                    <button id="next-page" class="storybook-nav"><i class="fas fa-chevron-right"></i></button>
+                    <div class="page-counter" id="pageCounter">Page 1 of 7</div>
                 </div>
             </div>
         </section>
 
-        <!-- Guest Constellation Section -->
         <section id="guest-constellation-section" class="py-20 px-4 md:px-10 bg-[#F7EBE8] fade-in-section">
             <div class="max-w-4xl mx-auto text-center">
                 <h2 class="section-title">The Guest Constellation</h2>
-                <p class="text-xl -mt-4 mb-8 text-gray-600">Click a spot in the night sky to add your own star to our universe.</p>
+                <p class="text-lg md:text-xl -mt-4 mb-8 text-gray-600">Click a spot in the night sky to add your own star to our universe.</p>
                 <canvas id="guest-constellation-canvas"></canvas>
                 <div id="star-form-container" class="mt-4 hidden">
                     <form id="star-form" class="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto">
@@ -600,33 +874,30 @@
             </div>
         </section>
 
-        <!-- Garden of Growth Section -->
-        <section id="garden" class="py-20 fade-in-section">
+        <section id="garden" class="py-20 px-4 fade-in-section">
             <div class="max-w-3xl mx-auto text-center">
                 <h2 class="section-title">The Garden of Our Growth</h2>
-                <p class="text-xl -mt-4 mb-8 text-gray-600">A tree that blossoms with every wish from our loved ones.</p>
+                <p class="text-lg md:text-xl -mt-4 mb-8 text-gray-600">A tree that blossoms with every wish from our loved ones.</p>
                 <div id="garden-container">
                     <canvas id="hearts-canvas"></canvas>
                 </div>
             </div>
         </section>
 
-        <!-- Connect the Stars Section -->
         <section id="connect-stars" class="py-20 px-4 md:px-10 bg-[#F7EBE8] fade-in-section">
             <div class="max-w-5xl mx-auto text-center">
                 <h2 class="section-title">Written in the Stars</h2>
-                <p class="text-xl -mt-4 mb-8 text-gray-600">Connect the stars to reveal our promise.</p>
+                <p class="text-lg md:text-xl -mt-4 mb-8 text-gray-600">Connect the stars to reveal our promise.</p>
                 <canvas id="vow-canvas"></canvas>
             </div>
         </section>
 
-        <!-- NEW Love Playlist Section -->
-        <section id="love-playlist" class="py-20 fade-in-section">
+        <section id="love-playlist" class="py-20 px-4 fade-in-section">
             <div class="max-w-4xl mx-auto text-center">
                 <h2 class="section-title">Our Love Playlist</h2>
-                <p class="text-xl -mt-4 mb-8 text-gray-600">The soundtrack to our story. Hover over a song to see the memory.</p>
+                <p class="text-lg md:text-xl -mt-4 mb-8 text-gray-600">The soundtrack to our story. Hover over a song to see the memory.</p>
                 <div class="playlist-container">
-                    <ul class="song-list text-right">
+                    <ul class="song-list text-center md:text-right">
                         <li class="song-item">Perfect - Ed Sheeran <span class="song-memory">Our first dance, under the stars.</span></li>
                         <li class="song-item">A Thousand Years - C. Perri <span class="song-memory">The song that played during the proposal.</span></li>
                         <li class="song-item">All of Me - John Legend <span class="song-memory">For all the quiet moments in between.</span></li>
@@ -641,7 +912,7 @@
                         </div>
                          <div class="h-4 bg-[#333] w-2/3 mx-auto rounded-sm"></div>
                     </div>
-                     <ul class="song-list text-left">
+                    <ul class="song-list text-center md:text-left right">
                         <li class="song-item">Iravinil Aattam <span class="song-memory">For all our midnight drives.</span></li>
                         <li class="song-item">Thinking Out Loud - Ed Sheeran <span class="song-memory">Our forever song.</span></li>
                         <li class="song-item">Just the Way You Are - B. Mars <span class="song-memory">Because it's true.</span></li>
@@ -650,11 +921,10 @@
             </div>
         </section>
 
-        <!-- Wishes Wall Section -->
         <section id="wishes" class="py-20 px-4 md:px-10 bg-[#F7EBE8] fade-in-section">
             <div class="max-w-4xl mx-auto">
                 <h2 class="section-title">Lanterns of Love</h2>
-                <p class="text-xl -mt-4 mb-8 text-center text-gray-600">Send a wish for the couple and release a lantern into the sky.</p>
+                <p class="text-lg md:text-xl -mt-4 mb-8 text-center text-gray-600">Send a wish for the couple and release a lantern into the sky.</p>
                 <form id="wish-form" class="mt-12 bg-white p-8 rounded-lg shadow-md">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <input type="text" id="wisher-name" placeholder="Your Name" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)]">
@@ -664,7 +934,7 @@
                     <button type="submit" class="mt-6 bg-[var(--accent-color)] text-white font-bold py-3 px-8 rounded-full hover:bg-[var(--primary-color)] transition-colors duration-300">Release a Lantern</button>
                 </form>
                 <div id="wishes-display" class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div class="wish-card p-6 rounded-lg shadow-sm"><p class="text-lg italic">"Wishing you both a lifetime of love and happiness. So happy to celebrate this beautiful journey with you!"</p><p class="text-right font-bold mt-4 text-stone-600">- A Loving Friend</p></div>
+                    <div class="wish-card p-6 rounded-lg shadow-sm bg-white"><p class="text-lg italic">"Wishing you both a lifetime of love and happiness. So happy to celebrate this beautiful journey with you!"</p><p class="text-right font-bold mt-4 text-stone-600">- A Loving Friend</p></div>
                 </div>
             </div>
         </section>
@@ -675,7 +945,6 @@
         </footer>
     </main>
     
-    <!-- Modal for Poem -->
     <div id="poem-modal" class="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-[10001] hidden p-4">
         <div class="bg-white/90 backdrop-blur-lg text-gray-800 p-8 rounded-lg max-w-lg w-full text-center relative shadow-2xl">
             <h3 class="font-dancing text-4xl mb-4 text-[var(--accent-color)]">A Secret Verse</h3>
@@ -758,7 +1027,6 @@
                 name2El.appendChild(span);
             });
 
-            heroNamesEl.classList.add('loaded');
             document.querySelector('.hero').classList.add('loaded');
         }
 
@@ -798,16 +1066,17 @@
                     if (entry.target.id === 'connect-stars') { startVowCanvas(); }
                     if (entry.target.id === 'guest-constellation-section') { initGuestConstellation(); }
                     if (entry.target.id === 'garden') { initGarden(); }
+                    observer.unobserve(entry.target); // Optional: stop observing once visible
                 }
             });
-        }, { threshold: 0.2 });
+        }, { threshold: 0.15 });
         sections.forEach(section => observer.observe(section));
 
         // --- Wish Lanterns & Garden Logic ---
         const wishForm = document.getElementById('wish-form');
         const wishesDisplay = document.getElementById('wishes-display');
         const lanternContainer = document.getElementById('lantern-container');
-        let wishCount = 0;
+        let wishCount = 1; // Start with 1 for the default wish
         wishForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const name = document.getElementById('wisher-name').value;
@@ -816,7 +1085,7 @@
             if (!name || !message) { alert('Please fill in your name and message!'); return; }
             
             const wishCard = document.createElement('div');
-            wishCard.className = 'wish-card p-6 rounded-lg shadow-sm';
+            wishCard.className = 'wish-card p-6 rounded-lg shadow-sm bg-white';
             wishCard.innerHTML = `<p class="text-lg italic">"${message}"</p><p class="text-right font-bold mt-4 text-stone-600">- ${name} (${relation || 'Well Wisher'})</p>`;
             wishesDisplay.prepend(wishCard);
 
@@ -843,45 +1112,49 @@
             gardenInitialized = true;
             heartsCanvas.width = gardenContainer.offsetWidth;
             heartsCanvas.height = gardenContainer.offsetHeight;
-            updateGarden(0); // Initial empty garden
+            updateGarden(wishCount); // Initial garden state
             animateHearts();
         }
 
         function updateGarden(count) {
-            gardenContainer.querySelector('#hearts-canvas').innerHTML = ''; // Clear canvas content if needed
-            
-            const existingTrunk = gardenContainer.querySelector('.tree-branch');
-            if (existingTrunk) gardenContainer.removeChild(existingTrunk);
-            
+            gardenContainer.innerHTML = ''; // Clear previous garden
+            gardenContainer.appendChild(heartsCanvas); // Re-add canvas
+
             const trunk = document.createElement('div');
             trunk.className = 'tree-branch';
             trunk.style.height = `${100 + count * 5}px`;
+            trunk.style.transform = `translateX(-50%)`;
             gardenContainer.appendChild(trunk);
-
-            const branchCount = Math.floor(count / 5);
-            for (let i = 0; i < 3 + branchCount; i++) {
+        
+            const branchCount = 1 + Math.floor(count / 3);
+            for (let i = 0; i < branchCount; i++) {
                 const branch = document.createElement('div');
                 branch.className = 'tree-branch';
-                branch.style.height = `${Math.random() * 50 + 50}px`;
-                branch.style.transform = `translateX(-50%) rotate(${Math.random() * 80 - 40}deg)`;
+                branch.style.height = `${Math.random() * 40 + 20}%`;
+                branch.style.position = 'absolute';
+                branch.style.bottom = `${Math.random() * 60 + 20}%`;
+                branch.style.width = '6px';
+                branch.style.transform = `rotate(${Math.random() * 120 - 60}deg)`;
                 trunk.appendChild(branch);
             }
-
+        
             for (let i = 0; i < count; i++) {
                 addFlowerToGarden();
             }
         }
-
+        
         function addFlowerToGarden() {
             const flower = document.createElement('div');
             flower.className = 'flower';
             flower.style.left = `${Math.random() * 90 + 5}%`;
             flower.style.bottom = `${Math.random() * 70 + 20}%`;
             flower.style.backgroundColor = `hsl(${Math.random() * 60 + 300}, 70%, 80%)`;
+            flower.style.animationDelay = `${Math.random() * 0.5}s`;
             gardenContainer.appendChild(flower);
         }
 
         function animateHearts() {
+            if(!gardenInitialized) return;
             hctx.clearRect(0, 0, heartsCanvas.width, heartsCanvas.height);
             if (Math.random() > 0.98) {
                 hearts.push({
@@ -899,72 +1172,13 @@
                 heart.y -= heart.speed;
                 hctx.globalAlpha = heart.opacity;
                 hctx.font = `${heart.size}px serif`;
-                hctx.fillStyle = `rgba(247, 175, 157, ${heart.opacity})`; // Orange heart
+                hctx.fillStyle = `rgba(247, 175, 157, ${heart.opacity})`;
                 hctx.fillText('♥', heart.x, heart.y);
             });
             hctx.globalAlpha = 1;
 
             requestAnimationFrame(animateHearts);
         }
-
-        // --- Storybook Gallery ---
-        const pages = document.querySelectorAll('.storybook-page');
-        const prevButton = document.getElementById('prev-page');
-        const nextButton = document.getElementById('next-page');
-        let currentPage = 0;
-        let isTurning = false;
-        const pageTurnSound = new Tone.NoiseSynth({
-            noise: { type: 'white' },
-            envelope: { attack: 0.005, decay: 0.15, sustain: 0 }
-        }).toDestination();
-
-        function showPage(pageIndex, direction) {
-            if (isTurning || pageIndex < 0 || pageIndex >= pages.length) return;
-            isTurning = true;
-
-            Tone.start();
-            pageTurnSound.triggerAttackRelease("8n");
-
-            const currentPageEl = pages[currentPage];
-            const nextPageEl = pages[pageIndex];
-
-            if (direction === 'next') {
-                currentPageEl.classList.add('turning');
-                nextPageEl.classList.add('active'); // Make next page visible underneath
-                
-                setTimeout(() => {
-                    currentPageEl.classList.remove('active', 'turning');
-                    currentPageEl.classList.add('flipped');
-                    currentPage = pageIndex;
-                    updateNavButtons();
-                    isTurning = false;
-                }, 1200);
-
-            } else { // Prev
-                const prevPageEl = pages[pageIndex];
-                prevPageEl.classList.remove('flipped');
-                prevPageEl.classList.add('active');
-                
-                currentPageEl.classList.remove('active');
-                currentPage = pageIndex;
-                updateNavButtons();
-                isTurning = false;
-            }
-        }
-        
-        function updateNavButtons(){
-            prevButton.style.display = currentPage === 0 ? 'none' : 'block';
-            nextButton.style.display = currentPage === pages.length - 1 ? 'none' : 'block';
-        }
-
-        prevButton.addEventListener('click', () => {
-            showPage(currentPage - 1, 'prev');
-        });
-
-        nextButton.addEventListener('click', () => {
-            showPage(currentPage + 1, 'next');
-        });
-        updateNavButtons();
 
         // --- Connect the Stars Vow Canvas ---
         const vowCanvas = document.getElementById('vow-canvas');
@@ -981,8 +1195,8 @@
 
         function setupVowCanvas() {
             const container = vowCanvas.parentElement;
-            let size = Math.min(container.clientWidth, 600);
-            vowCanvas.width = size; vowCanvas.height = size * 0.6;
+            let size = container.clientWidth;
+            vowCanvas.width = size; vowCanvas.height = size * 0.7;
             vowPoints = [
                 { x: vowCanvas.width * 0.1, y: vowCanvas.height * 0.5 }, { x: vowCanvas.width * 0.3, y: vowCanvas.height * 0.2 },
                 { x: vowCanvas.width * 0.5, y: vowCanvas.height * 0.8 }, { x: vowCanvas.width * 0.7, y: vowCanvas.height * 0.3 },
@@ -992,6 +1206,7 @@
         }
 
         function drawVowCanvas() {
+            if (!vowCanvasStarted) return;
             vctx.clearRect(0, 0, vowCanvas.width, vowCanvas.height);
             lines.forEach((line, index) => {
                 vctx.beginPath(); vctx.moveTo(line.start.x, line.start.y); vctx.lineTo(line.end.x, line.end.y);
@@ -1046,10 +1261,13 @@
 
         function startVowCanvas() {
             if (vowCanvasStarted) return;
-            vowCanvasStarted = true; setupVowCanvas(); drawVowCanvas();
+            vowCanvasStarted = true; 
+            setupVowCanvas(); 
+            drawVowCanvas();
+            window.addEventListener('resize', setupVowCanvas);
         }
         
-        // --- Guest Constellation Canvas (Static) ---
+        // --- Guest Constellation Canvas ---
         const guestCanvas = document.getElementById('guest-constellation-canvas');
         const gctx = guestCanvas.getContext('2d');
         let guestCanvasInitialized = false;
@@ -1063,28 +1281,29 @@
         function resizeGuestCanvas() {
             const container = guestCanvas.parentElement;
             guestCanvas.width = container.clientWidth;
-            guestCanvas.height = 450;
-        }
-
-        function initGuestConstellation() {
-            if (guestCanvasInitialized) return;
-            guestCanvasInitialized = true;
-            resizeGuestCanvas();
-
-            guestStars = [
-                { x: 0.2, y: 0.3, name: 'A Friend', wish: 'Wishing you a lifetime of joy!'},
-                { x: 0.8, y: 0.5, name: 'Family', wish: 'So happy for you both!'},
-                { x: 0.5, y: 0.7, name: 'A Well Wisher', wish: 'May your love shine bright!'}
-            ];
-
+            guestCanvas.height = guestCanvas.width * 0.75; // Responsive height
+            backgroundStars = []; // Recalculate background stars on resize
             for (let i = 0; i < 100; i++) {
                 backgroundStars.push({
                     x: Math.random() * guestCanvas.width, y: Math.random() * guestCanvas.height,
                     radius: Math.random() * 1.5, alpha: Math.random() * 0.5 + 0.2
                 });
             }
+        }
 
+        function initGuestConstellation() {
+            if (guestCanvasInitialized) return;
+            guestCanvasInitialized = true;
+            
+            guestStars = [
+                { x: 0.2, y: 0.3, name: 'A Friend', wish: 'Wishing you a lifetime of joy!'},
+                { x: 0.8, y: 0.5, name: 'Family', wish: 'So happy for you both!'},
+                { x: 0.5, y: 0.7, name: 'A Well Wisher', wish: 'May your love shine bright!'}
+            ];
+            
+            resizeGuestCanvas();
             drawGuestConstellation();
+            window.addEventListener('resize', resizeGuestCanvas);
 
             guestCanvas.addEventListener('click', (e) => {
                 const rect = guestCanvas.getBoundingClientRect();
@@ -1123,6 +1342,7 @@
         }
 
         function drawGuestConstellation() {
+            if(!guestCanvasInitialized) return;
             gctx.clearRect(0, 0, guestCanvas.width, guestCanvas.height);
             
             backgroundStars.forEach(star => {
@@ -1162,12 +1382,6 @@
 
             requestAnimationFrame(drawGuestConstellation);
         }
-
-        window.addEventListener('resize', () => {
-            if(guestCanvasInitialized) {
-                resizeGuestCanvas();
-            }
-        });
         
         // --- Secret Poem Modal ---
         const poemModal = document.getElementById('poem-modal');
@@ -1182,6 +1396,69 @@
                 poemModal.classList.add('hidden');
             }
         });
+
+        // --- Storybook JS Logic ---
+        let currentPage = 1;
+        const totalPages = 7;
+        const pageCurlSound = document.getElementById('page-curl-sound');
+
+        function nextPage() {
+            if (currentPage < totalPages) {
+                const page = document.querySelector(`.page[data-page="${currentPage}"]`);
+                page.classList.add('flipped');
+                page.style.zIndex = currentPage;
+                currentPage++;
+                playPageSound();
+                updateNavigation();
+            }
+        }
+        function previousPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                const page = document.querySelector(`.page[data-page="${currentPage}"]`);
+                page.classList.remove('flipped');
+                page.style.zIndex = totalPages - currentPage;
+                playPageSound();
+                updateNavigation();
+            }
+        }
+        function updateNavigation() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageCounter = document.getElementById('pageCounter');
+            prevBtn.disabled = currentPage === 1;
+            nextBtn.disabled = currentPage === totalPages;
+            
+            const frontPageNum = currentPage;
+            const backPageNum = currentPage - 1;
+
+            if(currentPage === 1) {
+                 pageCounter.textContent = `Cover`;
+            } else if (currentPage > totalPages) {
+                 pageCounter.textContent = `The End`;
+            } else {
+                 pageCounter.textContent = `Pages ${backPageNum*2-1} - ${backPageNum*2}`;
+            }
+            // A more user-friendly counter
+            pageCounter.textContent = `Page ${currentPage} of ${totalPages}`;
+        }
+
+        function playPageSound() {
+            pageCurlSound.currentTime = 0;
+            pageCurlSound.play().catch(e => console.error("Audio play failed:", e));
+        }
+
+        document.querySelectorAll('.page').forEach(page => {
+            page.addEventListener('click', function(e) {
+                if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'IMG') {
+                    const pageNum = parseInt(this.dataset.page);
+                    if (pageNum === currentPage && currentPage < totalPages) {
+                        nextPage();
+                    }
+                }
+            });
+        });
+        updateNavigation();
     </script>
 </body>
 </html>
