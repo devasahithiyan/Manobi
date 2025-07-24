@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manoharan & Abirami | Our Forever Story</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #FBF6F0;
+            --text-color: #433A3F;
+            --primary-color: #C08497; /* Muted Rose */
+            --secondary-color: #F7AF9D; /* Soft Peach */
+            --accent-color: #8B5E34; /* Warm Gold/Brown */
+        }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+        }
+        .font-dancing {
+            font-family: 'Dancing Script', cursive;
+        }
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://placehold.co/1200x800/433A3F/FBF6F0?text=M+%26+A') no-repeat center center/cover;
+        }
+        .section-title {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 3px;
+            background-color: var(--primary-color);
+            margin: 1rem auto 0;
+        }
+        .timeline-item {
+            position: relative;
+            padding-bottom: 4rem;
+            padding-left: 3.5rem;
+            border-left: 2px solid var(--primary-color);
+        }
+        .timeline-item:last-child {
+            border-left: 2px solid transparent;
+        }
+        .timeline-dot {
+            position: absolute;
+            left: -20px;
+            top: 0;
+            width: 40px;
+            height: 40px;
+            background-color: var(--bg-color);
+            border: 2px solid var(--accent-color);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            color: var(--accent-color);
+        }
+        
+        /* Fade-in animation */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        #lantern-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+        .lantern {
+            position: absolute;
+            bottom: -150px;
+            width: 80px;
+            height: 120px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 120"><defs><radialGradient id="grad" cx="50%" cy="50%" r="50%" fx="50%" fy="50%"><stop offset="0%" style="stop-color:white;stop-opacity:0.8" /><stop offset="100%" style="stop-color:gold;stop-opacity:0.5" /></radialGradient></defs><path d="M10 0 L70 0 L80 40 L80 100 L0 100 L0 40 Z" fill="url(%23grad)"/><rect x="30" y="100" width="20" height="20" fill="rgba(0,0,0,0.2)"/></svg>');
+            background-size: contain;
+            background-repeat: no-repeat;
+            animation: floatUp 15s ease-in forwards;
+            filter: drop-shadow(0 0 10px gold);
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(0) translateX(0) rotate(0); opacity: 1; }
+            100% { transform: translateY(-120vh) translateX(10vw) rotate(10deg); opacity: 0; }
+        }
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+            40%, 60% { transform: translate3d(4px, 0, 0); }
+        }
+        .animate-shake {
+            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+        }
+        
+        /* Smoother Unlock Animation */
+        #password-box {
+            transition: opacity 0.5s ease-out;
+        }
+        .gate {
+            background-color: #111827;
+            transition: transform 1.5s cubic-bezier(0.86, 0, 0.07, 1);
+        }
+        #password-overlay.unlocked #password-box {
+            opacity: 0;
+        }
+        #password-overlay.unlocked .left-gate {
+            transform: translateX(-100%);
+        }
+        #password-overlay.unlocked .right-gate {
+            transform: translateX(100%);
+        }
+
+        /* Mixtape Section Styles */
+        .vinyl-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            cursor: pointer;
+        }
+        .vinyl-record {
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="%23222"/><circle cx="50" cy="50" r="15" fill="%23C08497"/><circle cx="50" cy="50" r="2" fill="white"/></svg>');
+            background-size: contain;
+            animation: spin 10s linear infinite;
+            animation-play-state: paused;
+        }
+        .vinyl-container:hover .vinyl-record, .vinyl-container.playing .vinyl-record {
+            animation-play-state: running;
+        }
+        .song-info {
+            position: absolute;
+            bottom: 110%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0,0,0,0.7);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            opacity: 0;
+            transition: opacity 0.3s ease, bottom 0.3s ease;
+            pointer-events: none;
+            width: max-content;
+            max-width: 250px;
+            text-align: center;
+        }
+        .vinyl-container:hover .song-info {
+            opacity: 1;
+            bottom: 120%;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Photo Puzzle Styles */
+        #photo-puzzle-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            aspect-ratio: 4/3;
+            margin: auto;
+            background: url('https://placehold.co/600x450/C08497/FFFFFF?text=A+Glimpse+of+Us') center center/cover;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        .puzzle-grid {
+            position: absolute;
+            inset: 0;
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            grid-template-rows: repeat(12, 1fr);
+        }
+        .puzzle-tile {
+            background-color: var(--bg-color);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            transform: scale(1);
+        }
+        .puzzle-tile:hover {
+            opacity: 0;
+            transform: scale(0.5);
+        }
+
+        /* Garden of Growth Styles */
+        #garden-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            height: 400px;
+            margin: auto;
+            background: linear-gradient(to top, #F7EBE8, var(--bg-color));
+            border-bottom: 2px solid var(--accent-color);
+        }
+        .tree-branch {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 10px;
+            height: 100px;
+            background-color: var(--accent-color);
+            transform-origin: bottom center;
+        }
+        .flower {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            border: 2px solid white;
+            transform: scale(0);
+            animation: bloom 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        @keyframes bloom {
+            from { transform: scale(0); }
+            to { transform: scale(1); }
+        }
+
+        /* Connect the Stars Canvas */
+        #vow-canvas {
+            background: #1e1e3f;
+            background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+            border-radius: 1rem;
+            cursor: pointer;
+        }
+        
+        /* Stargazer's Oracle */
+        .oracle-button {
+            background: linear-gradient(45deg, #433A3F, var(--primary-color));
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .oracle-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 20px rgba(192, 132, 151, 0.5);
+        }
+        .loader {
+            width: 20px;
+            height: 20px;
+            border: 3px solid #FFF;
+            border-bottom-color: transparent;
+            border-radius: 50%;
+            display: inline-block;
+            box-sizing: border-box;
+            animation: rotation 1s linear infinite;
+        }
+        @keyframes rotation {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+    <!-- Password Overlay -->
+    <div id="password-overlay" class="fixed inset-0 z-[10000]">
+        <div class="gate left-gate fixed top-0 left-0 w-1/2 h-full"></div>
+        <div class="gate right-gate fixed top-0 right-0 w-1/2 h-full"></div>
+        <div id="password-box" class="absolute inset-0 flex justify-center items-center">
+            <div class="text-center text-white p-8 bg-black bg-opacity-30 rounded-lg shadow-2xl max-w-sm w-full mx-4">
+                <h2 class="font-dancing text-4xl mb-4 text-white">A Secret Key</h2>
+                <p class="mb-6 text-gray-300">This story is for special eyes only.</p>
+                <form id="password-form">
+                    <input type="text" id="password-input" placeholder="DD-MM-YYYY" class="w-full text-center bg-transparent border-b-2 border-gray-500 text-white text-lg py-2 focus:outline-none focus:border-[var(--primary-color)] transition-colors">
+                    <button type="submit" class="w-full mt-6 bg-[var(--accent-color)] text-white font-bold py-3 px-8 rounded-full hover:bg-[var(--primary-color)] transition-colors duration-300">Unlock Story</button>
+                </form>
+                <p class="mt-4 text-gray-400 text-sm">Hint: Your first meet</p>
+                <p id="error-message" class="text-red-400 mt-2 h-10 flex items-center justify-center"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content (Initially Hidden) -->
+    <main id="main-content" class="hidden opacity-0" style="transition: opacity 1s ease-in;">
+        <div id="lantern-container"></div>
+
+        <!-- Hero Section -->
+        <section class="hero h-screen w-full flex flex-col justify-center items-center text-white text-center relative">
+            <div id="particle-container" class="absolute inset-0 overflow-hidden"></div>
+            <div class="z-10 bg-black bg-opacity-40 p-8 rounded-lg">
+                <h1 class="text-5xl md:text-8xl font-bold mb-2">Manoharan</h1>
+                <div class="text-3xl md:text-5xl my-2">&</div>
+                <h1 class="text-5xl md:text-8xl font-bold">Abirami</h1>
+                <p class="text-xl md:text-2xl mt-4 tracking-wider">Our Forever Story</p>
+            </div>
+        </section>
+
+        <!-- Countdown Section -->
+        <section id="countdown" class="py-20 px-4 md:px-10 fade-in-section">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="section-title">The Next Chapter</h2>
+                <p class="text-xl -mt-4 mb-12">Counting down to our forever</p>
+                <div id="countdown-timer" class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 text-center">
+                    <div class="bg-white p-6 rounded-lg shadow-lg"><div id="days" class="text-5xl font-bold text-[var(--accent-color)]">00</div><div class="text-lg text-gray-600">Days</div></div>
+                    <div class="bg-white p-6 rounded-lg shadow-lg"><div id="hours" class="text-5xl font-bold text-[var(--accent-color)]">00</div><div class="text-lg text-gray-600">Hours</div></div>
+                    <div class="bg-white p-6 rounded-lg shadow-lg"><div id="minutes" class="text-5xl font-bold text-[var(--accent-color)]">00</div><div class="text-lg text-gray-600">Minutes</div></div>
+                    <div class="bg-white p-6 rounded-lg shadow-lg"><div id="seconds" class="text-5xl font-bold text-[var(--accent-color)]">00</div><div class="text-lg text-gray-600">Seconds</div></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Garden of Growth Section -->
+        <section id="garden" class="py-20 px-4 md:px-10 bg-[#F7EBE8] fade-in-section">
+            <div class="max-w-3xl mx-auto text-center">
+                <h2 class="section-title">The Garden of Our Growth</h2>
+                <p class="text-xl -mt-4 mb-8 text-gray-600">A tree that blossoms with every wish sent by our loved ones.</p>
+                <div id="garden-container"></div>
+            </div>
+        </section>
+
+        <!-- Mixtape Section -->
+        <section id="mixtape" class="py-20 px-4 md:px-10 fade-in-section">
+            <div class="max-w-5xl mx-auto text-center">
+                <h2 class="section-title">Our Love Mixtape</h2>
+                <p class="text-xl -mt-4 mb-12 text-gray-600">The soundtrack to our story. Click a record to play a memory.</p>
+                <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16">
+                    <div class="vinyl-container" data-note="C4">
+                        <div class="vinyl-record"></div>
+                        <div class="song-info"><strong>"Perfect" - Ed Sheeran</strong><br>Our first dance, under the stars.</div>
+                    </div>
+                    <div class="vinyl-container" data-note="E4">
+                        <div class="vinyl-record"></div>
+                        <div class="song-info"><strong>"Iravinil Aattam"</strong><br>For all our midnight drives and adventures.</div>
+                    </div>
+                    <div class="vinyl-container" data-note="G4">
+                        <div class="vinyl-record"></div>
+                        <div class="song-info"><strong>"A Thousand Years" - Christina Perri</strong><br>The song that played when he proposed.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Photo Puzzle Section -->
+        <section id="photo-puzzle" class="py-20 px-4 md:px-10 bg-[#F7EBE8] fade-in-section">
+            <div class="max-w-3xl mx-auto text-center">
+                <h2 class="section-title">A Glimpse of Us</h2>
+                <p class="text-xl -mt-4 mb-8 text-gray-600">Move your mouse to reveal a favorite moment.</p>
+                <div id="photo-puzzle-container">
+                    <div class="puzzle-grid" id="puzzle-grid-container"></div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Connect the Stars Section -->
+        <section id="connect-stars" class="py-20 px-4 md:px-10 fade-in-section">
+            <div class="max-w-5xl mx-auto text-center">
+                <h2 class="section-title">Written in the Stars</h2>
+                <p class="text-xl -mt-4 mb-8 text-gray-600">Connect the stars to reveal our promise.</p>
+                <canvas id="vow-canvas"></canvas>
+            </div>
+        </section>
+
+        <!-- Stargazer's Oracle Section -->
+        <section id="oracle" class="py-20 px-4 md:px-10 bg-[#F7EBE8] fade-in-section">
+            <div class="max-w-3xl mx-auto text-center">
+                <h2 class="section-title">The Stargazer's Oracle</h2>
+                <p class="text-xl -mt-4 mb-8 text-gray-600">Ask about our future, and the stars will answer.</p>
+                <div class="bg-white p-8 rounded-lg shadow-lg">
+                    <input type="text" id="oracle-question" placeholder="e.g., What will their 10th anniversary be like?" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)]">
+                    <button id="ask-oracle-btn" class="oracle-button mt-4 text-white font-bold py-3 px-8 rounded-full">
+                        <span>Ask the Oracle</span>
+                        <span class="loader hidden"></span>
+                    </button>
+                    <div id="oracle-answer" class="mt-6 text-lg text-left italic text-gray-700 min-h-[5rem] p-4 bg-gray-50 rounded-md">The stars await your question...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Wishes Wall Section -->
+        <section id="wishes" class="py-20 px-4 md:px-10 fade-in-section">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="section-title">Lanterns of Love</h2>
+                <p class="text-xl -mt-4 mb-8 text-center text-gray-600">Send a wish for the couple and release a lantern into the sky.</p>
+                <form id="wish-form" class="mt-12 bg-white p-8 rounded-lg shadow-md">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <input type="text" id="wisher-name" placeholder="Your Name" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)]">
+                        <input type="text" id="wisher-relation" placeholder="Your Relation (e.g., Friend)" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)]">
+                    </div>
+                    <textarea id="wisher-message" placeholder="Your heartfelt message..." rows="5" class="w-full p-3 mt-6 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)]"></textarea>
+                    <button type="submit" class="mt-6 bg-[var(--accent-color)] text-white font-bold py-3 px-8 rounded-full hover:bg-[var(--primary-color)] transition-colors duration-300">Release a Lantern</button>
+                </form>
+                <div id="wishes-display" class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="wish-card p-6 rounded-lg shadow-sm"><p class="text-lg italic">"Wishing you both a lifetime of love and happiness. So happy to celebrate this beautiful journey with you!"</p><p class="text-right font-bold mt-4 text-stone-600">- A Loving Friend</p></div>
+                </div>
+            </div>
+        </section>
+        
+        <footer class="text-center py-8">
+            <p class="font-dancing text-3xl text-[var(--accent-color)]">Manoharan & Abirami</p>
+            <p>Made with ❤️ for a love that was written in the stars</p>
+        </footer>
+    </main>
+
+    <script>
+        // --- Password Protection Logic ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const overlay = document.getElementById('password-overlay');
+            const passwordBox = document.getElementById('password-box');
+            const mainContent = document.getElementById('main-content');
+            const passwordForm = document.getElementById('password-form');
+            const passwordInput = document.getElementById('password-input');
+            const errorMessage = document.getElementById('error-message');
+
+            const wrongPasswordQuotes = [
+                "A love like theirs is a secret, but not *that* secret. Try again!",
+                "Close! But that memory is on a different page.",
+                "Are you sure you were there? 😉 Hint: It was a special day.",
+                "That's not the key to their heart... or this website.",
+                "Even Cupid would need another guess.",
+                "The stars aren't aligned for that date. Try another!"
+            ];
+
+            passwordForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                if (passwordInput.value === '22-02-2022') {
+                    errorMessage.textContent = '';
+                    passwordBox.style.opacity = '0';
+                    setTimeout(() => { overlay.classList.add('unlocked'); }, 300);
+                    setTimeout(() => { overlay.remove(); }, 2000);
+                    mainContent.classList.remove('hidden');
+                    setTimeout(() => { mainContent.classList.add('opacity-100'); }, 800);
+                } else {
+                    const randomIndex = Math.floor(Math.random() * wrongPasswordQuotes.length);
+                    errorMessage.textContent = wrongPasswordQuotes[randomIndex];
+                    passwordInput.value = '';
+                    passwordBox.firstElementChild.classList.add('animate-shake');
+                    setTimeout(() => { passwordBox.firstElementChild.classList.remove('animate-shake'); }, 500);
+                }
+            });
+        });
+
+        // --- Particle Animation for Hero ---
+        const particleContainer = document.getElementById('particle-container');
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.style.position = 'absolute';
+            particle.style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
+            const size = Math.random() * 3 + 1;
+            particle.style.width = `${size}px`; particle.style.height = `${size}px`;
+            particle.style.borderRadius = '50%';
+            particle.style.left = `${Math.random() * 100}%`;
+            particle.style.top = `${Math.random() * 100}%`;
+            particle.style.animation = `twinkle ${Math.random() * 5 + 3}s linear infinite`;
+            particleContainer.appendChild(particle);
+        }
+        for (let i = 0; i < 100; i++) { createParticle(); }
+        const style = document.createElement('style');
+        style.innerHTML = `@keyframes twinkle { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }`;
+        document.head.appendChild(style);
+
+        // --- Countdown Timer ---
+        const countDownDate = new Date("Dec 25, 2025 00:00:00").getTime();
+        const countdownFunction = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = countDownDate - now;
+            document.getElementById("days").innerText = Math.floor(distance / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
+            document.getElementById("hours").innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+            document.getElementById("minutes").innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+            document.getElementById("seconds").innerText = Math.floor((distance % (1000 * 60)) / 1000).toString().padStart(2, '0');
+            if (distance < 0) {
+                clearInterval(countdownFunction);
+                document.getElementById("countdown-timer").innerHTML = "<div class='col-span-4 text-3xl font-bold'>The day is here!</div>";
+            }
+        }, 1000);
+
+        // --- Fade-in sections on scroll ---
+        const sections = document.querySelectorAll('.fade-in-section');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    if (entry.target.id === 'connect-stars') { startVowCanvas(); }
+                    if (entry.target.id === 'photo-puzzle') { createPuzzleGrid(); }
+                    if (entry.target.id === 'garden') { initGarden(); }
+                }
+            });
+        }, { threshold: 0.2 });
+        sections.forEach(section => observer.observe(section));
+
+        // --- Wish Lanterns & Garden Logic ---
+        const wishForm = document.getElementById('wish-form');
+        const wishesDisplay = document.getElementById('wishes-display');
+        const lanternContainer = document.getElementById('lantern-container');
+        wishForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('wisher-name').value;
+            const relation = document.getElementById('wisher-relation').value;
+            const message = document.getElementById('wisher-message').value;
+            if (!name || !message) { alert('Please fill in your name and message!'); return; }
+            
+            const wishCard = document.createElement('div');
+            wishCard.className = 'wish-card p-6 rounded-lg shadow-sm';
+            wishCard.innerHTML = `<p class="text-lg italic">"${message}"</p><p class="text-right font-bold mt-4 text-stone-600">- ${name} (${relation || 'Well Wisher'})</p>`;
+            wishesDisplay.prepend(wishCard);
+
+            const lantern = document.createElement('div');
+            lantern.className = 'lantern';
+            lantern.style.left = `${Math.random() * 80 + 10}%`;
+            lanternContainer.appendChild(lantern);
+            setTimeout(() => { lantern.remove(); }, 15000);
+
+            addFlowerToGarden();
+            wishForm.reset();
+        });
+
+        // --- Garden of Growth ---
+        const gardenContainer = document.getElementById('garden-container');
+        let gardenInitialized = false;
+        function initGarden() {
+            if (gardenInitialized) return;
+            gardenInitialized = true;
+            const trunk = document.createElement('div');
+            trunk.className = 'tree-branch';
+            gardenContainer.appendChild(trunk);
+            // Add a few initial branches
+            for (let i = 0; i < 3; i++) {
+                const branch = document.createElement('div');
+                branch.className = 'tree-branch';
+                branch.style.height = `${Math.random() * 50 + 50}px`;
+                branch.style.transform = `translateX(-50%) rotate(${Math.random() * 60 - 30}deg)`;
+                trunk.appendChild(branch);
+            }
+        }
+        function addFlowerToGarden() {
+            const flower = document.createElement('div');
+            flower.className = 'flower';
+            flower.style.left = `${Math.random() * 90 + 5}%`;
+            flower.style.bottom = `${Math.random() * 70 + 20}%`;
+            flower.style.backgroundColor = `hsl(${Math.random() * 60 + 300}, 70%, 80%)`; // Shades of pink/purple
+            gardenContainer.appendChild(flower);
+        }
+
+        // --- Mixtape Sound ---
+        const synth = new Tone.Synth().toDestination();
+        document.querySelectorAll('.vinyl-container').forEach(container => {
+            container.addEventListener('click', () => {
+                const note = container.dataset.note;
+                Tone.start();
+                synth.triggerAttackRelease(note, "8n");
+                container.classList.add('playing');
+                setTimeout(() => container.classList.remove('playing'), 1000);
+            });
+        });
+
+        // --- Photo Puzzle ---
+        let puzzleCreated = false;
+        function createPuzzleGrid() {
+            if (puzzleCreated) return;
+            puzzleCreated = true;
+            const container = document.getElementById('puzzle-grid-container');
+            for (let i = 0; i < 144; i++) {
+                const tile = document.createElement('div');
+                tile.className = 'puzzle-tile';
+                container.appendChild(tile);
+            }
+        }
+
+        // --- Connect the Stars Vow Canvas ---
+        const vowCanvas = document.getElementById('vow-canvas');
+        const vctx = vowCanvas.getContext('2d');
+        let vowCanvasStarted = false;
+        let vowPoints = [];
+        let lines = [];
+        let currentLine = null;
+        const VOWS = [
+            "From this day forward,",
+            "you shall not walk alone.",
+            "My heart will be your shelter,",
+            "and my arms will be your home."
+        ];
+
+        function setupVowCanvas() {
+            const container = vowCanvas.parentElement;
+            let size = Math.min(container.clientWidth, 600);
+            vowCanvas.width = size;
+            vowCanvas.height = size * 0.6;
+            
+            vowPoints = [
+                { x: vowCanvas.width * 0.1, y: vowCanvas.height * 0.5 },
+                { x: vowCanvas.width * 0.3, y: vowCanvas.height * 0.2 },
+                { x: vowCanvas.width * 0.5, y: vowCanvas.height * 0.8 },
+                { x: vowCanvas.width * 0.7, y: vowCanvas.height * 0.3 },
+                { x: vowCanvas.width * 0.9, y: vowCanvas.height * 0.6 }
+            ];
+            lines = [];
+            currentLine = { start: null, end: null };
+        }
+
+        function drawVowCanvas() {
+            vctx.clearRect(0, 0, vowCanvas.width, vowCanvas.height);
+            
+            // Draw completed lines and vows
+            lines.forEach((line, index) => {
+                vctx.beginPath();
+                vctx.moveTo(line.start.x, line.start.y);
+                vctx.lineTo(line.end.x, line.end.y);
+                vctx.strokeStyle = 'gold';
+                vctx.lineWidth = 2;
+                vctx.stroke();
+
+                vctx.fillStyle = 'white';
+                vctx.font = '16px "Dancing Script", cursive';
+                vctx.textAlign = 'center';
+                vctx.fillText(VOWS[index], (line.start.x + line.end.x) / 2, (line.start.y + line.end.y) / 2 - 10);
+            });
+
+            // Draw current drawing line
+            if (currentLine && currentLine.start && currentLine.end) {
+                vctx.beginPath();
+                vctx.moveTo(currentLine.start.x, currentLine.start.y);
+                vctx.lineTo(currentLine.end.x, currentLine.end.y);
+                vctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+                vctx.setLineDash([5, 5]);
+                vctx.stroke();
+                vctx.setLineDash([]);
+            }
+
+            // Draw points
+            vowPoints.forEach((p, i) => {
+                vctx.beginPath();
+                vctx.arc(p.x, p.y, 8, 0, Math.PI * 2);
+                const isConnected = lines.some(l => l.start === p || l.end === p);
+                vctx.fillStyle = isConnected ? 'gold' : 'white';
+                vctx.fill();
+            });
+
+            requestAnimationFrame(drawVowCanvas);
+        }
+
+        function getPointAt(x, y) {
+            for (const p of vowPoints) {
+                const dist = Math.sqrt((p.x - x) ** 2 + (p.y - y) ** 2);
+                if (dist < 10) return p;
+            }
+            return null;
+        }
+
+        vowCanvas.addEventListener('mousedown', e => {
+            const rect = vowCanvas.getBoundingClientRect();
+            const point = getPointAt(e.clientX - rect.left, e.clientY - rect.top);
+            if (point) {
+                currentLine.start = point;
+            }
+        });
+
+        vowCanvas.addEventListener('mousemove', e => {
+            if (currentLine.start) {
+                const rect = vowCanvas.getBoundingClientRect();
+                currentLine.end = { x: e.clientX - rect.left, y: e.clientY - rect.top };
+            }
+        });
+
+        vowCanvas.addEventListener('mouseup', e => {
+            if (currentLine.start) {
+                const rect = vowCanvas.getBoundingClientRect();
+                const endPoint = getPointAt(e.clientX - rect.left, e.clientY - rect.top);
+                const nextPointIndex = lines.length;
+                if (endPoint && endPoint === vowPoints[nextPointIndex + 1] && currentLine.start === vowPoints[nextPointIndex]) {
+                    lines.push({ start: currentLine.start, end: endPoint });
+                }
+                currentLine.start = null;
+                currentLine.end = null;
+            }
+        });
+
+        function startVowCanvas() {
+            if (vowCanvasStarted) return;
+            vowCanvasStarted = true;
+            setupVowCanvas();
+            drawVowCanvas();
+        }
+        
+        // --- Stargazer's Oracle (Gemini API) ---
+        const oracleBtn = document.getElementById('ask-oracle-btn');
+        const oracleQuestion = document.getElementById('oracle-question');
+        const oracleAnswer = document.getElementById('oracle-answer');
+        const loader = oracleBtn.querySelector('.loader');
+        const btnText = oracleBtn.querySelector('span');
+
+        oracleBtn.addEventListener('click', async () => {
+            const prompt = oracleQuestion.value;
+            if (!prompt) {
+                oracleAnswer.textContent = "Please ask a question for the stars to answer.";
+                return;
+            }
+
+            loader.classList.remove('hidden');
+            btnText.classList.add('hidden');
+            oracleAnswer.textContent = "The stars are aligning...";
+
+            const fullPrompt = `For a romantic website celebrating a couple named Manoharan and Abirami, write a short, whimsical, and happy story (2-3 sentences) based on this question from a well-wisher: "${prompt}". Frame the answer as if it's a vision from the stars.`;
+            
+            let chatHistory = [{ role: "user", parts: [{ text: fullPrompt }] }];
+            const payload = { contents: chatHistory };
+            const apiKey = ""; // API key will be managed by the environment
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const text = result.candidates[0].content.parts[0].text;
+                    oracleAnswer.textContent = text;
+                } else {
+                    oracleAnswer.textContent = "The starlight is faint right now. Please try asking again later.";
+                }
+            } catch (error) {
+                console.error("Oracle Error:", error);
+                oracleAnswer.textContent = "A cosmic cloud is obscuring the view. Please try again.";
+            } finally {
+                loader.classList.add('hidden');
+                btnText.classList.remove('hidden');
+            }
+        });
+
+    </script>
+</body>
+</html>
