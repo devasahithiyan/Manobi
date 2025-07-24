@@ -22,6 +22,7 @@
             font-family: 'Montserrat', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
+            overflow-x: hidden;
         }
         h1, h2, h3 {
             font-family: 'Playfair Display', serif;
@@ -30,7 +31,8 @@
             font-family: 'Dancing Script', cursive;
         }
         .hero {
-            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://placehold.co/1200x800/433A3F/FBF6F0?text=M+%26+A') no-repeat center center/cover;
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://placehold.co/1200x800/433A3F/FBF6F0?text=') no-repeat center center/cover;
+            position: relative;
         }
         .section-title {
             font-size: 3rem;
@@ -41,43 +43,18 @@
             position: relative;
         }
         .section-title::after {
-            content: '';
+            content: '✨';
             display: block;
-            width: 80px;
-            height: 3px;
-            background-color: var(--primary-color);
-            margin: 1rem auto 0;
-        }
-        .timeline-item {
-            position: relative;
-            padding-bottom: 4rem;
-            padding-left: 3.5rem;
-            border-left: 2px solid var(--primary-color);
-        }
-        .timeline-item:last-child {
-            border-left: 2px solid transparent;
-        }
-        .timeline-dot {
-            position: absolute;
-            left: -20px;
-            top: 0;
-            width: 40px;
-            height: 40px;
-            background-color: var(--bg-color);
-            border: 2px solid var(--accent-color);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.2rem;
-            color: var(--accent-color);
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin: 0.5rem auto 0;
         }
         
         /* Fade-in animation */
         .fade-in-section {
             opacity: 0;
             transform: translateY(30px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            transition: opacity 1s ease-out, transform 1s ease-out;
         }
         .fade-in-section.is-visible {
             opacity: 1;
@@ -136,78 +113,6 @@
             transform: translateX(100%);
         }
 
-        /* Mixtape Section Styles */
-        .vinyl-container {
-            position: relative;
-            width: 200px;
-            height: 200px;
-            cursor: pointer;
-        }
-        .vinyl-record {
-            width: 100%;
-            height: 100%;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="%23222"/><circle cx="50" cy="50" r="15" fill="%23C08497"/><circle cx="50" cy="50" r="2" fill="white"/></svg>');
-            background-size: contain;
-            animation: spin 10s linear infinite;
-            animation-play-state: paused;
-        }
-        .vinyl-container:hover .vinyl-record, .vinyl-container.playing .vinyl-record {
-            animation-play-state: running;
-        }
-        .song-info {
-            position: absolute;
-            bottom: 110%;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: rgba(0,0,0,0.7);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 0.5rem;
-            opacity: 0;
-            transition: opacity 0.3s ease, bottom 0.3s ease;
-            pointer-events: none;
-            width: max-content;
-            max-width: 250px;
-            text-align: center;
-        }
-        .vinyl-container:hover .song-info {
-            opacity: 1;
-            bottom: 120%;
-        }
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        /* Photo Puzzle Styles */
-        #photo-puzzle-container {
-            position: relative;
-            width: 100%;
-            max-width: 600px;
-            aspect-ratio: 4/3;
-            margin: auto;
-            background: url('https://placehold.co/600x450/C08497/FFFFFF?text=A+Glimpse+of+Us') center center/cover;
-            border-radius: 1rem;
-            overflow: hidden;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-        .puzzle-grid {
-            position: absolute;
-            inset: 0;
-            display: grid;
-            grid-template-columns: repeat(12, 1fr);
-            grid-template-rows: repeat(12, 1fr);
-        }
-        .puzzle-tile {
-            background-color: var(--bg-color);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-            transform: scale(1);
-        }
-        .puzzle-tile:hover {
-            opacity: 0;
-            transform: scale(0.5);
-        }
-
         /* Garden of Growth Styles */
         #garden-container {
             position: relative;
@@ -217,15 +122,17 @@
             margin: auto;
             background: linear-gradient(to top, #F7EBE8, var(--bg-color));
             border-bottom: 2px solid var(--accent-color);
+            border-radius: 0.5rem;
+            overflow: hidden;
         }
         .tree-branch {
             position: absolute;
             bottom: 0;
             left: 50%;
             width: 10px;
-            height: 100px;
             background-color: var(--accent-color);
             transform-origin: bottom center;
+            transition: height 1s ease-in-out;
         }
         .flower {
             position: absolute;
@@ -236,6 +143,7 @@
             border: 2px solid white;
             transform: scale(0);
             animation: bloom 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            filter: drop-shadow(0 0 5px var(--primary-color));
         }
         @keyframes bloom {
             from { transform: scale(0); }
@@ -249,8 +157,26 @@
             border-radius: 1rem;
             cursor: pointer;
         }
+        .glowing-word {
+            position: relative;
+            display: inline-block;
+        }
+        .glowing-word .icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            font-size: 1.5em;
+            color: var(--primary-color);
+        }
+        .glowing-word:hover .icon {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
         
-        /* Stargazer's Oracle */
+        /* Poet's Oracle */
         .oracle-button {
             background: linear-gradient(45deg, #433A3F, var(--primary-color));
             transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -273,6 +199,110 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+        .oracle-image-option {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 4px solid transparent;
+        }
+        .oracle-image-option:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px var(--secondary-color);
+        }
+        .oracle-image-option.selected {
+            border-color: var(--primary-color);
+            transform: scale(1.05);
+        }
+        
+        /* Guest Constellation Canvas */
+        #guest-constellation-canvas {
+            background: #1e1e3f;
+            background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+            border-radius: 1rem;
+            cursor: cell;
+        }
+
+        /* Storybook Gallery */
+        .storybook-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            aspect-ratio: 16/9;
+            margin: auto;
+            perspective: 2500px;
+        }
+        .storybook-page {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            transition: transform 1s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.5s;
+            opacity: 0;
+            transform-origin: left center;
+        }
+        .storybook-page.active {
+            opacity: 1;
+            transform: rotateY(0deg) scale(1);
+            z-index: 10;
+        }
+        .storybook-page.previous {
+            transform: rotateY(-120deg) scale(0.9);
+            opacity: 0;
+            z-index: 5;
+        }
+        .page-content {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            flex-direction: row;
+        }
+        .page-image {
+            width: 60%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+        }
+        .page-text {
+            width: 40%;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .storybook-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 20;
+            background: rgba(255,255,255,0.5);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .storybook-nav:hover {
+            background: rgba(255,255,255,0.8);
+        }
+        #prev-page { left: -25px; }
+        #next-page { right: -25px; }
+        
+        /* Hero Canvas */
+        #hero-canvas {
+            position: absolute;
+            inset: 0;
+            z-index: 5;
+        }
+        .hero-names {
+            transition: opacity 1s ease-in-out;
+        }
+
     </style>
 </head>
 <body class="overflow-x-hidden">
@@ -299,9 +329,9 @@
         <div id="lantern-container"></div>
 
         <!-- Hero Section -->
-        <section class="hero h-screen w-full flex flex-col justify-center items-center text-white text-center relative">
-            <div id="particle-container" class="absolute inset-0 overflow-hidden"></div>
-            <div class="z-10 bg-black bg-opacity-40 p-8 rounded-lg">
+        <section class="hero h-screen w-full flex flex-col justify-center items-center text-white text-center">
+            <canvas id="hero-canvas"></canvas>
+            <div class="hero-names z-10 bg-black bg-opacity-40 p-8 rounded-lg opacity-0">
                 <h1 class="text-5xl md:text-8xl font-bold mb-2">Manoharan</h1>
                 <div class="text-3xl md:text-5xl my-2">&</div>
                 <h1 class="text-5xl md:text-8xl font-bold">Abirami</h1>
@@ -322,49 +352,73 @@
                 </div>
             </div>
         </section>
+        
+        <!-- Storybook Photo Gallery -->
+        <section id="storybook-gallery" class="py-20 px-4 md:px-10 bg-[#F7EBE8] fade-in-section">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="section-title">Our Storybook</h2>
+                <p class="text-xl -mt-4 mb-8 text-gray-600">Turn the pages to walk through our most cherished memories.</p>
+                <div class="storybook-container">
+                    <div id="page1" class="storybook-page active">
+                        <div class="page-content">
+                            <div class="page-image" style="background-image: url('https://placehold.co/800x600/D9BFA9/333?text=First+Meet')"></div>
+                            <div class="page-text">
+                                <h3 class="font-dancing text-4xl text-[var(--primary-color)] mb-4">The First Meet</h3>
+                                <p>A simple hello in a quiet cafe. We didn't know it then, but it was the first word of the first chapter of our forever story.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="page2" class="storybook-page">
+                        <div class="page-content">
+                            <div class="page-image" style="background-image: url('https://placehold.co/800x600/C8A2C8/333?text=First+Date')"></div>
+                            <div class="page-text">
+                                <h3 class="font-dancing text-4xl text-[var(--primary-color)] mb-4">The First Date</h3>
+                                <p>Nervous laughter and endless conversation. The world seemed to fade away, and in that small bubble, it was just us.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="page3" class="storybook-page">
+                        <div class="page-content">
+                             <div class="page-image" style="background-image: url('https://placehold.co/800x600/B2D8D8/333?text=The+Proposal')"></div>
+                            <div class="page-text">
+                                <h3 class="font-dancing text-4xl text-[var(--primary-color)] mb-4">The Proposal</h3>
+                                <p>Under a sky full of stars, one question changed everything. It was the easiest 'Yes' ever spoken.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="prev-page" class="storybook-nav"><i class="fas fa-chevron-left"></i></button>
+                    <button id="next-page" class="storybook-nav"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Guest Constellation Section -->
+        <section id="guest-constellation-section" class="py-20 px-4 md:px-10 fade-in-section">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="section-title">The Guest Constellation</h2>
+                <p class="text-xl -mt-4 mb-8 text-gray-600">Click a spot in the night sky to add your own star to our universe.</p>
+                <canvas id="guest-constellation-canvas"></canvas>
+                <div id="star-form-container" class="mt-4 hidden">
+                    <form id="star-form" class="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto">
+                        <p class="font-bold mb-2">You've chosen a spot in the heavens!</p>
+                        <p class="mb-4 text-sm text-gray-600">Now, leave your wish to create a star.</p>
+                        <input type="text" id="star-name" placeholder="Your Name" class="w-full p-2 mb-2 border rounded" required>
+                        <input type="text" id="star-wish" placeholder="Your short wish" class="w-full p-2 mb-4 border rounded" required maxlength="50">
+                        <button type="submit" class="w-full bg-[var(--accent-color)] text-white py-2 rounded-full hover:bg-[var(--primary-color)]">Create Star</button>
+                    </form>
+                </div>
+            </div>
+        </section>
 
         <!-- Garden of Growth Section -->
         <section id="garden" class="py-20 px-4 md:px-10 bg-[#F7EBE8] fade-in-section">
             <div class="max-w-3xl mx-auto text-center">
                 <h2 class="section-title">The Garden of Our Growth</h2>
-                <p class="text-xl -mt-4 mb-8 text-gray-600">A tree that blossoms with every wish sent by our loved ones.</p>
+                <p class="text-xl -mt-4 mb-8 text-gray-600">A tree that blossoms with every wish from our loved ones.</p>
                 <div id="garden-container"></div>
             </div>
         </section>
 
-        <!-- Mixtape Section -->
-        <section id="mixtape" class="py-20 px-4 md:px-10 fade-in-section">
-            <div class="max-w-5xl mx-auto text-center">
-                <h2 class="section-title">Our Love Mixtape</h2>
-                <p class="text-xl -mt-4 mb-12 text-gray-600">The soundtrack to our story. Click a record to play a memory.</p>
-                <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16">
-                    <div class="vinyl-container" data-note="C4">
-                        <div class="vinyl-record"></div>
-                        <div class="song-info"><strong>"Perfect" - Ed Sheeran</strong><br>Our first dance, under the stars.</div>
-                    </div>
-                    <div class="vinyl-container" data-note="E4">
-                        <div class="vinyl-record"></div>
-                        <div class="song-info"><strong>"Iravinil Aattam"</strong><br>For all our midnight drives and adventures.</div>
-                    </div>
-                    <div class="vinyl-container" data-note="G4">
-                        <div class="vinyl-record"></div>
-                        <div class="song-info"><strong>"A Thousand Years" - Christina Perri</strong><br>The song that played when he proposed.</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Photo Puzzle Section -->
-        <section id="photo-puzzle" class="py-20 px-4 md:px-10 bg-[#F7EBE8] fade-in-section">
-            <div class="max-w-3xl mx-auto text-center">
-                <h2 class="section-title">A Glimpse of Us</h2>
-                <p class="text-xl -mt-4 mb-8 text-gray-600">Move your mouse to reveal a favorite moment.</p>
-                <div id="photo-puzzle-container">
-                    <div class="puzzle-grid" id="puzzle-grid-container"></div>
-                </div>
-            </div>
-        </section>
-        
         <!-- Connect the Stars Section -->
         <section id="connect-stars" class="py-20 px-4 md:px-10 fade-in-section">
             <div class="max-w-5xl mx-auto text-center">
@@ -374,18 +428,22 @@
             </div>
         </section>
 
-        <!-- Stargazer's Oracle Section -->
+        <!-- Poet's Oracle Section -->
         <section id="oracle" class="py-20 px-4 md:px-10 bg-[#F7EBE8] fade-in-section">
             <div class="max-w-3xl mx-auto text-center">
-                <h2 class="section-title">The Stargazer's Oracle</h2>
-                <p class="text-xl -mt-4 mb-8 text-gray-600">Ask about our future, and the stars will answer.</p>
+                <h2 class="section-title">The Poet's Oracle</h2>
+                <p class="text-xl -mt-4 mb-8 text-gray-600">Choose an image that speaks to you, and let the stars compose a verse.</p>
                 <div class="bg-white p-8 rounded-lg shadow-lg">
-                    <input type="text" id="oracle-question" placeholder="e.g., What will their 10th anniversary be like?" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)]">
-                    <button id="ask-oracle-btn" class="oracle-button mt-4 text-white font-bold py-3 px-8 rounded-full">
-                        <span>Ask the Oracle</span>
+                    <div id="oracle-image-options" class="flex justify-center gap-4 mb-6">
+                        <img src="https://placehold.co/150x100/1e1e3f/ffffff?text=Starry+Night" class="oracle-image-option rounded-lg cursor-pointer" data-prompt="a starry night sky">
+                        <img src="https://placehold.co/150x100/228B22/ffffff?text=Forest+Path" class="oracle-image-option rounded-lg cursor-pointer" data-prompt="a sunlit path in a forest">
+                        <img src="https://placehold.co/150x100/4682B4/ffffff?text=Ocean+Waves" class="oracle-image-option rounded-lg cursor-pointer" data-prompt="gentle ocean waves on a shore">
+                    </div>
+                    <button id="ask-oracle-btn" class="oracle-button text-white font-bold py-3 px-8 rounded-full" disabled>
+                        <span>Choose an Image</span>
                         <span class="loader hidden"></span>
                     </button>
-                    <div id="oracle-answer" class="mt-6 text-lg text-left italic text-gray-700 min-h-[5rem] p-4 bg-gray-50 rounded-md">The stars await your question...</div>
+                    <div id="oracle-answer" class="mt-6 text-lg text-left italic text-gray-700 min-h-[5rem] p-4 bg-gray-50 rounded-md">The stars await your inspiration...</div>
                 </div>
             </div>
         </section>
@@ -411,13 +469,52 @@
         
         <footer class="text-center py-8">
             <p class="font-dancing text-3xl text-[var(--accent-color)]">Manoharan & Abirami</p>
-            <p>Made with ❤️ for a love that was written in the stars</p>
+            <p>Made with <span id="footer-heart" class="cursor-pointer text-red-500">❤️</span> for a love that was written in the stars</p>
         </footer>
     </main>
+    
+    <!-- Modal for Poem -->
+    <div id="poem-modal" class="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-[10001] hidden p-4">
+        <div class="bg-white/90 backdrop-blur-lg text-gray-800 p-8 rounded-lg max-w-lg w-full text-center relative shadow-2xl">
+            <h3 class="font-dancing text-4xl mb-4 text-[var(--accent-color)]">A Secret Verse</h3>
+            <p class="text-lg leading-relaxed italic">
+                Two souls afloat on cosmic seas,<br>
+                Found their harbor in the breeze.<br>
+                A whispered vow, a gentle hand,<br>
+                The greatest love in all the land.
+            </p>
+            <button id="close-poem-modal-btn" class="absolute top-2 right-2 text-2xl text-gray-600 hover:text-black">&times;</button>
+        </div>
+    </div>
 
-    <script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot, doc, setDoc, getDoc, query, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // --- Firebase Config ---
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        // --- Authentication ---
+        async function authenticateUser() {
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+            } catch (error) {
+                console.error("Authentication failed:", error);
+            }
+        }
+
         // --- Password Protection Logic ---
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
+            await authenticateUser();
             const overlay = document.getElementById('password-overlay');
             const passwordBox = document.getElementById('password-box');
             const mainContent = document.getElementById('main-content');
@@ -442,7 +539,10 @@
                     setTimeout(() => { overlay.classList.add('unlocked'); }, 300);
                     setTimeout(() => { overlay.remove(); }, 2000);
                     mainContent.classList.remove('hidden');
-                    setTimeout(() => { mainContent.classList.add('opacity-100'); }, 800);
+                    setTimeout(() => { 
+                        mainContent.classList.add('opacity-100');
+                        initHeroCanvas(); // Start hero animation after fade-in
+                    }, 800);
                 } else {
                     const randomIndex = Math.floor(Math.random() * wrongPasswordQuotes.length);
                     errorMessage.textContent = wrongPasswordQuotes[randomIndex];
@@ -452,25 +552,6 @@
                 }
             });
         });
-
-        // --- Particle Animation for Hero ---
-        const particleContainer = document.getElementById('particle-container');
-        function createParticle() {
-            const particle = document.createElement('div');
-            particle.style.position = 'absolute';
-            particle.style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
-            const size = Math.random() * 3 + 1;
-            particle.style.width = `${size}px`; particle.style.height = `${size}px`;
-            particle.style.borderRadius = '50%';
-            particle.style.left = `${Math.random() * 100}%`;
-            particle.style.top = `${Math.random() * 100}%`;
-            particle.style.animation = `twinkle ${Math.random() * 5 + 3}s linear infinite`;
-            particleContainer.appendChild(particle);
-        }
-        for (let i = 0; i < 100; i++) { createParticle(); }
-        const style = document.createElement('style');
-        style.innerHTML = `@keyframes twinkle { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }`;
-        document.head.appendChild(style);
 
         // --- Countdown Timer ---
         const countDownDate = new Date("Dec 25, 2025 00:00:00").getTime();
@@ -494,7 +575,7 @@
                 if (entry.isIntersecting) {
                     entry.target.classList.add('is-visible');
                     if (entry.target.id === 'connect-stars') { startVowCanvas(); }
-                    if (entry.target.id === 'photo-puzzle') { createPuzzleGrid(); }
+                    if (entry.target.id === 'guest-constellation-section') { initGuestConstellation(); }
                     if (entry.target.id === 'garden') { initGarden(); }
                 }
             });
@@ -505,7 +586,7 @@
         const wishForm = document.getElementById('wish-form');
         const wishesDisplay = document.getElementById('wishes-display');
         const lanternContainer = document.getElementById('lantern-container');
-        wishForm.addEventListener('submit', function(e) {
+        wishForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const name = document.getElementById('wisher-name').value;
             const relation = document.getElementById('wisher-relation').value;
@@ -523,61 +604,94 @@
             lanternContainer.appendChild(lantern);
             setTimeout(() => { lantern.remove(); }, 15000);
 
-            addFlowerToGarden();
+            // Add wish to Firestore to track for garden growth
+            const wishesRef = collection(db, `artifacts/${appId}/public/data/wishes`);
+            await addDoc(wishesRef, { name, message, timestamp: new Date() });
+
             wishForm.reset();
         });
 
         // --- Garden of Growth ---
         const gardenContainer = document.getElementById('garden-container');
         let gardenInitialized = false;
-        function initGarden() {
+        async function initGarden() {
             if (gardenInitialized) return;
             gardenInitialized = true;
+            
+            const wishesRef = collection(db, `artifacts/${appId}/public/data/wishes`);
+            onSnapshot(wishesRef, (snapshot) => {
+                const wishCount = snapshot.size;
+                updateGarden(wishCount);
+            });
+
+            // Initial load
+            const initialSnapshot = await getDocs(wishesRef);
+            updateGarden(initialSnapshot.size);
+        }
+
+        function updateGarden(wishCount) {
+            gardenContainer.innerHTML = ''; // Clear garden to redraw
             const trunk = document.createElement('div');
             trunk.className = 'tree-branch';
+            trunk.style.height = `${100 + wishCount * 5}px`;
             gardenContainer.appendChild(trunk);
-            // Add a few initial branches
-            for (let i = 0; i < 3; i++) {
+
+            const branchCount = Math.floor(wishCount / 5);
+            for (let i = 0; i < 3 + branchCount; i++) {
                 const branch = document.createElement('div');
                 branch.className = 'tree-branch';
                 branch.style.height = `${Math.random() * 50 + 50}px`;
-                branch.style.transform = `translateX(-50%) rotate(${Math.random() * 60 - 30}deg)`;
+                branch.style.transform = `translateX(-50%) rotate(${Math.random() * 80 - 40}deg)`;
                 trunk.appendChild(branch);
             }
+
+            for (let i = 0; i < wishCount; i++) {
+                addFlowerToGarden();
+            }
         }
+
         function addFlowerToGarden() {
             const flower = document.createElement('div');
             flower.className = 'flower';
             flower.style.left = `${Math.random() * 90 + 5}%`;
             flower.style.bottom = `${Math.random() * 70 + 20}%`;
-            flower.style.backgroundColor = `hsl(${Math.random() * 60 + 300}, 70%, 80%)`; // Shades of pink/purple
+            flower.style.backgroundColor = `hsl(${Math.random() * 60 + 300}, 70%, 80%)`;
             gardenContainer.appendChild(flower);
         }
 
-        // --- Mixtape Sound ---
-        const synth = new Tone.Synth().toDestination();
-        document.querySelectorAll('.vinyl-container').forEach(container => {
-            container.addEventListener('click', () => {
-                const note = container.dataset.note;
-                Tone.start();
-                synth.triggerAttackRelease(note, "8n");
-                container.classList.add('playing');
-                setTimeout(() => container.classList.remove('playing'), 1000);
+        // --- Storybook Gallery ---
+        const pages = document.querySelectorAll('.storybook-page');
+        const prevButton = document.getElementById('prev-page');
+        const nextButton = document.getElementById('next-page');
+        let currentPage = 0;
+
+        function showPage(pageIndex) {
+            pages.forEach((page, index) => {
+                page.classList.remove('active', 'previous');
+                if (index === pageIndex) {
+                    page.classList.add('active');
+                } else if (index < pageIndex) {
+                    page.classList.add('previous');
+                }
             });
+            prevButton.disabled = pageIndex === 0;
+            nextButton.disabled = pageIndex === pages.length - 1;
+        }
+
+        prevButton.addEventListener('click', () => {
+            if (currentPage > 0) {
+                currentPage--;
+                showPage(currentPage);
+            }
         });
 
-        // --- Photo Puzzle ---
-        let puzzleCreated = false;
-        function createPuzzleGrid() {
-            if (puzzleCreated) return;
-            puzzleCreated = true;
-            const container = document.getElementById('puzzle-grid-container');
-            for (let i = 0; i < 144; i++) {
-                const tile = document.createElement('div');
-                tile.className = 'puzzle-tile';
-                container.appendChild(tile);
+        nextButton.addEventListener('click', () => {
+            if (currentPage < pages.length - 1) {
+                currentPage++;
+                showPage(currentPage);
             }
-        }
+        });
+        showPage(0);
 
         // --- Connect the Stars Vow Canvas ---
         const vowCanvas = document.getElementById('vow-canvas');
@@ -587,67 +701,43 @@
         let lines = [];
         let currentLine = null;
         const VOWS = [
-            "From this day forward,",
-            "you shall not walk alone.",
-            "My heart will be your shelter,",
-            "and my arms will be your home."
+            "From this day forward,", "you shall not walk alone.",
+            "My <span class='glowing-word'>heart<i class='fas fa-heart icon'></i></span> will be your shelter,",
+            "and my arms will be your <span class='glowing-word'>home<i class='fas fa-home icon'></i></span>."
         ];
 
         function setupVowCanvas() {
             const container = vowCanvas.parentElement;
             let size = Math.min(container.clientWidth, 600);
-            vowCanvas.width = size;
-            vowCanvas.height = size * 0.6;
-            
+            vowCanvas.width = size; vowCanvas.height = size * 0.6;
             vowPoints = [
-                { x: vowCanvas.width * 0.1, y: vowCanvas.height * 0.5 },
-                { x: vowCanvas.width * 0.3, y: vowCanvas.height * 0.2 },
-                { x: vowCanvas.width * 0.5, y: vowCanvas.height * 0.8 },
-                { x: vowCanvas.width * 0.7, y: vowCanvas.height * 0.3 },
+                { x: vowCanvas.width * 0.1, y: vowCanvas.height * 0.5 }, { x: vowCanvas.width * 0.3, y: vowCanvas.height * 0.2 },
+                { x: vowCanvas.width * 0.5, y: vowCanvas.height * 0.8 }, { x: vowCanvas.width * 0.7, y: vowCanvas.height * 0.3 },
                 { x: vowCanvas.width * 0.9, y: vowCanvas.height * 0.6 }
             ];
-            lines = [];
-            currentLine = { start: null, end: null };
+            lines = []; currentLine = { start: null, end: null };
         }
 
         function drawVowCanvas() {
             vctx.clearRect(0, 0, vowCanvas.width, vowCanvas.height);
-            
-            // Draw completed lines and vows
             lines.forEach((line, index) => {
-                vctx.beginPath();
-                vctx.moveTo(line.start.x, line.start.y);
-                vctx.lineTo(line.end.x, line.end.y);
-                vctx.strokeStyle = 'gold';
-                vctx.lineWidth = 2;
-                vctx.stroke();
-
-                vctx.fillStyle = 'white';
-                vctx.font = '16px "Dancing Script", cursive';
-                vctx.textAlign = 'center';
-                vctx.fillText(VOWS[index], (line.start.x + line.end.x) / 2, (line.start.y + line.end.y) / 2 - 10);
+                vctx.beginPath(); vctx.moveTo(line.start.x, line.start.y); vctx.lineTo(line.end.x, line.end.y);
+                vctx.strokeStyle = 'gold'; vctx.lineWidth = 2; vctx.stroke();
+                
+                // This part is now visual only; the interactive text is in HTML
+                const text = VOWS[index].replace(/<[^>]*>/g, ""); // strip html for canvas
+                vctx.fillStyle = 'white'; vctx.font = '16px "Dancing Script", cursive'; vctx.textAlign = 'center';
+                vctx.fillText(text, (line.start.x + line.end.x) / 2, (line.start.y + line.end.y) / 2 - 10);
             });
-
-            // Draw current drawing line
             if (currentLine && currentLine.start && currentLine.end) {
-                vctx.beginPath();
-                vctx.moveTo(currentLine.start.x, currentLine.start.y);
-                vctx.lineTo(currentLine.end.x, currentLine.end.y);
-                vctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
-                vctx.setLineDash([5, 5]);
-                vctx.stroke();
-                vctx.setLineDash([]);
+                vctx.beginPath(); vctx.moveTo(currentLine.start.x, currentLine.start.y); vctx.lineTo(currentLine.end.x, currentLine.end.y);
+                vctx.strokeStyle = 'rgba(255, 255, 255, 0.5)'; vctx.setLineDash([5, 5]); vctx.stroke(); vctx.setLineDash([]);
             }
-
-            // Draw points
             vowPoints.forEach((p, i) => {
-                vctx.beginPath();
-                vctx.arc(p.x, p.y, 8, 0, Math.PI * 2);
+                vctx.beginPath(); vctx.arc(p.x, p.y, 8, 0, Math.PI * 2);
                 const isConnected = lines.some(l => l.start === p || l.end === p);
-                vctx.fillStyle = isConnected ? 'gold' : 'white';
-                vctx.fill();
+                vctx.fillStyle = isConnected ? 'gold' : 'white'; vctx.fill();
             });
-
             requestAnimationFrame(drawVowCanvas);
         }
 
@@ -662,61 +752,63 @@
         vowCanvas.addEventListener('mousedown', e => {
             const rect = vowCanvas.getBoundingClientRect();
             const point = getPointAt(e.clientX - rect.left, e.clientY - rect.top);
-            if (point) {
-                currentLine.start = point;
-            }
+            if (point) { currentLine.start = point; }
         });
-
         vowCanvas.addEventListener('mousemove', e => {
             if (currentLine.start) {
                 const rect = vowCanvas.getBoundingClientRect();
                 currentLine.end = { x: e.clientX - rect.left, y: e.clientY - rect.top };
             }
         });
-
         vowCanvas.addEventListener('mouseup', e => {
             if (currentLine.start) {
                 const rect = vowCanvas.getBoundingClientRect();
                 const endPoint = getPointAt(e.clientX - rect.left, e.clientY - rect.top);
                 const nextPointIndex = lines.length;
-                if (endPoint && endPoint === vowPoints[nextPointIndex + 1] && currentLine.start === vowPoints[nextPointIndex]) {
+                if (endPoint && vowPoints.indexOf(endPoint) === nextPointIndex + 1 && vowPoints.indexOf(currentLine.start) === nextPointIndex) {
                     lines.push({ start: currentLine.start, end: endPoint });
                 }
-                currentLine.start = null;
-                currentLine.end = null;
+                currentLine.start = null; currentLine.end = null;
             }
         });
 
         function startVowCanvas() {
             if (vowCanvasStarted) return;
-            vowCanvasStarted = true;
-            setupVowCanvas();
-            drawVowCanvas();
+            vowCanvasStarted = true; setupVowCanvas(); drawVowCanvas();
         }
         
-        // --- Stargazer's Oracle (Gemini API) ---
+        // --- Poet's Oracle (Gemini API) ---
         const oracleBtn = document.getElementById('ask-oracle-btn');
-        const oracleQuestion = document.getElementById('oracle-question');
         const oracleAnswer = document.getElementById('oracle-answer');
         const loader = oracleBtn.querySelector('.loader');
         const btnText = oracleBtn.querySelector('span');
+        const imageOptions = document.getElementById('oracle-image-options');
+        let selectedPrompt = '';
+
+        imageOptions.addEventListener('click', e => {
+            if (e.target.tagName === 'IMG') {
+                imageOptions.querySelectorAll('img').forEach(img => img.classList.remove('selected'));
+                e.target.classList.add('selected');
+                selectedPrompt = e.target.dataset.prompt;
+                oracleBtn.disabled = false;
+                btnText.textContent = 'Ask the Oracle';
+            }
+        });
 
         oracleBtn.addEventListener('click', async () => {
-            const prompt = oracleQuestion.value;
-            if (!prompt) {
-                oracleAnswer.textContent = "Please ask a question for the stars to answer.";
+            if (!selectedPrompt) {
+                oracleAnswer.textContent = "Please choose an image to inspire the stars.";
                 return;
             }
-
             loader.classList.remove('hidden');
             btnText.classList.add('hidden');
-            oracleAnswer.textContent = "The stars are aligning...";
+            oracleAnswer.textContent = "The stars are composing a verse...";
 
-            const fullPrompt = `For a romantic website celebrating a couple named Manoharan and Abirami, write a short, whimsical, and happy story (2-3 sentences) based on this question from a well-wisher: "${prompt}". Frame the answer as if it's a vision from the stars.`;
+            const fullPrompt = `For a romantic website celebrating a couple named Manoharan and Abirami, write a short, poetic, and happy verse (2-4 lines) inspired by this theme: "${selectedPrompt}". Frame the answer as if it's a vision from the stars.`;
             
             let chatHistory = [{ role: "user", parts: [{ text: fullPrompt }] }];
             const payload = { contents: chatHistory };
-            const apiKey = ""; // API key will be managed by the environment
+            const apiKey = "";
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
             try {
@@ -726,14 +818,10 @@
                     body: JSON.stringify(payload)
                 });
                 const result = await response.json();
-
-                if (result.candidates && result.candidates.length > 0 &&
-                    result.candidates[0].content && result.candidates[0].content.parts &&
-                    result.candidates[0].content.parts.length > 0) {
-                    const text = result.candidates[0].content.parts[0].text;
-                    oracleAnswer.textContent = text;
+                if (result.candidates && result.candidates[0].content && result.candidates[0].content.parts[0].text) {
+                    oracleAnswer.textContent = result.candidates[0].content.parts[0].text;
                 } else {
-                    oracleAnswer.textContent = "The starlight is faint right now. Please try asking again later.";
+                    oracleAnswer.textContent = "The starlight is faint right now. Please try again later.";
                 }
             } catch (error) {
                 console.error("Oracle Error:", error);
@@ -743,6 +831,247 @@
                 btnText.classList.remove('hidden');
             }
         });
+
+        // --- Guest Constellation Canvas (Firestore) ---
+        const guestCanvas = document.getElementById('guest-constellation-canvas');
+        const gctx = guestCanvas.getContext('2d');
+        let guestCanvasInitialized = false;
+        let guestStars = [];
+        let backgroundStars = [];
+        let tempStar = null;
+        let hoverStar = null;
+        const starFormContainer = document.getElementById('star-form-container');
+        const starForm = document.getElementById('star-form');
+
+        function resizeGuestCanvas() {
+            const container = guestCanvas.parentElement;
+            guestCanvas.width = container.clientWidth;
+            guestCanvas.height = 450;
+        }
+
+        async function initGuestConstellation() {
+            if (guestCanvasInitialized) return;
+            guestCanvasInitialized = true;
+            resizeGuestCanvas();
+
+            for (let i = 0; i < 100; i++) {
+                backgroundStars.push({
+                    x: Math.random() * guestCanvas.width, y: Math.random() * guestCanvas.height,
+                    radius: Math.random() * 1.5, alpha: Math.random() * 0.5 + 0.2
+                });
+            }
+
+            const guestConstellationRef = collection(db, `artifacts/${appId}/public/data/guest-constellation`);
+            onSnapshot(guestConstellationRef, (snapshot) => {
+                guestStars = [];
+                snapshot.forEach(doc => {
+                    guestStars.push(doc.data());
+                });
+            });
+
+            drawGuestConstellation();
+
+            guestCanvas.addEventListener('click', (e) => {
+                const rect = guestCanvas.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / guestCanvas.width;
+                const y = (e.clientY - rect.top) / guestCanvas.height;
+                tempStar = { x, y };
+                starFormContainer.classList.remove('hidden');
+            });
+
+            guestCanvas.addEventListener('mousemove', (e) => {
+                const rect = guestCanvas.getBoundingClientRect();
+                const mouseX = e.clientX - rect.left;
+                const mouseY = e.clientY - rect.top;
+                hoverStar = null;
+                for(const star of guestStars) {
+                    const starX = star.x * guestCanvas.width;
+                    const starY = star.y * guestCanvas.height;
+                    const dist = Math.sqrt((mouseX - starX)**2 + (mouseY - starY)**2);
+                    if (dist < 8) {
+                        hoverStar = star;
+                        break;
+                    }
+                }
+            });
+
+            starForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                if (!tempStar) return;
+                const name = document.getElementById('star-name').value;
+                const wish = document.getElementById('star-wish').value;
+                await addDoc(guestConstellationRef, { ...tempStar, name, wish });
+                tempStar = null;
+                starForm.reset();
+                starFormContainer.classList.add('hidden');
+            });
+        }
+
+        function drawGuestConstellation() {
+            gctx.clearRect(0, 0, guestCanvas.width, guestCanvas.height);
+            
+            backgroundStars.forEach(star => {
+                gctx.beginPath();
+                gctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                gctx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
+                gctx.fill();
+            });
+
+            guestStars.forEach(star => {
+                gctx.beginPath();
+                gctx.arc(star.x * guestCanvas.width, star.y * guestCanvas.height, 5, 0, Math.PI * 2);
+                gctx.fillStyle = 'gold';
+                gctx.shadowColor = 'gold';
+                gctx.shadowBlur = 10;
+                gctx.fill();
+                gctx.shadowBlur = 0;
+            });
+
+            if (tempStar) {
+                gctx.beginPath();
+                gctx.arc(tempStar.x * guestCanvas.width, tempStar.y * guestCanvas.height, 6, 0, Math.PI * 2);
+                gctx.strokeStyle = 'white';
+                gctx.setLineDash([3, 3]);
+                gctx.stroke();
+                gctx.setLineDash([]);
+            }
+
+            if (hoverStar) {
+                gctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+                gctx.fillRect(hoverStar.x * guestCanvas.width + 15, hoverStar.y * guestCanvas.height - 30, 150, 40);
+                gctx.fillStyle = 'white';
+                gctx.font = '12px "Montserrat"';
+                gctx.fillText(`${hoverStar.name}:`, hoverStar.x * guestCanvas.width + 20, hoverStar.y * guestCanvas.height - 15);
+                gctx.fillText(`"${hoverStar.wish}"`, hoverStar.x * guestCanvas.width + 20, hoverStar.y * guestCanvas.height);
+            }
+
+            requestAnimationFrame(drawGuestConstellation);
+        }
+
+        window.addEventListener('resize', () => {
+            if(guestCanvasInitialized) {
+                resizeGuestCanvas();
+            }
+        });
+        
+        // --- Secret Poem Modal ---
+        const poemModal = document.getElementById('poem-modal');
+        document.getElementById('footer-heart').addEventListener('click', () => {
+            poemModal.classList.remove('hidden');
+        });
+        document.getElementById('close-poem-modal-btn').addEventListener('click', () => {
+            poemModal.classList.add('hidden');
+        });
+        poemModal.addEventListener('click', (e) => {
+            if (e.target.id === 'poem-modal') {
+                poemModal.classList.add('hidden');
+            }
+        });
+
+        // --- Interactive Hero Canvas ---
+        const heroCanvas = document.getElementById('hero-canvas');
+        const hctx = heroCanvas.getContext('2d');
+        let heroAnimationId;
+        let souls = [];
+        let particles = [];
+        let mouse = { x: undefined, y: undefined };
+        let namesVisible = false;
+
+        function initHeroCanvas() {
+            heroCanvas.width = heroCanvas.offsetWidth;
+            heroCanvas.height = heroCanvas.offsetHeight;
+            
+            souls = [
+                { x: heroCanvas.width * 0.3, y: heroCanvas.height * 0.5, radius: 15, color: 'rgba(247, 175, 157, 0.8)', vx: (Math.random() - 0.5), vy: (Math.random() - 0.5) },
+                { x: heroCanvas.width * 0.7, y: heroCanvas.height * 0.5, radius: 15, color: 'rgba(192, 132, 151, 0.8)', vx: (Math.random() - 0.5), vy: (Math.random() - 0.5) }
+            ];
+            
+            heroCanvas.addEventListener('mousemove', e => {
+                mouse.x = e.clientX - heroCanvas.getBoundingClientRect().left;
+                mouse.y = e.clientY - heroCanvas.getBoundingClientRect().top;
+            });
+            
+            animateHero();
+        }
+
+        function animateHero() {
+            hctx.clearRect(0, 0, heroCanvas.width, heroCanvas.height);
+            
+            if (souls.length > 1) {
+                souls.forEach(soul => {
+                    // Move towards mouse
+                    if(mouse.x) {
+                        const dx = mouse.x - soul.x;
+                        const dy = mouse.y - soul.y;
+                        soul.x += dx * 0.02;
+                        soul.y += dy * 0.02;
+                    }
+
+                    // Draw soul
+                    hctx.beginPath();
+                    hctx.arc(soul.x, soul.y, soul.radius, 0, Math.PI * 2);
+                    hctx.fillStyle = soul.color;
+                    hctx.shadowColor = soul.color;
+                    hctx.shadowBlur = 20;
+                    hctx.fill();
+                });
+
+                // Check for collision
+                const dx = souls[0].x - souls[1].x;
+                const dy = souls[0].y - souls[1].y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                if (distance < souls[0].radius + souls[1].radius) {
+                    const midX = (souls[0].x + souls[1].x) / 2;
+                    const midY = (souls[0].y + souls[1].y) / 2;
+                    for(let i=0; i<100; i++) {
+                        particles.push(new Particle(midX, midY));
+                    }
+                    souls = []; // Remove original souls
+                    if (!namesVisible) {
+                        document.querySelector('.hero-names').style.opacity = '1';
+                        namesVisible = true;
+                    }
+                }
+            }
+            
+            particles.forEach((p, index) => {
+                p.update();
+                p.draw();
+                if (p.alpha <= 0) {
+                    particles.splice(index, 1);
+                }
+            });
+
+            heroAnimationId = requestAnimationFrame(animateHero);
+        }
+
+        class Particle {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.radius = Math.random() * 3 + 1;
+                this.color = `hsl(${Math.random() * 60 + 300}, 80%, 70%)`;
+                this.velocity = {
+                    x: (Math.random() - 0.5) * 8,
+                    y: (Math.random() - 0.5) * 8
+                };
+                this.alpha = 1;
+            }
+            draw() {
+                hctx.save();
+                hctx.globalAlpha = this.alpha;
+                hctx.beginPath();
+                hctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                hctx.fillStyle = this.color;
+                hctx.fill();
+                hctx.restore();
+            }
+            update() {
+                this.x += this.velocity.x;
+                this.y += this.velocity.y;
+                this.alpha -= 0.02;
+            }
+        }
 
     </script>
 </body>
