@@ -18,6 +18,9 @@
             --secondary-color: #F7AF9D; /* Soft Peach */
             --accent-color: #8B5E34; /* Warm Gold/Brown */
         }
+        html {
+            scroll-behavior: smooth;
+        }
         body {
             font-family: 'Montserrat', sans-serif;
             background-color: var(--bg-color);
@@ -125,6 +128,12 @@
             border-radius: 0.5rem;
             overflow: hidden;
         }
+        #hearts-canvas {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+        }
         .tree-branch {
             position: absolute;
             bottom: 0;
@@ -157,24 +166,6 @@
             border-radius: 1rem;
             cursor: pointer;
         }
-        .glowing-word {
-            position: relative;
-            display: inline-block;
-        }
-        .glowing-word .icon {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            opacity: 0;
-            transition: transform 0.3s ease, opacity 0.3s ease;
-            font-size: 1.5em;
-            color: var(--primary-color);
-        }
-        .glowing-word:hover .icon {
-            transform: translate(-50%, -50%) scale(1);
-            opacity: 1;
-        }
         
         /* Guest Constellation Canvas */
         #guest-constellation-canvas {
@@ -184,7 +175,7 @@
             cursor: cell;
         }
 
-        /* Storybook Gallery */
+        /* NEW Storybook Gallery with Smoother Page Turn */
         .storybook-container {
             position: relative;
             width: 100%;
@@ -198,25 +189,24 @@
             width: 100%;
             height: 100%;
             background-color: white;
-            border-radius: 1rem;
+            border-radius: 0.5rem;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            transition: transform 1s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.5s;
-            opacity: 0;
             transform-origin: left center;
+            transform-style: preserve-3d;
+            backface-visibility: hidden;
+            transition: transform 1.2s cubic-bezier(0.6, 0.04, 0.98, 0.335), z-index 1.2s;
+            z-index: 1;
         }
         .storybook-page.active {
-            opacity: 1;
-            transform: rotateY(0deg) scale(1);
             z-index: 10;
         }
-        .storybook-page.previous {
-            transform: rotateY(-120deg) scale(0.9);
-            opacity: 0;
-            z-index: 5;
+        .storybook-page.flipped {
+            transform: rotateY(-180deg);
+            z-index: 1;
         }
         .page-content {
             display: flex;
@@ -257,43 +247,185 @@
         #prev-page { left: -25px; }
         #next-page { right: -25px; }
         
-        /* Hero Canvas */
-        #hero-canvas {
-            position: absolute;
-            inset: 0;
-            z-index: 5;
-        }
+        /* NEW Hero Animation */
         .hero-names {
-            transition: opacity 1s ease-in-out;
+            opacity: 0;
+            transform: scale(1.2);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+        .hero.loaded .hero-names {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .hero-names h1 .letter {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(30px) rotateZ(20deg) scale(0.5);
+            animation: letter-reveal 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
+        }
+        @keyframes letter-reveal {
+            to {
+                opacity: 1;
+                transform: translateY(0) rotateZ(0) scale(1);
+            }
+        }
+        .hero-names .subtitle {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: subtitle-reveal 1s 1.5s forwards;
+        }
+        @keyframes subtitle-reveal {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .scroll-down-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            animation: bounce 2s infinite;
+            opacity: 0;
+            transition: opacity 1s 2s ease-in;
+        }
+        .hero.loaded .scroll-down-indicator {
+            opacity: 1;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            40% {
+                transform: translateX(-50%) translateY(-20px);
+            }
+            60% {
+                transform: translateX(-50%) translateY(-10px);
+            }
         }
         
-        /* Serendipity Map */
-        #adventure-map-canvas {
-            background: url('https://placehold.co/800x500/1e1e3f/433A3F?text=Our+World') center center/cover;
-            border-radius: 1rem;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        /* NEW: Timeline Photo Gallery */
+        .timeline-gallery-container {
+            max-width: 800px;
+            margin: auto;
+            position: relative;
         }
-        .adventure-button {
-            background: linear-gradient(45deg, #433A3F, var(--primary-color));
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        .timeline-gallery-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background-color: var(--primary-color);
         }
-        .adventure-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 20px rgba(192, 132, 151, 0.5);
+        .timeline-item {
+            position: relative;
+            width: 50%;
+            padding: 2rem;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
         }
-        .loader {
+        .timeline-item.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .timeline-item:nth-child(odd) {
+            left: 0;
+            padding-right: 4rem;
+            text-align: right;
+        }
+        .timeline-item:nth-child(even) {
+            left: 50%;
+            padding-left: 4rem;
+            text-align: left;
+        }
+        .timeline-dot {
+            content: '';
+            position: absolute;
+            top: 2.5rem;
             width: 20px;
             height: 20px;
-            border: 3px solid #FFF;
-            border-bottom-color: transparent;
+            background-color: var(--bg-color);
+            border: 4px solid var(--primary-color);
             border-radius: 50%;
-            display: inline-block;
-            box-sizing: border-box;
-            animation: rotation 1s linear infinite;
+            z-index: 1;
         }
-        @keyframes rotation {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .timeline-item:nth-child(odd) .timeline-dot {
+            right: -10px;
+        }
+        .timeline-item:nth-child(even) .timeline-dot {
+            left: -10px;
+        }
+        .timeline-content {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .timeline-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 0.25rem;
+            margin-bottom: 1rem;
+        }
+
+        /* NEW Love Playlist */
+        .playlist-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        .song-list { list-style: none; padding: 0; }
+        .song-item {
+            padding: 0.5rem 1rem;
+            margin: 0.5rem 0;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            position: relative;
+        }
+        .song-item:hover {
+            background-color: rgba(255,255,255,0.7);
+            transform: translateX(10px);
+        }
+        .song-list.right .song-item:hover {
+            transform: translateX(-10px);
+        }
+        .song-item .song-memory {
+            display: none;
+            position: absolute;
+            bottom: 100%;
+            left: 0;
+            background: #333;
+            color: white;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            font-size: 0.9rem;
+            width: 200px;
+            margin-bottom: 0.5rem;
+        }
+        .song-item:hover .song-memory {
+            display: block;
+        }
+        .cassette-tape {
+            width: 250px;
+            height: 160px;
+            background-color: #EAEAEA;
+            border-radius: 10px;
+            padding: 10px;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
     </style>
@@ -323,31 +455,78 @@
 
         <!-- Hero Section -->
         <section class="hero h-screen w-full flex flex-col justify-center items-center text-white text-center">
-            <canvas id="hero-canvas"></canvas>
-            <div class="hero-names z-10 bg-black bg-opacity-40 p-8 rounded-lg opacity-0">
-                <h1 class="text-5xl md:text-8xl font-bold mb-2">Manoharan</h1>
-                <div class="text-3xl md:text-5xl my-2">&</div>
-                <h1 class="text-5xl md:text-8xl font-bold">Abirami</h1>
-                <p class="text-xl md:text-2xl mt-4 tracking-wider">Our Forever Story</p>
+            <div class="hero-names z-10 bg-black bg-opacity-40 p-8 rounded-lg">
+                <h1 id="name1" class="text-5xl md:text-8xl font-bold mb-2"></h1>
+                <div class="subtitle text-3xl md:text-5xl my-2">&</div>
+                <h1 id="name2" class="text-5xl md:text-8xl font-bold"></h1>
+                <p class="subtitle text-xl md:text-2xl mt-4 tracking-wider">Our Forever Story</p>
             </div>
+            <div class="scroll-down-indicator"><i class="fas fa-chevron-down"></i></div>
         </section>
 
-        <!-- Countdown Section -->
-        <section id="countdown" class="py-20 px-4 md:px-10 fade-in-section">
-            <div class="max-w-4xl mx-auto text-center">
+        <!-- Time Together Section -->
+        <section id="time-together" class="py-20 px-4 md:px-10 fade-in-section">
+            <div class="max-w-5xl mx-auto text-center">
                 <h2 class="section-title">Our Time Together</h2>
                 <p class="text-xl -mt-4 mb-12">Celebrating every moment since we began</p>
-                <div id="countdown-timer" class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 text-center">
+                <div id="time-together-timer" class="grid grid-cols-2 sm:grid-cols-5 gap-4 md:gap-8 text-center">
                     <div class="bg-white p-6 rounded-lg shadow-lg"><div id="years" class="text-5xl font-bold text-[var(--accent-color)]">00</div><div class="text-lg text-gray-600">Years</div></div>
                     <div class="bg-white p-6 rounded-lg shadow-lg"><div id="days" class="text-5xl font-bold text-[var(--accent-color)]">00</div><div class="text-lg text-gray-600">Days</div></div>
                     <div class="bg-white p-6 rounded-lg shadow-lg"><div id="hours" class="text-5xl font-bold text-[var(--accent-color)]">00</div><div class="text-lg text-gray-600">Hours</div></div>
                     <div class="bg-white p-6 rounded-lg shadow-lg"><div id="minutes" class="text-5xl font-bold text-[var(--accent-color)]">00</div><div class="text-lg text-gray-600">Minutes</div></div>
+                    <div class="bg-white p-6 rounded-lg shadow-lg"><div id="seconds" class="text-5xl font-bold text-[var(--accent-color)]">00</div><div class="text-lg text-gray-600">Seconds</div></div>
                 </div>
             </div>
         </section>
         
+        <!-- NEW Timeline Photo Gallery Section -->
+        <section id="timeline-gallery" class="py-20 bg-[#F7EBE8] fade-in-section">
+            <div class="max-w-7xl mx-auto text-center">
+                <h2 class="section-title">A Timeline of Our Moments</h2>
+                <p class="text-xl -mt-4 mb-12 text-gray-600">Our journey, one beautiful memory at a time.</p>
+                <div class="timeline-gallery-container">
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <img src="https://images.unsplash.com/photo-1552011414-23f29515a643?q=80&w=400&auto=format&fit=crop" alt="First Coffee Date" class="timeline-image">
+                            <h3 class="font-bold text-lg text-[var(--primary-color)]">First Coffee</h3>
+                            <p class="text-sm text-gray-500 mb-2">March 22, 2022</p>
+                            <p class="text-sm">It all started with a simple coffee and a conversation that felt like home.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <img src="https://images.unsplash.com/photo-1525095276-251977093514?q=80&w=400&auto=format&fit=crop" alt="First Road Trip" class="timeline-image">
+                            <h3 class="font-bold text-lg text-[var(--primary-color)]">First Road Trip</h3>
+                            <p class="text-sm text-gray-500 mb-2">July 10, 2022</p>
+                            <p class="text-sm">Our first adventure on the open road, singing along to our favorite songs.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?q=80&w=400&auto=format&fit=crop" alt="Beach Days" class="timeline-image">
+                            <h3 class="font-bold text-lg text-[var(--primary-color)]">Beach Days</h3>
+                            <p class="text-sm text-gray-500 mb-2">September 3, 2022</p>
+                            <p class="text-sm">Finding our paradise in the sun, sand, and the sound of waves.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                             <img src="https://images.unsplash.com/photo-1597977938225-20de0a75a7f1?q=80&w=400&auto=format&fit=crop" alt="The Proposal" class="timeline-image">
+                            <h3 class="font-bold text-lg text-[var(--primary-color)]">The Proposal</h3>
+                            <p class="text-sm text-gray-500 mb-2">December 25, 2023</p>
+                            <p class="text-sm">A Christmas surprise and a promise of forever. The easiest 'yes'.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Storybook Photo Gallery -->
-        <section id="storybook-gallery" class="py-20 px-4 md:px-10 bg-[#F7EBE8] fade-in-section">
+        <section id="storybook-gallery" class="py-20 fade-in-section">
             <div class="max-w-4xl mx-auto text-center">
                 <h2 class="section-title">Our Storybook</h2>
                 <p class="text-xl -mt-4 mb-8 text-gray-600">Turn the pages to walk through our most cherished memories.</p>
@@ -372,10 +551,28 @@
                     </div>
                     <div id="page3" class="storybook-page">
                         <div class="page-content">
+                             <div class="page-image" style="background-image: url('https://placehold.co/800x600/A0D2DB/333?text=First+Trip')"></div>
+                            <div class="page-text">
+                                <h3 class="font-dancing text-4xl text-[var(--primary-color)] mb-4">Our First Trip</h3>
+                                <p>With bags packed and hearts full of adventure, we learned that the best views are the ones we share together.</p>
+                            </div>
+                        </div>
+                    </div>
+                     <div id="page4" class="storybook-page">
+                        <div class="page-content">
                              <div class="page-image" style="background-image: url('https://placehold.co/800x600/B2D8D8/333?text=The+Proposal')"></div>
                             <div class="page-text">
                                 <h3 class="font-dancing text-4xl text-[var(--primary-color)] mb-4">The Proposal</h3>
                                 <p>Under a sky full of stars, one question changed everything. It was the easiest 'Yes' ever spoken.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="page5" class="storybook-page">
+                        <div class="page-content">
+                             <div class="page-image" style="background-image: url('https://placehold.co/800x600/FADADD/333?text=Our+Home')"></div>
+                            <div class="page-text">
+                                <h3 class="font-dancing text-4xl text-[var(--primary-color)] mb-4">Building Our Home</h3>
+                                <p>More than just bricks and mortar, we started building a space filled with love, laughter, and a lifetime of shared dreams.</p>
                             </div>
                         </div>
                     </div>
@@ -386,7 +583,7 @@
         </section>
 
         <!-- Guest Constellation Section -->
-        <section id="guest-constellation-section" class="py-20 px-4 md:px-10 fade-in-section">
+        <section id="guest-constellation-section" class="py-20 px-4 md:px-10 bg-[#F7EBE8] fade-in-section">
             <div class="max-w-4xl mx-auto text-center">
                 <h2 class="section-title">The Guest Constellation</h2>
                 <p class="text-xl -mt-4 mb-8 text-gray-600">Click a spot in the night sky to add your own star to our universe.</p>
@@ -404,16 +601,18 @@
         </section>
 
         <!-- Garden of Growth Section -->
-        <section id="garden" class="py-20 px-4 md:px-10 bg-[#F7EBE8] fade-in-section">
+        <section id="garden" class="py-20 fade-in-section">
             <div class="max-w-3xl mx-auto text-center">
                 <h2 class="section-title">The Garden of Our Growth</h2>
                 <p class="text-xl -mt-4 mb-8 text-gray-600">A tree that blossoms with every wish from our loved ones.</p>
-                <div id="garden-container"></div>
+                <div id="garden-container">
+                    <canvas id="hearts-canvas"></canvas>
+                </div>
             </div>
         </section>
 
         <!-- Connect the Stars Section -->
-        <section id="connect-stars" class="py-20 px-4 md:px-10 fade-in-section">
+        <section id="connect-stars" class="py-20 px-4 md:px-10 bg-[#F7EBE8] fade-in-section">
             <div class="max-w-5xl mx-auto text-center">
                 <h2 class="section-title">Written in the Stars</h2>
                 <p class="text-xl -mt-4 mb-8 text-gray-600">Connect the stars to reveal our promise.</p>
@@ -421,24 +620,38 @@
             </div>
         </section>
 
-        <!-- Serendipity Map Section -->
-        <section id="serendipity-map" class="py-20 px-4 md:px-10 bg-[#F7EBE8] fade-in-section">
+        <!-- NEW Love Playlist Section -->
+        <section id="love-playlist" class="py-20 fade-in-section">
             <div class="max-w-4xl mx-auto text-center">
-                <h2 class="section-title">Our Future Adventures</h2>
-                <p class="text-xl -mt-4 mb-8 text-gray-600">Where will our story take us next? Let's find out.</p>
-                <div class="bg-white p-8 rounded-lg shadow-lg">
-                    <canvas id="adventure-map-canvas" class="w-full aspect-video"></canvas>
-                    <button id="adventure-btn" class="adventure-button mt-6 text-white font-bold py-3 px-8 rounded-full">
-                        <span>Discover Our Next Adventure</span>
-                        <span class="loader hidden"></span>
-                    </button>
-                    <div id="adventure-story" class="mt-6 text-lg text-left italic text-gray-700 min-h-[5rem] p-4 bg-gray-50 rounded-md">The world awaits...</div>
+                <h2 class="section-title">Our Love Playlist</h2>
+                <p class="text-xl -mt-4 mb-8 text-gray-600">The soundtrack to our story. Hover over a song to see the memory.</p>
+                <div class="playlist-container">
+                    <ul class="song-list text-right">
+                        <li class="song-item">Perfect - Ed Sheeran <span class="song-memory">Our first dance, under the stars.</span></li>
+                        <li class="song-item">A Thousand Years - C. Perri <span class="song-memory">The song that played during the proposal.</span></li>
+                        <li class="song-item">All of Me - John Legend <span class="song-memory">For all the quiet moments in between.</span></li>
+                    </ul>
+                    <div class="cassette-tape">
+                        <div class="flex justify-between items-center px-2">
+                             <div class="font-dancing text-lg">M & A Mix</div>
+                        </div>
+                        <div class="flex-grow flex justify-center items-center gap-8">
+                            <div class="w-12 h-12 bg-[#333] rounded-full border-4 border-[#C0C0C0]"></div>
+                             <div class="w-12 h-12 bg-[#333] rounded-full border-4 border-[#C0C0C0]"></div>
+                        </div>
+                         <div class="h-4 bg-[#333] w-2/3 mx-auto rounded-sm"></div>
+                    </div>
+                     <ul class="song-list text-left">
+                        <li class="song-item">Iravinil Aattam <span class="song-memory">For all our midnight drives.</span></li>
+                        <li class="song-item">Thinking Out Loud - Ed Sheeran <span class="song-memory">Our forever song.</span></li>
+                        <li class="song-item">Just the Way You Are - B. Mars <span class="song-memory">Because it's true.</span></li>
+                    </ul>
                 </div>
             </div>
         </section>
 
         <!-- Wishes Wall Section -->
-        <section id="wishes" class="py-20 px-4 md:px-10 fade-in-section">
+        <section id="wishes" class="py-20 px-4 md:px-10 bg-[#F7EBE8] fade-in-section">
             <div class="max-w-4xl mx-auto">
                 <h2 class="section-title">Lanterns of Love</h2>
                 <p class="text-xl -mt-4 mb-8 text-center text-gray-600">Send a wish for the couple and release a lantern into the sky.</p>
@@ -505,7 +718,7 @@
                     mainContent.classList.remove('hidden');
                     setTimeout(() => { 
                         mainContent.classList.add('opacity-100');
-                        initHeroCanvas(); // Start hero animation after fade-in
+                        animateHeroText(); // Start hero animation after fade-in
                     }, 800);
                 } else {
                     const randomIndex = Math.floor(Math.random() * wrongPasswordQuotes.length);
@@ -516,6 +729,39 @@
                 }
             });
         });
+        
+        // --- NEW Hero Animation ---
+        function animateHeroText() {
+            const name1El = document.getElementById('name1');
+            const name2El = document.getElementById('name2');
+            const heroNamesEl = document.querySelector('.hero-names');
+
+            name1El.innerHTML = '';
+            name2El.innerHTML = '';
+
+            const name1 = "Manoharan";
+            const name2 = "Abirami";
+
+            name1.split('').forEach((letter, i) => {
+                const span = document.createElement('span');
+                span.className = 'letter';
+                span.textContent = letter === ' ' ? '\u00A0' : letter;
+                span.style.animationDelay = `${i * 0.1}s`;
+                name1El.appendChild(span);
+            });
+            
+            name2.split('').forEach((letter, i) => {
+                const span = document.createElement('span');
+                span.className = 'letter';
+                span.textContent = letter === ' ' ? '\u00A0' : letter;
+                span.style.animationDelay = `${(name1.length + i) * 0.1}s`;
+                name2El.appendChild(span);
+            });
+
+            heroNamesEl.classList.add('loaded');
+            document.querySelector('.hero').classList.add('loaded');
+        }
+
 
         // --- Time Since Timer ---
         const startDate = new Date("2022-03-22T00:00:00");
@@ -534,15 +780,17 @@
             const days = Math.floor(diff / (1000 * 60 * 60 * 24));
             const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
             document.getElementById("years").innerText = years.toString().padStart(2, '0');
             document.getElementById("days").innerText = days.toString().padStart(2, '0');
             document.getElementById("hours").innerText = hours.toString().padStart(2, '0');
             document.getElementById("minutes").innerText = minutes.toString().padStart(2, '0');
+            document.getElementById("seconds").innerText = seconds.toString().padStart(2, '0');
         }, 1000);
 
         // --- Fade-in sections on scroll ---
-        const sections = document.querySelectorAll('.fade-in-section');
+        const sections = document.querySelectorAll('.fade-in-section, .timeline-item');
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -550,7 +798,6 @@
                     if (entry.target.id === 'connect-stars') { startVowCanvas(); }
                     if (entry.target.id === 'guest-constellation-section') { initGuestConstellation(); }
                     if (entry.target.id === 'garden') { initGarden(); }
-                    if (entry.target.id === 'serendipity-map') { initAdventureMap(); }
                 }
             });
         }, { threshold: 0.2 });
@@ -586,15 +833,26 @@
 
         // --- Garden of Growth ---
         const gardenContainer = document.getElementById('garden-container');
+        const heartsCanvas = document.getElementById('hearts-canvas');
+        const hctx = heartsCanvas.getContext('2d');
+        let hearts = [];
         let gardenInitialized = false;
+
         function initGarden() {
             if (gardenInitialized) return;
             gardenInitialized = true;
+            heartsCanvas.width = gardenContainer.offsetWidth;
+            heartsCanvas.height = gardenContainer.offsetHeight;
             updateGarden(0); // Initial empty garden
+            animateHearts();
         }
 
         function updateGarden(count) {
-            gardenContainer.innerHTML = ''; // Clear garden to redraw
+            gardenContainer.querySelector('#hearts-canvas').innerHTML = ''; // Clear canvas content if needed
+            
+            const existingTrunk = gardenContainer.querySelector('.tree-branch');
+            if (existingTrunk) gardenContainer.removeChild(existingTrunk);
+            
             const trunk = document.createElement('div');
             trunk.className = 'tree-branch';
             trunk.style.height = `${100 + count * 5}px`;
@@ -623,39 +881,90 @@
             gardenContainer.appendChild(flower);
         }
 
+        function animateHearts() {
+            hctx.clearRect(0, 0, heartsCanvas.width, heartsCanvas.height);
+            if (Math.random() > 0.98) {
+                hearts.push({
+                    x: Math.random() * heartsCanvas.width,
+                    y: heartsCanvas.height + 20,
+                    size: Math.random() * 15 + 10,
+                    speed: Math.random() * 0.5 + 0.2,
+                    opacity: Math.random() * 0.5 + 0.2
+                });
+            }
+
+            hearts = hearts.filter(heart => heart.y > -20);
+
+            hearts.forEach(heart => {
+                heart.y -= heart.speed;
+                hctx.globalAlpha = heart.opacity;
+                hctx.font = `${heart.size}px serif`;
+                hctx.fillStyle = `rgba(247, 175, 157, ${heart.opacity})`; // Orange heart
+                hctx.fillText('♥', heart.x, heart.y);
+            });
+            hctx.globalAlpha = 1;
+
+            requestAnimationFrame(animateHearts);
+        }
+
         // --- Storybook Gallery ---
         const pages = document.querySelectorAll('.storybook-page');
         const prevButton = document.getElementById('prev-page');
         const nextButton = document.getElementById('next-page');
         let currentPage = 0;
+        let isTurning = false;
+        const pageTurnSound = new Tone.NoiseSynth({
+            noise: { type: 'white' },
+            envelope: { attack: 0.005, decay: 0.15, sustain: 0 }
+        }).toDestination();
 
-        function showPage(pageIndex) {
-            pages.forEach((page, index) => {
-                page.classList.remove('active', 'previous');
-                if (index === pageIndex) {
-                    page.classList.add('active');
-                } else if (index < pageIndex) {
-                    page.classList.add('previous');
-                }
-            });
-            prevButton.disabled = pageIndex === 0;
-            nextButton.disabled = pageIndex === pages.length - 1;
+        function showPage(pageIndex, direction) {
+            if (isTurning || pageIndex < 0 || pageIndex >= pages.length) return;
+            isTurning = true;
+
+            Tone.start();
+            pageTurnSound.triggerAttackRelease("8n");
+
+            const currentPageEl = pages[currentPage];
+            const nextPageEl = pages[pageIndex];
+
+            if (direction === 'next') {
+                currentPageEl.classList.add('turning');
+                nextPageEl.classList.add('active'); // Make next page visible underneath
+                
+                setTimeout(() => {
+                    currentPageEl.classList.remove('active', 'turning');
+                    currentPageEl.classList.add('flipped');
+                    currentPage = pageIndex;
+                    updateNavButtons();
+                    isTurning = false;
+                }, 1200);
+
+            } else { // Prev
+                const prevPageEl = pages[pageIndex];
+                prevPageEl.classList.remove('flipped');
+                prevPageEl.classList.add('active');
+                
+                currentPageEl.classList.remove('active');
+                currentPage = pageIndex;
+                updateNavButtons();
+                isTurning = false;
+            }
+        }
+        
+        function updateNavButtons(){
+            prevButton.style.display = currentPage === 0 ? 'none' : 'block';
+            nextButton.style.display = currentPage === pages.length - 1 ? 'none' : 'block';
         }
 
         prevButton.addEventListener('click', () => {
-            if (currentPage > 0) {
-                currentPage--;
-                showPage(currentPage);
-            }
+            showPage(currentPage - 1, 'prev');
         });
 
         nextButton.addEventListener('click', () => {
-            if (currentPage < pages.length - 1) {
-                currentPage++;
-                showPage(currentPage);
-            }
+            showPage(currentPage + 1, 'next');
         });
-        showPage(0);
+        updateNavButtons();
 
         // --- Connect the Stars Vow Canvas ---
         const vowCanvas = document.getElementById('vow-canvas');
@@ -740,110 +1049,6 @@
             vowCanvasStarted = true; setupVowCanvas(); drawVowCanvas();
         }
         
-        // --- Serendipity Map (Gemini API) ---
-        const adventureBtn = document.getElementById('adventure-btn');
-        const adventureStory = document.getElementById('adventure-story');
-        const adventureLoader = adventureBtn.querySelector('.loader');
-        const adventureBtnText = adventureBtn.querySelector('span');
-        const adventureCanvas = document.getElementById('adventure-map-canvas');
-        const actx = adventureCanvas.getContext('2d');
-        let adventureMapInitialized = false;
-
-        const destinations = [
-            { name: "Paris, France", x: 0.49, y: 0.35 },
-            { name: "Kyoto, Japan", x: 0.84, y: 0.42 },
-            { name: "Santorini, Greece", x: 0.55, y: 0.41 },
-            { name: "Bali, Indonesia", x: 0.79, y: 0.62 },
-            { name: "Reykjavik, Iceland", x: 0.44, y: 0.25 },
-        ];
-
-        function initAdventureMap() {
-            if (adventureMapInitialized) return;
-            adventureMapInitialized = true;
-            adventureCanvas.width = adventureCanvas.offsetWidth;
-            adventureCanvas.height = adventureCanvas.offsetHeight;
-        }
-
-        function animateAdventurePath(destination) {
-            const start = { x: adventureCanvas.width * 0.68, y: adventureCanvas.height * 0.55 }; // Approx. Chennai
-            const end = { x: destination.x * adventureCanvas.width, y: destination.y * adventureCanvas.height };
-            let progress = 0;
-            
-            function animate() {
-                if (progress < 1) {
-                    progress += 0.01;
-                    const currentX1 = start.x + (end.x - start.x) * progress;
-                    const currentY1 = start.y + (end.y - start.y) * progress;
-                    
-                    actx.clearRect(0, 0, adventureCanvas.width, adventureCanvas.height);
-                    
-                    // Draw path
-                    actx.beginPath();
-                    actx.moveTo(start.x, start.y);
-                    actx.lineTo(currentX1, currentY1);
-                    actx.strokeStyle = 'rgba(255, 215, 0, 0.8)';
-                    actx.lineWidth = 2;
-                    actx.stroke();
-
-                    // Draw glowing dot
-                    actx.beginPath();
-                    actx.arc(currentX1, currentY1, 5, 0, Math.PI * 2);
-                    actx.fillStyle = 'gold';
-                    actx.shadowColor = 'gold';
-                    actx.shadowBlur = 15;
-                    actx.fill();
-                    actx.shadowBlur = 0;
-
-                    requestAnimationFrame(animate);
-                } else {
-                    // Animation finished, call Gemini
-                    getAdventureStory(destination.name);
-                }
-            }
-            animate();
-        }
-
-        async function getAdventureStory(destinationName) {
-            const fullPrompt = `For a romantic website celebrating a couple named Manoharan and Abirami, write a very short, whimsical, and happy story (2-3 sentences) about their future adventure in ${destinationName}.`;
-            
-            let chatHistory = [{ role: "user", parts: [{ text: fullPrompt }] }];
-            const payload = { contents: chatHistory };
-            const apiKey = "";
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-
-            try {
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                const result = await response.json();
-                if (result.candidates && result.candidates[0].content && result.candidates[0].content.parts[0].text) {
-                    adventureStory.textContent = result.candidates[0].content.parts[0].text;
-                } else {
-                    adventureStory.textContent = "The stars whisper of a beautiful journey, but the details are a sweet surprise...";
-                }
-            } catch (error) {
-                console.error("Adventure Story Error:", error);
-                adventureStory.textContent = "A cosmic cloud is obscuring the view. Please try again.";
-            } finally {
-                adventureLoader.classList.add('hidden');
-                adventureBtnText.classList.remove('hidden');
-                adventureBtn.disabled = false;
-            }
-        }
-
-        adventureBtn.addEventListener('click', () => {
-            adventureLoader.classList.remove('hidden');
-            adventureBtnText.classList.add('hidden');
-            adventureBtn.disabled = true;
-            adventureStory.textContent = "Charting a course through the stars...";
-            
-            const randomIndex = Math.floor(Math.random() * destinations.length);
-            const destination = destinations[randomIndex];
-            animateAdventurePath(destination);
-        });
-
         // --- Guest Constellation Canvas (Static) ---
         const guestCanvas = document.getElementById('guest-constellation-canvas');
         const gctx = guestCanvas.getContext('2d');
@@ -866,7 +1071,6 @@
             guestCanvasInitialized = true;
             resizeGuestCanvas();
 
-            // Pre-populate with some stars
             guestStars = [
                 { x: 0.2, y: 0.3, name: 'A Friend', wish: 'Wishing you a lifetime of joy!'},
                 { x: 0.8, y: 0.5, name: 'Family', wish: 'So happy for you both!'},
@@ -978,112 +1182,6 @@
                 poemModal.classList.add('hidden');
             }
         });
-
-        // --- Interactive Hero Canvas ---
-        const heroCanvas = document.getElementById('hero-canvas');
-        const hctx = heroCanvas.getContext('2d');
-        let heroAnimationId;
-        let souls = [];
-        let particles = [];
-        let mouse = { x: undefined, y: undefined };
-        let namesVisible = false;
-
-        function initHeroCanvas() {
-            heroCanvas.width = heroCanvas.offsetWidth;
-            heroCanvas.height = heroCanvas.offsetHeight;
-            
-            souls = [
-                { x: heroCanvas.width * 0.3, y: heroCanvas.height * 0.5, radius: 15, color: 'rgba(247, 175, 157, 0.8)', vx: (Math.random() - 0.5), vy: (Math.random() - 0.5) },
-                { x: heroCanvas.width * 0.7, y: heroCanvas.height * 0.5, radius: 15, color: 'rgba(192, 132, 151, 0.8)', vx: (Math.random() - 0.5), vy: (Math.random() - 0.5) }
-            ];
-            
-            heroCanvas.addEventListener('mousemove', e => {
-                mouse.x = e.clientX - heroCanvas.getBoundingClientRect().left;
-                mouse.y = e.clientY - heroCanvas.getBoundingClientRect().top;
-            });
-            
-            animateHero();
-        }
-
-        function animateHero() {
-            hctx.clearRect(0, 0, heroCanvas.width, heroCanvas.height);
-            
-            if (souls.length > 1) {
-                souls.forEach(soul => {
-                    // Move towards mouse
-                    if(mouse.x) {
-                        const dx = mouse.x - soul.x;
-                        const dy = mouse.y - soul.y;
-                        soul.x += dx * 0.02;
-                        soul.y += dy * 0.02;
-                    }
-
-                    // Draw soul
-                    hctx.beginPath();
-                    hctx.arc(soul.x, soul.y, soul.radius, 0, Math.PI * 2);
-                    hctx.fillStyle = soul.color;
-                    hctx.shadowColor = soul.color;
-                    hctx.shadowBlur = 20;
-                    hctx.fill();
-                });
-
-                // Check for collision
-                const dx = souls[0].x - souls[1].x;
-                const dy = souls[0].y - souls[1].y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                if (distance < souls[0].radius + souls[1].radius) {
-                    const midX = (souls[0].x + souls[1].x) / 2;
-                    const midY = (souls[0].y + souls[1].y) / 2;
-                    for(let i=0; i<100; i++) {
-                        particles.push(new Particle(midX, midY));
-                    }
-                    souls = []; // Remove original souls
-                    if (!namesVisible) {
-                        document.querySelector('.hero-names').style.opacity = '1';
-                        namesVisible = true;
-                    }
-                }
-            }
-            
-            particles.forEach((p, index) => {
-                p.update();
-                p.draw();
-                if (p.alpha <= 0) {
-                    particles.splice(index, 1);
-                }
-            });
-
-            heroAnimationId = requestAnimationFrame(animateHero);
-        }
-
-        class Particle {
-            constructor(x, y) {
-                this.x = x;
-                this.y = y;
-                this.radius = Math.random() * 3 + 1;
-                this.color = `hsl(${Math.random() * 60 + 300}, 80%, 70%)`;
-                this.velocity = {
-                    x: (Math.random() - 0.5) * 8,
-                    y: (Math.random() - 0.5) * 8
-                };
-                this.alpha = 1;
-            }
-            draw() {
-                hctx.save();
-                hctx.globalAlpha = this.alpha;
-                hctx.beginPath();
-                hctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                hctx.fillStyle = this.color;
-                hctx.fill();
-                hctx.restore();
-            }
-            update() {
-                this.x += this.velocity.x;
-                this.y += this.velocity.y;
-                this.alpha -= 0.02;
-            }
-        }
-
     </script>
 </body>
 </html>
