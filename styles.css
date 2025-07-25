@@ -1,0 +1,132 @@
+/* Mobile-first responsive styles */
+@media (max-width: 768px) {
+    .section-title {
+        font-size: 1.75rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    /* Hero section */
+    .hero {
+        min-height: 100vh;
+        padding: 2rem 1rem;
+    }
+    
+    /* Timeline section */
+    .timeline-gallery-container {
+        padding: 0 1rem;
+    }
+    .timeline-item {
+        flex-direction: column;
+        padding-left: 40px;
+        width: 100% !important;
+        margin: 2rem 0;
+    }
+    .timeline-dot {
+        left: 12px !important;
+        right: auto !important;
+    }
+    .timeline-content {
+        width: 100%;
+        padding: 1rem;
+    }
+    .timeline-image {
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+
+    /* Book section */
+    .book-container {
+        padding: 1rem;
+    }
+    .book {
+        width: 90vw;
+        max-width: 400px;
+        height: auto;
+        aspect-ratio: 3/4;
+    }
+    .page, .cover {
+        width: 45vw;
+        max-width: 200px;
+        height: 100%;
+    }
+    .page {
+        left: 45vw;
+    }
+    .book-spine {
+        width: 15px;
+        left: calc(45vw - 7.5px);
+    }
+    
+    /* Navigation */
+    .navigation {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+    }
+    .nav-button {
+        width: 100%;
+        max-width: 200px;
+        padding: 0.75rem;
+        font-size: 0.875rem;
+    }
+}
+
+/* Extra small devices */
+@media (max-width: 480px) {
+    body {
+        padding: 0.5rem;
+    }
+    
+    .section-title {
+        font-size: 1.5rem;
+    }
+    
+    /* Password overlay */
+    #password-box {
+        width: 90%;
+        max-width: 300px;
+        padding: 1rem;
+    }
+    #password-input {
+        font-size: 0.875rem;
+    }
+    
+    /* Timeline */
+    .timeline-content h3 {
+        font-size: 1rem;
+    }
+    .timeline-content p {
+        font-size: 0.875rem;
+    }
+    
+    /* Book */
+    .book {
+        max-width: 320px;
+    }
+    .page-content-wrap {
+        padding: 0.75rem;
+    }
+    .page-front .page-title,
+    .page-back .page-title {
+        font-size: 1.125rem;
+        margin-bottom: 0.5rem;
+    }
+    .page-front .page-content,
+    .page-back .page-content {
+        font-size: 0.875rem;
+        line-height: 1.4;
+    }
+    
+    /* Form elements */
+    input, button {
+        font-size: 0.875rem;
+        padding: 0.5rem;
+    }
+    
+    /* Text content */
+    p {
+        font-size: 0.875rem;
+        line-height: 1.5;
+    }
+}
