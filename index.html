@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -124,65 +123,6 @@
         transform: translateX(100%);
     }
 
-    /* Garden of Growth Styles */
-    #garden-container {
-        position: relative;
-        width: 100%;
-        max-width: 600px;
-        height: 400px;
-        margin: auto;
-        background: linear-gradient(to top, #F7EBE8, var(--bg-color));
-        border-bottom: 2px solid var(--accent-color);
-        border-radius: 0.5rem;
-        overflow: hidden;
-    }
-    #hearts-canvas {
-        position: absolute;
-        top: 0; left: 0;
-        width: 100%; height: 100%;
-        pointer-events: none;
-    }
-    .tree-branch {
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        width: 10px;
-        background-color: var(--accent-color);
-        transform-origin: bottom center;
-        transition: height 1s ease-in-out;
-    }
-    .flower {
-        position: absolute;
-        width: 20px;
-        height: 20px;
-        background-color: var(--primary-color);
-        border-radius: 50%;
-        border: 2px solid white;
-        transform: scale(0);
-        animation: bloom 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-        filter: drop-shadow(0 0 5px var(--primary-color));
-    }
-    @keyframes bloom {
-        from { transform: scale(0); }
-        to { transform: scale(1); }
-    }
-
-    /* Connect the Stars Canvas */
-    #vow-canvas {
-        background: #1e1e3f;
-        background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
-        border-radius: 1rem;
-        cursor: pointer;
-    }
-    
-    /* Guest Constellation Canvas */
-    #guest-constellation-canvas {
-        background: #1e1e3f;
-        background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
-        border-radius: 1rem;
-        cursor: cell;
-    }
-    
     /* NEW Hero Animation */
     .hero-names {
         opacity: 0;
@@ -310,59 +250,6 @@
         object-fit: cover;
         border-radius: 0.25rem;
         margin-bottom: 1rem;
-    }
-
-    /* NEW Love Playlist */
-    .playlist-container {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 2rem;
-        flex-wrap: wrap;
-    }
-    .song-list { list-style: none; padding: 0; }
-    .song-item {
-        padding: 0.5rem 1rem;
-        margin: 0.5rem 0;
-        border-radius: 0.5rem;
-        cursor: pointer;
-        transition: background-color 0.3s, transform 0.3s;
-        position: relative;
-    }
-    .song-item:hover {
-        background-color: rgba(255,255,255,0.7);
-        transform: translateX(10px);
-    }
-    .song-list.right .song-item:hover {
-        transform: translateX(-10px);
-    }
-    .song-item .song-memory {
-        display: none;
-        position: absolute;
-        bottom: 100%;
-        left: 0;
-        background: #333;
-        color: white;
-        padding: 0.5rem;
-        border-radius: 0.5rem;
-        font-size: 0.9rem;
-        width: 200px;
-        margin-bottom: 0.5rem;
-        z-index: 10;
-    }
-    .song-item:hover .song-memory {
-        display: block;
-    }
-    .cassette-tape {
-        width: 250px;
-        height: 160px;
-        background-color: #EAEAEA;
-        border-radius: 10px;
-        padding: 10px;
-        box-shadow: 5px 5px 15px rgba(0,0,0,0.2);
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
     }
 
     /* Book effect styles */
@@ -808,18 +695,6 @@
             right: auto;
             transform: translateX(0);
         }
-
-        .playlist-container {
-            flex-direction: column;
-            align-items: center; /* Center items when stacked */
-        }
-        .song-list {
-            text-align: center;
-        }
-        .song-list.right .song-item:hover, /* remove transform on mobile */
-        .song-item:hover {
-            transform: none;
-        }
     }
 
     /* Mobile Book */
@@ -834,7 +709,7 @@
         }
         .book {
             width: 90vw;
-            height: 80vw; /* Make it more square for better visibility */
+            height: 120vw; 
             max-height: 500px;
             margin: 0 auto;
             transform: translateZ(0) scale(1);
@@ -909,15 +784,15 @@
             pointer-events: none;
         }
         .cover h1 { 
-            font-size: 2rem;
-            padding: 2rem 1.5rem;
+            font-size: 1.5rem;
+            padding: 1rem 0.5rem;
             text-align: center;
             line-height: 1.3;
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
         }
         .cover p { 
-            font-size: 1.2rem;
-            padding: 0 1.5rem;
+            font-size: 1rem;
+            padding: 0 0.5rem;
             line-height: 1.5;
         }
         .cover {
@@ -926,13 +801,13 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 2rem;
+            padding: 1rem;
         }
         .page-front .page-title,
         .page-back .page-title {
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             margin-bottom: 0.5rem;
-            padding: 0.75rem 0.5rem;
+            padding: 0.5rem 0.5rem;
             text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
             line-height: 1.2;
             width: 100%;
@@ -940,8 +815,8 @@
         }
         .page-front .page-content,
         .page-back .page-content {
-            font-size: 1rem;
-            line-height: 1.4;
+            font-size: 0.8rem;
+            line-height: 1.3;
             padding: 0 0.5rem;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.9);
             margin: 0.5rem 0;
@@ -955,7 +830,7 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            align-items: flex-start;
+            align-items: center;
             position: relative;
             z-index: 2;
             box-sizing: border-box;
@@ -974,7 +849,7 @@
             bottom: -60px;
             flex-direction: row;
             justify-content: center;
-            gap: 20px;
+            gap: 10px;
             width: 100%;
             padding: 0 1rem;
         }
@@ -986,9 +861,9 @@
             letter-spacing: 1px;
         }
         .nav-button {
-            padding: 10px 20px;
-            font-size: 1rem;
-            min-width: 120px;
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            min-width: 100px;
             border-width: 2px;
             border-radius: 25px;
             box-shadow: 0 2px 6px rgba(0,0,0,0.2);
@@ -1004,21 +879,139 @@
     @media (max-width: 360px) {
         .book {
             width: 90vw;
-            height: 60vh;
+            height: 120vw;
         }
         .page, .cover, .book-spine {
             height: 100%;
         }
         .page {
-            width: calc(90vw * 0.5);
-            left: calc(90vw * 0.5);
+            width: 45vw;
+            left: 45vw;
         }
         .cover {
-            width: calc(90vw * 0.5);
+            width: 45vw;
         }
         .book-spine {
-            left: calc(90vw * 0.5 - 5px);
+            left: calc(45vw - 5px);
             width: 10px;
+        }
+    }
+    
+    /* Mobile-first responsive styles from styles.css */
+    @media (max-width: 768px) {
+        .section-title {
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        /* Hero section */
+        .hero {
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+        
+        .hero-names h1 {
+            font-size: 3rem;
+        }
+
+        .hero-names .subtitle {
+            font-size: 1.25rem;
+        }
+        
+        /* Timeline section */
+        .timeline-gallery-container {
+            padding: 0 1rem;
+        }
+        .timeline-item {
+            flex-direction: column;
+            padding-left: 40px;
+            width: 100% !important; /* Override inline styles */
+            left: 0 !important;
+            margin: 2rem 0;
+        }
+        .timeline-dot {
+            left: 12px !important;
+            right: auto !important;
+        }
+        .timeline-content {
+            width: 100%;
+            padding: 1rem;
+            text-align: left;
+        }
+        .timeline-image {
+            width: 100%;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        /* Navigation */
+        .navigation {
+            flex-direction: row;
+            gap: 1rem;
+            padding: 1rem;
+            bottom: -80px;
+        }
+        .nav-button {
+            width: auto;
+            max-width: 140px;
+            padding: 0.75rem;
+            font-size: 0.875rem;
+        }
+    }
+
+    /* Extra small devices from styles.css */
+    @media (max-width: 480px) {
+        body {
+            padding: 0;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+        }
+        
+        /* Password overlay */
+        #password-box {
+            width: 90%;
+            max-width: 300px;
+            padding: 1rem;
+        }
+        #password-input {
+            font-size: 0.875rem;
+        }
+        
+        /* Timeline */
+        .timeline-content h3 {
+            font-size: 1.2rem;
+        }
+        .timeline-content p {
+            font-size: 0.875rem;
+        }
+        
+        /* Book */
+        .page-content-wrap {
+            padding: 0.75rem;
+        }
+        .page-front .page-title,
+        .page-back .page-title {
+            font-size: 1.125rem;
+            margin-bottom: 0.5rem;
+        }
+        .page-front .page-content,
+        .page-back .page-content {
+            font-size: 0.8rem;
+            line-height: 1.4;
+        }
+        
+        /* Form elements */
+        input, button {
+            font-size: 0.875rem;
+            padding: 0.5rem;
+        }
+        
+        /* Text content */
+        p {
+            font-size: 0.875rem;
+            line-height: 1.5;
         }
     }
 </style>
@@ -1088,8 +1081,7 @@
                 <h2 class="section-title">Our Love Story Timeline</h2>
                 <p class="text-lg md:text-xl -mt-4 mb-12 text-gray-600">Every moment that brought us closer</p>
                 <div class="timeline-gallery-container relative">
-                    <div class="timeline-line absolute h-full w-1 bg-gradient-to-b from-pink-300 to-red-400 left-1/2 transform -translate-x-1/2"></div>
-                    <div class="timeline-item" data-aos="fade-right">
+                    <div class="timeline-item">
                         <div class="timeline-dot"></div>
                         <div class="timeline-content transform hover:scale-105 transition-all duration-300">
                             <img src="images/storyBook/firstSemester.jpg" alt="First Meeting" class="timeline-image rounded-lg shadow-xl">
@@ -1263,132 +1255,6 @@
             </div>
         </section>
 
-        <section id="guest-constellation-section" class="py-20 px-4 md:px-10 bg-[#F7EBE8] fade-in-section">
-            <div class="max-w-4xl mx-auto text-center">
-                <h2 class="section-title">The Guest Constellation</h2>
-                <p class="text-lg md:text-xl -mt-4 mb-8 text-gray-600">Click a spot in the night sky to add your own star to our universe.</p>
-                <canvas id="guest-constellation-canvas"></canvas>
-                <div id="star-form-container" class="mt-4 hidden">
-                    <form id="star-form" class="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto">
-                        <p class="font-bold mb-2">You've chosen a spot in the heavens!</p>
-                        <p class="mb-4 text-sm text-gray-600">Now, leave your wish to create a star.</p>
-                        <input type="text" id="star-name" placeholder="Your Name" class="w-full p-2 mb-2 border rounded" required>
-                        <input type="text" id="star-wish" placeholder="Your short wish" class="w-full p-2 mb-4 border rounded" required maxlength="50">
-                        <button type="submit" class="w-full bg-[var(--accent-color)] text-white py-2 rounded-full hover:bg-[var(--primary-color)]">Create Star</button>
-                    </form>
-                </div>
-            </div>
-        </section>
-
-        <section id="love-story-chapters" class="py-20 px-4 fade-in-section bg-gradient-to-b from-white to-[#F7EBE8]">
-            <div class="max-w-5xl mx-auto text-center">
-                <h2 class="section-title">Chapters of Our Love</h2>
-                <p class="text-lg md:text-xl -mt-4 mb-12 text-gray-600">Click each chapter to unfold our story</p>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="chapter-card" onclick="revealChapter(1)">
-                        <div class="chapter-front">
-                            <h3 class="font-dancing text-2xl">The Beginning</h3>
-                            <p class="text-sm mt-2">First semester memories</p>
-                            <div class="chapter-icon">📖</div>
-                        </div>
-                        <div class="chapter-back">
-                            <p>It all began in our first semester, where destiny played its perfect role. Every glance held a promise, every smile told a story.</p>
-                        </div>
-                    </div>
-                    <div class="chapter-card" onclick="revealChapter(2)">
-                        <div class="chapter-front">
-                            <h3 class="font-dancing text-2xl">Adventures Together</h3>
-                            <p class="text-sm mt-2">Our first trips & moments</p>
-                            <div class="chapter-icon">🌟</div>
-                        </div>
-                        <div class="chapter-back">
-                            <p>From bike trips to temple visits, each adventure brought us closer. Kotagiri's winds carried our laughter, while temple bells blessed our love.</p>
-                        </div>
-                    </div>
-                    <div class="chapter-card" onclick="revealChapter(3)">
-                        <div class="chapter-front">
-                            <h3 class="font-dancing text-2xl">Growing Love</h3>
-                            <p class="text-sm mt-2">Special moments & milestones</p>
-                            <div class="chapter-icon">💝</div>
-                        </div>
-                        <div class="chapter-back">
-                            <p>Through every challenge and celebration, our love grew stronger. Family meetings, surprise gifts, and countless precious moments.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="garden" class="py-20 px-4 fade-in-section">
-            <div class="max-w-3xl mx-auto text-center">
-                <h2 class="section-title">Our Love Garden</h2>
-                <p class="text-lg md:text-xl -mt-4 mb-8 text-gray-600">Watch our love bloom with every memory</p>
-                <div id="garden-container" class="relative">
-                    <canvas id="hearts-canvas"></canvas>
-                    <div class="memory-flowers"></div>
-                    <div class="garden-quotes">
-                        <div class="quote-bubble">Every day with you is a new bloom in our garden of love</div>
-                        <div class="quote-bubble">Growing together, rooted in love</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="connect-stars" class="py-20 px-4 md:px-10 bg-[#F7EBE8] fade-in-section">
-            <div class="max-w-5xl mx-auto text-center">
-                <h2 class="section-title">Written in the Stars</h2>
-                <p class="text-lg md:text-xl -mt-4 mb-8 text-gray-600">Connect the stars to reveal our promise.</p>
-                <canvas id="vow-canvas"></canvas>
-            </div>
-        </section>
-
-        <section id="love-playlist" class="py-20 px-4 fade-in-section">
-            <div class="max-w-4xl mx-auto text-center">
-                <h2 class="section-title">Our Love Playlist</h2>
-                <p class="text-lg md:text-xl -mt-4 mb-8 text-gray-600">The soundtrack to our story. Hover over a song to see the memory.</p>
-                <div class="playlist-container">
-                    <ul class="song-list text-center md:text-right">
-                        <li class="song-item">Perfect - Ed Sheeran <span class="song-memory">Our first dance, under the stars.</span></li>
-                        <li class="song-item">A Thousand Years - C. Perri <span class="song-memory">The song that played during the proposal.</span></li>
-                        <li class="song-item">All of Me - John Legend <span class="song-memory">For all the quiet moments in between.</span></li>
-                    </ul>
-                    <div class="cassette-tape">
-                        <div class="flex justify-between items-center px-2">
-                             <div class="font-dancing text-lg">M & A Mix</div>
-                        </div>
-                        <div class="flex-grow flex justify-center items-center gap-8">
-                            <div class="w-12 h-12 bg-[#333] rounded-full border-4 border-[#C0C0C0]"></div>
-                             <div class="w-12 h-12 bg-[#333] rounded-full border-4 border-[#C0C0C0]"></div>
-                        </div>
-                         <div class="h-4 bg-[#333] w-2/3 mx-auto rounded-sm"></div>
-                    </div>
-                    <ul class="song-list text-center md:text-left right">
-                        <li class="song-item">Iravinil Aattam <span class="song-memory">For all our midnight drives.</span></li>
-                        <li class="song-item">Thinking Out Loud - Ed Sheeran <span class="song-memory">Our forever song.</span></li>
-                        <li class="song-item">Just the Way You Are - B. Mars <span class="song-memory">Because it's true.</span></li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <section id="wishes" class="py-20 px-4 md:px-10 bg-[#F7EBE8] fade-in-section">
-            <div class="max-w-4xl mx-auto">
-                <h2 class="section-title">Lanterns of Love</h2>
-                <p class="text-lg md:text-xl -mt-4 mb-8 text-center text-gray-600">Send a wish for the couple and release a lantern into the sky.</p>
-                <form id="wish-form" class="mt-12 bg-white p-8 rounded-lg shadow-md">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <input type="text" id="wisher-name" placeholder="Your Name" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)]">
-                        <input type="text" id="wisher-relation" placeholder="Your Relation (e.g., Friend)" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)]">
-                    </div>
-                    <textarea id="wisher-message" placeholder="Your heartfelt message..." rows="5" class="w-full p-3 mt-6 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)]"></textarea>
-                    <button type="submit" class="mt-6 bg-[var(--accent-color)] text-white font-bold py-3 px-8 rounded-full hover:bg-[var(--primary-color)] transition-colors duration-300">Release a Lantern</button>
-                </form>
-                <div id="wishes-display" class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div class="wish-card p-6 rounded-lg shadow-sm bg-white"><p class="text-lg italic">"Wishing you both a lifetime of love and happiness. So happy to celebrate this beautiful journey with you!"</p><p class="text-right font-bold mt-4 text-stone-600">- A Loving Friend</p></div>
-                </div>
-            </div>
-        </section>
-        
         <footer class="text-center py-8">
             <p class="font-dancing text-3xl text-[var(--accent-color)]">Manoharan & Abirami</p>
             <p>Made with <span id="footer-heart" class="cursor-pointer text-red-500">❤️</span> for a love that was written in the stars</p>
@@ -1482,26 +1348,33 @@
 
 
         // --- Time Since Timer ---
-        const startDate = new Date("2022-03-22T00:00:00");
+        const startDate = new Date("2022-02-22T00:00:00");
         const timeSinceFunction = setInterval(function() {
             const now = new Date();
             
             let years = now.getFullYear() - startDate.getFullYear();
-            const anniversaryThisYear = new Date(now.getFullYear(), startDate.getMonth(), startDate.getDate());
-            if (now < anniversaryThisYear) {
-                years--;
+            let months = now.getMonth() - startDate.getMonth();
+            let days = now.getDate() - startDate.getDate();
+
+            if (days < 0) {
+                months--;
+                const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+                days += prevMonth.getDate();
             }
 
-            const lastAnniversary = new Date(startDate.getFullYear() + years, startDate.getMonth(), startDate.getDate());
-            const diff = now - lastAnniversary;
+            if (months < 0) {
+                years--;
+                months += 12;
+            }
             
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const totalDays = Math.floor((now - startDate) / (1000 * 60 * 60 * 24));
+            const diff = now - startDate;
             const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
             document.getElementById("years").innerText = years.toString().padStart(2, '0');
-            document.getElementById("days").innerText = days.toString().padStart(2, '0');
+            document.getElementById("days").innerText = totalDays.toString().padStart(2, '0');
             document.getElementById("hours").innerText = hours.toString().padStart(2, '0');
             document.getElementById("minutes").innerText = minutes.toString().padStart(2, '0');
             document.getElementById("seconds").innerText = seconds.toString().padStart(2, '0');
@@ -1513,371 +1386,12 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('is-visible');
-                    if (entry.target.id === 'connect-stars') { startVowCanvas(); }
-                    if (entry.target.id === 'guest-constellation-section') { initGuestConstellation(); }
-                    if (entry.target.id === 'garden') { initGarden(); }
-                    observer.unobserve(entry.target); // Optional: stop observing once visible
+                    observer.unobserve(entry.target);
                 }
             });
         }, { threshold: 0.15 });
         sections.forEach(section => observer.observe(section));
 
-        // --- Wish Lanterns & Garden Logic ---
-        const wishForm = document.getElementById('wish-form');
-        const wishesDisplay = document.getElementById('wishes-display');
-        const lanternContainer = document.getElementById('lantern-container');
-        let wishCount = 1; // Start with 1 for the default wish
-        wishForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const name = document.getElementById('wisher-name').value;
-            const relation = document.getElementById('wisher-relation').value;
-            const message = document.getElementById('wisher-message').value;
-            if (!name || !message) { alert('Please fill in your name and message!'); return; }
-            
-            const wishCard = document.createElement('div');
-            wishCard.className = 'wish-card p-6 rounded-lg shadow-sm bg-white';
-            wishCard.innerHTML = `<p class="text-lg italic">"${message}"</p><p class="text-right font-bold mt-4 text-stone-600">- ${name} (${relation || 'Well Wisher'})</p>`;
-            wishesDisplay.prepend(wishCard);
-
-            const lantern = document.createElement('div');
-            lantern.className = 'lantern';
-            lantern.style.left = `${Math.random() * 80 + 10}%`;
-            lanternContainer.appendChild(lantern);
-            setTimeout(() => { lantern.remove(); }, 15000);
-
-            wishCount++;
-            updateGarden(wishCount);
-            wishForm.reset();
-        });
-
-        // --- Interactive Story Elements ---
-        function revealChapter(chapterNum) {
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
-            
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-            
-            oscillator.frequency.value = 440 + (chapterNum * 100);
-            gainNode.gain.value = 0.1;
-            
-            oscillator.start();
-            setTimeout(() => oscillator.stop(), 200);
-            
-            // Add sparkling effect
-            createSparkles(chapterNum);
-        }
-
-        function createSparkles(chapterNum) {
-            const card = document.querySelectorAll('.chapter-card')[chapterNum - 1];
-            for (let i = 0; i < 20; i++) {
-                const sparkle = document.createElement('div');
-                sparkle.className = 'sparkle';
-                sparkle.style.left = Math.random() * 100 + '%';
-                sparkle.style.top = Math.random() * 100 + '%';
-                sparkle.style.animationDelay = Math.random() * 1000 + 'ms';
-                card.appendChild(sparkle);
-                setTimeout(() => sparkle.remove(), 1000);
-            }
-        }
-
-        // --- Enhanced Garden Animation ---
-        const gardenContainer = document.getElementById('garden-container');
-        const heartsCanvas = document.getElementById('hearts-canvas');
-        const hctx = heartsCanvas.getContext('2d');
-        let hearts = [];
-        let gardenInitialized = false;
-        
-        // Add memory flowers
-        const memories = [
-            "First Meet", "First Trip", "First Temple Visit",
-            "Family Meeting", "Diamond Ring", "Special Moments"
-        ];
-        
-        memories.forEach((memory, index) => {
-            const flower = document.createElement('div');
-            flower.className = 'memory-flower';
-            flower.textContent = memory;
-            flower.style.animationDelay = (index * 0.5) + 's';
-            document.querySelector('.memory-flowers').appendChild(flower);
-        });
-
-        function initGarden() {
-            if (gardenInitialized) return;
-            gardenInitialized = true;
-            heartsCanvas.width = gardenContainer.offsetWidth;
-            heartsCanvas.height = gardenContainer.offsetHeight;
-            updateGarden(wishCount); // Initial garden state
-            animateHearts();
-        }
-
-        function updateGarden(count) {
-            gardenContainer.innerHTML = ''; // Clear previous garden
-            gardenContainer.appendChild(heartsCanvas); // Re-add canvas
-
-            const trunk = document.createElement('div');
-            trunk.className = 'tree-branch';
-            trunk.style.height = `${100 + count * 5}px`;
-            trunk.style.transform = `translateX(-50%)`;
-            gardenContainer.appendChild(trunk);
-        
-            const branchCount = 1 + Math.floor(count / 3);
-            for (let i = 0; i < branchCount; i++) {
-                const branch = document.createElement('div');
-                branch.className = 'tree-branch';
-                branch.style.height = `${Math.random() * 40 + 20}%`;
-                branch.style.position = 'absolute';
-                branch.style.bottom = `${Math.random() * 60 + 20}%`;
-                branch.style.width = '6px';
-                branch.style.transform = `rotate(${Math.random() * 120 - 60}deg)`;
-                trunk.appendChild(branch);
-            }
-        
-            for (let i = 0; i < count; i++) {
-                addFlowerToGarden();
-            }
-        }
-        
-        function addFlowerToGarden() {
-            const flower = document.createElement('div');
-            flower.className = 'flower';
-            flower.style.left = `${Math.random() * 90 + 5}%`;
-            flower.style.bottom = `${Math.random() * 70 + 20}%`;
-            flower.style.backgroundColor = `hsl(${Math.random() * 60 + 300}, 70%, 80%)`;
-            flower.style.animationDelay = `${Math.random() * 0.5}s`;
-            gardenContainer.appendChild(flower);
-        }
-
-        function animateHearts() {
-            if(!gardenInitialized) return;
-            hctx.clearRect(0, 0, heartsCanvas.width, heartsCanvas.height);
-            if (Math.random() > 0.98) {
-                hearts.push({
-                    x: Math.random() * heartsCanvas.width,
-                    y: heartsCanvas.height + 20,
-                    size: Math.random() * 15 + 10,
-                    speed: Math.random() * 0.5 + 0.2,
-                    opacity: Math.random() * 0.5 + 0.2
-                });
-            }
-
-            hearts = hearts.filter(heart => heart.y > -20);
-
-            hearts.forEach(heart => {
-                heart.y -= heart.speed;
-                hctx.globalAlpha = heart.opacity;
-                hctx.font = `${heart.size}px serif`;
-                hctx.fillStyle = `rgba(247, 175, 157, ${heart.opacity})`;
-                hctx.fillText('♥', heart.x, heart.y);
-            });
-            hctx.globalAlpha = 1;
-
-            requestAnimationFrame(animateHearts);
-        }
-
-        // --- Connect the Stars Vow Canvas ---
-        const vowCanvas = document.getElementById('vow-canvas');
-        const vctx = vowCanvas.getContext('2d');
-        let vowCanvasStarted = false;
-        let vowPoints = [];
-        let lines = [];
-        let currentLine = null;
-        const VOWS = [
-            "From this day forward,", "you shall not walk alone.",
-            "My heart will be your shelter,",
-            "and my arms will be your home."
-        ];
-
-        function setupVowCanvas() {
-            const container = vowCanvas.parentElement;
-            let size = container.clientWidth;
-            vowCanvas.width = size; vowCanvas.height = size * 0.7;
-            vowPoints = [
-                { x: vowCanvas.width * 0.1, y: vowCanvas.height * 0.5 }, { x: vowCanvas.width * 0.3, y: vowCanvas.height * 0.2 },
-                { x: vowCanvas.width * 0.5, y: vowCanvas.height * 0.8 }, { x: vowCanvas.width * 0.7, y: vowCanvas.height * 0.3 },
-                { x: vowCanvas.width * 0.9, y: vowCanvas.height * 0.6 }
-            ];
-            lines = []; currentLine = { start: null, end: null };
-        }
-
-        function drawVowCanvas() {
-            if (!vowCanvasStarted) return;
-            vctx.clearRect(0, 0, vowCanvas.width, vowCanvas.height);
-            lines.forEach((line, index) => {
-                vctx.beginPath(); vctx.moveTo(line.start.x, line.start.y); vctx.lineTo(line.end.x, line.end.y);
-                vctx.strokeStyle = 'gold'; vctx.lineWidth = 2; vctx.stroke();
-                
-                const text = VOWS[index];
-                vctx.fillStyle = 'white'; vctx.font = '16px "Dancing Script", cursive'; vctx.textAlign = 'center';
-                vctx.fillText(text, (line.start.x + line.end.x) / 2, (line.start.y + line.end.y) / 2 - 10);
-            });
-            if (currentLine && currentLine.start && currentLine.end) {
-                vctx.beginPath(); vctx.moveTo(currentLine.start.x, currentLine.start.y); vctx.lineTo(currentLine.end.x, currentLine.end.y);
-                vctx.strokeStyle = 'rgba(255, 255, 255, 0.5)'; vctx.setLineDash([5, 5]); vctx.stroke(); vctx.setLineDash([]);
-            }
-            vowPoints.forEach((p, i) => {
-                vctx.beginPath(); vctx.arc(p.x, p.y, 8, 0, Math.PI * 2);
-                const isConnected = lines.some(l => l.start === p || l.end === p);
-                vctx.fillStyle = isConnected ? 'gold' : 'white'; vctx.fill();
-            });
-            requestAnimationFrame(drawVowCanvas);
-        }
-
-        function getPointAt(x, y) {
-            for (const p of vowPoints) {
-                const dist = Math.sqrt((p.x - x) ** 2 + (p.y - y) ** 2);
-                if (dist < 10) return p;
-            }
-            return null;
-        }
-
-        vowCanvas.addEventListener('mousedown', e => {
-            const rect = vowCanvas.getBoundingClientRect();
-            const point = getPointAt(e.clientX - rect.left, e.clientY - rect.top);
-            if (point) { currentLine.start = point; }
-        });
-        vowCanvas.addEventListener('mousemove', e => {
-            if (currentLine.start) {
-                const rect = vowCanvas.getBoundingClientRect();
-                currentLine.end = { x: e.clientX - rect.left, y: e.clientY - rect.top };
-            }
-        });
-        vowCanvas.addEventListener('mouseup', e => {
-            if (currentLine.start) {
-                const rect = vowCanvas.getBoundingClientRect();
-                const endPoint = getPointAt(e.clientX - rect.left, e.clientY - rect.top);
-                const nextPointIndex = lines.length;
-                if (endPoint && vowPoints.indexOf(endPoint) === nextPointIndex + 1 && vowPoints.indexOf(currentLine.start) === nextPointIndex) {
-                    lines.push({ start: currentLine.start, end: endPoint });
-                }
-                currentLine.start = null; currentLine.end = null;
-            }
-        });
-
-        function startVowCanvas() {
-            if (vowCanvasStarted) return;
-            vowCanvasStarted = true; 
-            setupVowCanvas(); 
-            drawVowCanvas();
-            window.addEventListener('resize', setupVowCanvas);
-        }
-        
-        // --- Guest Constellation Canvas ---
-        const guestCanvas = document.getElementById('guest-constellation-canvas');
-        const gctx = guestCanvas.getContext('2d');
-        let guestCanvasInitialized = false;
-        let guestStars = [];
-        let backgroundStars = [];
-        let tempStar = null;
-        let hoverStar = null;
-        const starFormContainer = document.getElementById('star-form-container');
-        const starForm = document.getElementById('star-form');
-
-        function resizeGuestCanvas() {
-            const container = guestCanvas.parentElement;
-            guestCanvas.width = container.clientWidth;
-            guestCanvas.height = guestCanvas.width * 0.75; // Responsive height
-            backgroundStars = []; // Recalculate background stars on resize
-            for (let i = 0; i < 100; i++) {
-                backgroundStars.push({
-                    x: Math.random() * guestCanvas.width, y: Math.random() * guestCanvas.height,
-                    radius: Math.random() * 1.5, alpha: Math.random() * 0.5 + 0.2
-                });
-            }
-        }
-
-        function initGuestConstellation() {
-            if (guestCanvasInitialized) return;
-            guestCanvasInitialized = true;
-            
-            guestStars = [
-                { x: 0.2, y: 0.3, name: 'A Friend', wish: 'Wishing you a lifetime of joy!'},
-                { x: 0.8, y: 0.5, name: 'Family', wish: 'So happy for you both!'},
-                { x: 0.5, y: 0.7, name: 'A Well Wisher', wish: 'May your love shine bright!'}
-            ];
-            
-            resizeGuestCanvas();
-            drawGuestConstellation();
-            window.addEventListener('resize', resizeGuestCanvas);
-
-            guestCanvas.addEventListener('click', (e) => {
-                const rect = guestCanvas.getBoundingClientRect();
-                const x = (e.clientX - rect.left) / guestCanvas.width;
-                const y = (e.clientY - rect.top) / guestCanvas.height;
-                tempStar = { x, y };
-                starFormContainer.classList.remove('hidden');
-            });
-
-            guestCanvas.addEventListener('mousemove', (e) => {
-                const rect = guestCanvas.getBoundingClientRect();
-                const mouseX = e.clientX - rect.left;
-                const mouseY = e.clientY - rect.top;
-                hoverStar = null;
-                for(const star of guestStars) {
-                    const starX = star.x * guestCanvas.width;
-                    const starY = star.y * guestCanvas.height;
-                    const dist = Math.sqrt((mouseX - starX)**2 + (mouseY - starY)**2);
-                    if (dist < 8) {
-                        hoverStar = star;
-                        break;
-                    }
-                }
-            });
-
-            starForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                if (!tempStar) return;
-                const name = document.getElementById('star-name').value;
-                const wish = document.getElementById('star-wish').value;
-                guestStars.push({ ...tempStar, name, wish });
-                tempStar = null;
-                starForm.reset();
-                starFormContainer.classList.add('hidden');
-            });
-        }
-
-        function drawGuestConstellation() {
-            if(!guestCanvasInitialized) return;
-            gctx.clearRect(0, 0, guestCanvas.width, guestCanvas.height);
-            
-            backgroundStars.forEach(star => {
-                gctx.beginPath();
-                gctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-                gctx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
-                gctx.fill();
-            });
-
-            guestStars.forEach(star => {
-                gctx.beginPath();
-                gctx.arc(star.x * guestCanvas.width, star.y * guestCanvas.height, 5, 0, Math.PI * 2);
-                gctx.fillStyle = 'gold';
-                gctx.shadowColor = 'gold';
-                gctx.shadowBlur = 10;
-                gctx.fill();
-                gctx.shadowBlur = 0;
-            });
-
-            if (tempStar) {
-                gctx.beginPath();
-                gctx.arc(tempStar.x * guestCanvas.width, tempStar.y * guestCanvas.height, 6, 0, Math.PI * 2);
-                gctx.strokeStyle = 'white';
-                gctx.setLineDash([3, 3]);
-                gctx.stroke();
-                gctx.setLineDash([]);
-            }
-
-            if (hoverStar) {
-                gctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-                gctx.fillRect(hoverStar.x * guestCanvas.width + 15, hoverStar.y * guestCanvas.height - 30, 150, 40);
-                gctx.fillStyle = 'white';
-                gctx.font = '12px "Montserrat"';
-                gctx.fillText(`${hoverStar.name}:`, hoverStar.x * guestCanvas.width + 20, hoverStar.y * guestCanvas.height - 15);
-                gctx.fillText(`"${hoverStar.wish}"`, hoverStar.x * guestCanvas.width + 20, hoverStar.y * guestCanvas.height);
-            }
-
-            requestAnimationFrame(drawGuestConstellation);
-        }
         
         // --- Secret Poem Modal ---
         const poemModal = document.getElementById('poem-modal');
@@ -1925,17 +1439,6 @@
             prevBtn.disabled = currentPage === 1;
             nextBtn.disabled = currentPage === totalPages;
             
-            const frontPageNum = currentPage;
-            const backPageNum = currentPage - 1;
-
-            if(currentPage === 1) {
-                 pageCounter.textContent = `Cover`;
-            } else if (currentPage > totalPages) {
-                 pageCounter.textContent = `The End`;
-            } else {
-                 pageCounter.textContent = `Pages ${backPageNum*2-1} - ${backPageNum*2}`;
-            }
-            // A more user-friendly counter ok
             pageCounter.textContent = `Page ${currentPage} of ${totalPages}`;
         }
 
@@ -1946,14 +1449,38 @@
 
         document.querySelectorAll('.page').forEach(page => {
             page.addEventListener('click', function(e) {
-                if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'IMG') {
-                    const pageNum = parseInt(this.dataset.page);
-                    if (pageNum === currentPage && currentPage < totalPages) {
-                        nextPage();
+                if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'IMG' && !e.target.closest('.nav-button')) {
+                    const rect = this.getBoundingClientRect();
+                    const clickX = e.clientX - rect.left;
+                    
+                    // If click is on the left half of the page (for the back page)
+                    if (this.classList.contains('flipped')) {
+                        if (clickX < this.offsetWidth / 2) {
+                            previousPage()
+                           // This logic is tricky because the 'back' is visually on the left.
+                           // The main navigation buttons are clearer for the user.
+                           // We will rely on previousPage() for this.
+                        }
+                    } else { // If click is on the right half of the page (for the front page)
+                         if (clickX > this.offsetWidth / 2) {
+                            const pageNum = parseInt(this.dataset.page);
+                            if (pageNum === currentPage && currentPage < totalPages) {
+                                nextPage();
+                            }
+                         }
                     }
                 }
             });
         });
+        
+        document.querySelector('.cover').addEventListener('click', function(e) {
+             const rect = this.getBoundingClientRect();
+             const clickX = e.clientX - rect.left;
+             if (currentPage > 1 && clickX < this.offsetWidth / 2) {
+                 previousPage();
+             }
+        });
+
         updateNavigation();
     </script>
 </body>
